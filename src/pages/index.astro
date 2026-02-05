@@ -1,11 +1,308 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import type { Tool } from '../types/tool';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// 加载工具数据
+const toolsData = await import('../../public/tools.json');
+const tools: Tool[] = toolsData.default as Tool[];
+
+// 获取所有分类并统计
+const categories = tools.reduce((acc, tool) => {
+  const cat = tool.category || '未分类';
+  acc[cat] = (acc[cat] || 0) + 1;
+  return acc;
+}, {} as Record<string, number>);
+
+const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Batool - 个人工具索引站">
+  <div class="min-h-screen bg-base-100">
+    <div class="max-w-5xl mx-auto px-4 py-8 md:py-12">
+
+      <!-- Hero 区 -->
+      <header class="text-center mb-10 md:mb-12">
+        <div class="inline-block mb-4">
+          <span class="text-6xl">🛠️</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-4">
+          Batool
+        </h1>
+        <p class="text-base md:text-lg text-base-content/70 max-w-2xl mx-auto">
+          你的个人工具索引站 —— 快速搜索、一键直达，所有工具尽在掌握。
+        </p>
+        <div class="mt-4 flex justify-center gap-4 text-sm text-base-content/60">
+          <span>📦 共 <strong class="text-primary">{tools.length}</strong> 个工具</span>
+          <span>🏷️ <strong class="text-secondary">{categoryList.length}</strong> 个分类</span>
+        </div>
+      </header>
+
+      <!-- 搜索与筛选区 -->
+      <div class="mb-8 space-y-4">
+        <!-- 搜索框 -->
+        <div class="relative">
+          <label for="search-input" class="sr-only">搜索工具</label>
+          <div class="relative group">
+            <input
+              id="search-input"
+              type="text"
+              placeholder="🔍 搜索工具名称、描述或分类..."
+              class="input input-bordered input-lg w-full pr-16 focus:input-primary transition-all duration-200"
+            />
+            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-base-content/40 text-sm select-none">
+              ⌘K
+            </span>
+          </div>
+        </div>
+
+        <!-- 分类筛选 -->
+        <div class="flex flex-wrap gap-2">
+          <button
+            data-category="all"
+            class="category-btn badge badge-primary cursor-pointer hover:badge-lg transition-all duration-200"
+          >
+            全部 <span class="ml-1 opacity-70">({tools.length})</span>
+          </button>
+          {
+            categoryList.map(([cat, count]) => (
+              <button
+                data-category={cat}
+                class="category-btn badge badge-outline cursor-pointer hover:badge-lg transition-all duration-200"
+              >
+                {cat} <span class="ml-1 opacity-70">({count})</span>
+              </button>
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- 工具列表 -->
+      <div id="tools-container">
+        <!-- 加载状态 -->
+        <div id="loading-state" class="hidden text-center py-12">
+          <span class="loading loading-spinner loading-lg text-primary"></span>
+          <p class="mt-4 text-base-content/60">加载中...</p>
+        </div>
+
+        <!-- 空状态 -->
+        <div id="empty-state" class="hidden text-center py-16">
+          <div class="text-6xl mb-4">🔍</div>
+          <h3 class="text-xl font-semibold mb-2">未找到匹配的工具</h3>
+          <p class="text-base-content/60">尝试调整搜索词或选择其他分类</p>
+        </div>
+
+        <!-- 工具列表 -->
+        <div id="tools-list" class="grid gap-4">
+          <!-- 由 JS 动态渲染 -->
+        </div>
+      </div>
+
+      <!-- 底部信息 -->
+      <footer class="mt-16 text-center text-sm text-base-content/50">
+        <p>使用 ❤️ 和 Astro 构建</p>
+      </footer>
+
+    </div>
+  </div>
+
+  <!-- 服务端数据传递到客户端 -->
+  <script define:vars={{ tools }}>
+    window.__TOOLS__ = tools;
+  </script>
+
+  <!-- 客户端脚本 -->
+  <script>
+    // 从全局变量获取工具数据
+    const toolsData = window.__TOOLS__ || [];
+
+    // DOM 元素
+    const searchInput = document.getElementById('search-input');
+    const toolsListEl = document.getElementById('tools-list');
+    const emptyStateEl = document.getElementById('empty-state');
+    const categoryButtons = document.querySelectorAll('.category-btn');
+
+    // 状态
+    let currentCategory = 'all';
+    let searchQuery = '';
+    let fuse = null;
+
+    // 初始化 Fuse.js（动态导入）
+    async function initFuse() {
+      const { default: Fuse } = await import('fuse.js');
+
+      fuse = new Fuse(toolsData, {
+        keys: [
+          { name: 'name', weight: 2 },
+          { name: 'description', weight: 1.5 },
+          { name: 'category', weight: 1 },
+          { name: 'tags', weight: 1.2 }
+        ],
+        threshold: 0.4,
+        includeScore: false,
+        shouldSort: true,
+        minMatchCharLength: 1,
+        ignoreLocation: true
+      });
+
+      // 初始渲染
+      renderTools(filterTools());
+    }
+
+    // 过滤工具
+    function filterTools() {
+      let filtered = toolsData;
+
+      // 分类筛选
+      if (currentCategory !== 'all') {
+        filtered = filtered.filter(tool => tool.category === currentCategory);
+      }
+
+      // 搜索筛选
+      if (searchQuery.trim() && fuse) {
+        const results = fuse.search(searchQuery);
+        filtered = filtered.filter(tool =>
+          results.some(r => r.item === tool)
+        );
+      }
+
+      return filtered;
+    }
+
+    // 渲染工具卡片
+    function renderTools(tools) {
+      if (tools.length === 0) {
+        toolsListEl.classList.add('hidden');
+        emptyStateEl.classList.remove('hidden');
+        return;
+      }
+
+      toolsListEl.classList.remove('hidden');
+      emptyStateEl.classList.add('hidden');
+
+      const html = tools.map((tool, index) => `
+        <article
+          class="card bg-base-200 hover:bg-base-300 transition-all duration-200 shadow-sm hover:shadow-md"
+          style="animation: fadeIn 0.3s ease-out ${index * 0.05}s both"
+        >
+          <div class="card-body p-5">
+            <div class="flex flex-col sm:flex-row justify-between gap-4">
+              <!-- 主信息区 -->
+              <div class="flex-1 min-w-0">
+                <div class="flex items-start gap-3">
+                  <div class="flex-1">
+                    <h2 class="card-title text-xl mb-2">
+                      ${tool.name}
+                    </h2>
+                    <p class="text-base-content/70 text-sm leading-relaxed">
+                      ${tool.description}
+                    </p>
+                  </div>
+                </div>
+                <div class="flex flex-wrap gap-2 mt-3">
+                  <span class="badge badge-ghost badge-sm">
+                    ${tool.category || '未分类'}
+                  </span>
+                  ${(tool.tags || []).map(tag =>
+                    `<span class="badge badge-outline badge-sm opacity-70">${tag}</span>`
+                  ).join('')}
+                </div>
+              </div>
+
+              <!-- 操作区 -->
+              <div class="flex items-center">
+                <a
+                  href="${tool.url}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-primary btn-sm btn-circle group"
+                  aria-label="打开 ${tool.name}"
+                  title="打开 ${tool.name}"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 group-hover:scale-110 transition-transform"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                    <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </article>
+      `).join('');
+
+      toolsListEl.innerHTML = html;
+    }
+
+    // 更新分类按钮状态
+    function updateCategoryButtons() {
+      categoryButtons.forEach(btn => {
+        const category = btn.getAttribute('data-category');
+        if (category === currentCategory) {
+          btn.classList.remove('badge-outline');
+          btn.classList.add('badge-primary');
+        } else {
+          btn.classList.remove('badge-primary');
+          btn.classList.add('badge-outline');
+        }
+      });
+    }
+
+    // 搜索输入处理
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      renderTools(filterTools());
+    });
+
+    // 分类按钮点击处理
+    categoryButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentCategory = btn.getAttribute('data-category') || 'all';
+        updateCategoryButtons();
+        renderTools(filterTools());
+
+        // 滚动到工具列表
+        toolsListEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // 快捷键支持
+    document.addEventListener('keydown', (e) => {
+      // Cmd/Ctrl + K 聚焦搜索框
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        searchInput.focus();
+        searchInput.select();
+      }
+      // Escape 清空搜索
+      if (e.key === 'Escape' && document.activeElement === searchInput) {
+        searchInput.value = '';
+        searchQuery = '';
+        renderTools(filterTools());
+        searchInput.blur();
+      }
+    });
+
+    // 添加淡入动画
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // 初始化
+    initFuse();
+  </script>
 </Layout>
