@@ -17,140 +17,140 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
 ---
 
 <Layout title="Batool - Tool Index">
-  <!-- 简洁容器 -->
   <div class="min-h-screen bg-base-100 flex flex-col">
 
-    <!-- 简化的固定 Header -->
-    <header class="fixed top-0 left-0 right-0 z-50 h-16 bg-base-100 border-b border-base-content/10">
-      <div class="h-full px-4 md:px-6 flex items-center justify-between gap-4">
-        <!-- 左侧: Brand -->
-        <div class="flex items-center gap-2 flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          <a href="/" class="text-xl font-bold text-base-content hover:text-primary transition-colors">
-            Batool
-          </a>
-        </div>
-
-        <!-- 中间: 搜索框 -->
-        <div class="flex-1 flex justify-center max-w-lg mx-auto">
-          <div class="relative w-full max-w-md">
-            <input
-              id="search-input"
-              type="text"
-              placeholder="搜索工具..."
-              class="input input-bordered w-full pr-16 bg-base-100 focus:border-primary focus:outline-none transition-colors h-10"
-            />
-            <div class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-base-content/40 hidden md:block pointer-events-none">
-              ⌘K
-            </div>
+    <!-- 固定顶部 Header - 极简 -->
+    <header class="fixed top-0 left-0 right-0 z-50 h-14 bg-base-100/80 backdrop-blur-xl border-b border-base-content/5">
+      <div class="h-full px-6 flex items-center justify-between">
+        <!-- Brand -->
+        <a href="/" class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-base-content flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-base-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
           </div>
-        </div>
+          <span class="text-base font-bold text-base-content tracking-tight">Batool</span>
+        </a>
 
-        <!-- 右侧: 操作按钮组 -->
-        <div class="flex items-center gap-2 flex-shrink-0">
-          <!-- GitHub 按钮 -->
+        <!-- 右侧: 主题切换 + GitHub -->
+        <div class="flex items-center gap-1">
+          <button
+            onclick="toggleTheme()"
+            class="p-2 rounded-lg hover:bg-base-content/5 transition-colors group"
+            aria-label="Toggle theme"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-base-content/50 group-hover:text-base-content/70 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </button>
+
           <a
             href="https://github.com"
             target="_blank"
             rel="noopener noreferrer"
-            class="btn btn-ghost btn-circle btn-sm"
-            aria-label="GitHub Repository"
+            class="p-2 rounded-lg hover:bg-base-content/5 transition-colors group"
+            aria-label="GitHub"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-base-content/50 group-hover:text-base-content/70 transition-colors" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
             </svg>
           </a>
-
-          <!-- 主题切换器 -->
-          <div class="dropdown dropdown-end">
-            <div tabindex="0" role="button" class="btn btn-ghost btn-circle btn-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-              </svg>
-            </div>
-            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-40 border border-base-content/10">
-              <li><a onclick="setTheme('emerald')" class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-                Emerald
-              </a></li>
-              <li><a onclick="setTheme('winter')" class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-sky-500"></span>
-                Winter
-              </a></li>
-              <li><a onclick="setTheme('light')" class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-gray-200 border"></span>
-                Light
-              </a></li>
-            </ul>
-          </div>
         </div>
       </div>
     </header>
 
-    <!-- 页面主体容器 -->
-    <div class="flex-1 flex flex-col pt-16">
+    <!-- 主内容区 -->
+    <div class="flex-1 flex flex-col pt-14">
 
-      <!-- 主内容区 -->
-      <div class="flex-1 max-w-4xl mx-auto px-4 py-8">
-
-      <!-- Hero 区域 - 简洁 -->
-      <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-base-content mb-2">
+      <!-- Hero 区域 + 搜索框 -->
+      <div class="px-4 sm:px-6 pt-12 sm:pt-16 pb-8 sm:pb-12 text-center">
+        <!-- 标题 -->
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-base-content tracking-tight mb-2 sm:mb-3">
           工具快速索引
         </h1>
-        <p class="text-base-content/60 text-sm">
-          搜索即达 · 点击即达
+        <p class="text-base-content/50 text-sm sm:text-base md:text-lg mb-6 sm:mb-10">
+          精选工具 · 搜索即达 · 点击即达
         </p>
-      </div>
 
-      <!-- 分类过滤器 - 简洁胶囊样式 -->
-      <div class="mb-8">
-        <div class="flex flex-wrap justify-center gap-2">
+        <!-- 搜索框 -->
+        <div class="max-w-2xl mx-auto mb-8 sm:mb-12">
+          <div class="relative">
+            <input
+              id="search-input"
+              type="text"
+              placeholder="搜索工具..."
+              class="w-full px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base rounded-xl sm:rounded-2xl border-2 border-base-content/10 bg-base-100 focus:border-base-content/30 focus:outline-none transition-colors placeholder:text-base-content/30"
+            />
+            <div class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+              <kbd class="hidden md:inline-flex px-2 py-1 text-xs font-medium text-base-content/40 bg-base-content/5 rounded-md">⌘K</kbd>
+            </div>
+          </div>
+        </div>
+
+        <!-- 分类过滤器 - 现代标签样式 -->
+        <div class="flex flex-wrap justify-center gap-1.5 sm:gap-2">
           <button
             data-category="all"
-            class="category-btn px-4 py-1.5 rounded-full bg-primary text-base-100 text-sm font-medium hover:opacity-90 transition-opacity cursor-pointer"
+            class="category-btn px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-base-content text-base-100 text-xs sm:text-sm font-medium hover:opacity-90 transition-opacity"
           >
-            全部 <span class="ml-1.5 opacity-75">({tools.length})</span>
+            全部 <span class="ml-1 sm:ml-1.5 opacity-60">({tools.length})</span>
           </button>
           {
             categoryList.map(([cat, count]) => (
               <button
                 data-category={cat}
-                class="category-btn px-4 py-1.5 rounded-full bg-base-200 text-base-content text-sm font-medium hover:bg-base-300 transition-colors cursor-pointer dark:bg-base-content/10 dark:hover:bg-base-content/20"
+                class="category-btn px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-base-content/5 text-base-content text-xs sm:text-sm font-medium hover:bg-base-content/10 transition-colors border border-base-content/5"
               >
-                {cat} <span class="ml-1.5 opacity-60">({count})</span>
+                {cat} <span class="ml-1 sm:ml-1.5 opacity-40">({count})</span>
               </button>
             ))
           }
         </div>
       </div>
 
-      <!-- 工具列表 - 列表式布局 -->
-      <div id="tools-container">
-        <!-- 空状态 -->
-        <div id="empty-state" class="hidden text-center py-16">
-          <div class="text-5xl mb-4 opacity-40">🔍</div>
-          <h3 class="text-lg font-semibold mb-2 text-base-content/70">未找到匹配的工具</h3>
-          <p class="text-base-content/50 text-sm">尝试调整搜索词或选择其他分类</p>
-        </div>
+      <!-- 工具列表 -->
+      <div class="flex-1 px-4 sm:px-6 pb-8 sm:pb-12">
+        <div class="max-w-4xl mx-auto">
+          <!-- 空状态 -->
+          <div id="empty-state" class="hidden text-center py-16 sm:py-20">
+            <div class="text-5xl sm:text-6xl mb-4 sm:mb-6 opacity-20">🔍</div>
+            <h3 class="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-base-content/50">未找到匹配的工具</h3>
+            <p class="text-base-content/30 text-sm">尝试调整搜索词或选择其他分类</p>
+          </div>
 
-        <!-- 工具列表 - 分割线布局 -->
-        <div id="tools-list" class="border-t border-base-content/10">
-          <!-- 由 JS 动态渲染 -->
-        </div>
+          <!-- 骨架屏 -->
+          <div id="skeleton-state" class="border-t border-base-content/10">
+            {
+              Array.from({ length: 5 }).map(() => (
+                <div class="skeleton-item border-b border-base-content/5 py-3.5">
+                  <div class="flex items-center justify-between gap-4">
+                    <div class="flex-1 min-w-0 space-y-2">
+                      <div class="skeleton h-5 w-32 rounded"></div>
+                      <div class="skeleton h-4 w-full max-w-md rounded"></div>
+                    </div>
+                    <div class="flex items-center gap-3 flex-shrink-0">
+                      <div class="skeleton h-7 w-16 rounded-md"></div>
+                      <div class="skeleton h-4 w-4 rounded"></div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
 
-        <!-- 加载状态和哨兵元素 -->
-        <div id="loading-container" class="py-8">
-          <!-- 哨兵元素 - 始终可见,让 Observer 监听 -->
-          <div id="loading-sentinel" class="min-h-[60px] flex items-center justify-center">
-            <!-- 加载 spinner - 可以隐藏 -->
-            <span id="loading-spinner" class="loading loading-spinner loading-primary"></span>
-            <!-- 已加载全部消息 -->
-            <div id="end-message" class="hidden text-center text-base-content/40 text-sm font-medium">
-              ✨ 已加载全部 <span id="total-count">0</span> 条数据
+          <!-- 工具列表 -->
+          <div id="tools-list" class="border-t border-base-content/10 hidden">
+            <!-- 由 JS 动态渲染 -->
+          </div>
+
+          <!-- 加载状态 -->
+          <div id="loading-container" class="py-6 sm:py-8">
+            <div id="loading-sentinel" class="min-h-[60px] flex items-center justify-center">
+              <span id="loading-spinner" class="loading loading-spinner hidden"></span>
+              <div id="end-message" class="hidden text-center text-base-content/30 text-sm cursor-pointer hover:text-base-content/50 transition-colors" title="点击聚焦搜索框">
+                <span id="total-count">已加载全部 0 条数据</span>
+              </div>
             </div>
           </div>
         </div>
@@ -158,18 +158,18 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
 
     </div>
 
-    <!-- Footer - 简洁 -->
-    <footer class="py-6 border-t border-base-content/10">
-      <div class="max-w-4xl mx-auto px-4">
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-base-content/50">
+    <!-- Footer -->
+    <footer class="py-6 border-t border-base-content/5">
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-base-content/40">
           <div>
-            Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="link link-hover text-base-content/60">Astro</a> ·
-            <a href="https://daisyui.com" target="_blank" rel="noopener noreferrer" class="link link-hover text-base-content/60">DaisyUI</a> ·
-            <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" class="link link-hover text-base-content/60">TailwindCSS</a>
+            Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="hover:text-base-content/60 transition-colors">Astro</a> ·
+            <a href="https://daisyui.com" target="_blank" rel="noopener noreferrer" class="hover:text-base-content/60 transition-colors">DaisyUI</a> ·
+            <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" class="hover:text-base-content/60 transition-colors">TailwindCSS</a>
           </div>
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-4">
             <span>© 2025 Batool</span>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hover:text-primary transition-colors" aria-label="GitHub">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hover:text-base-content/60 transition-colors" aria-label="GitHub">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
               </svg>
@@ -178,8 +178,6 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
         </div>
       </div>
     </footer>
-
-  </div>
 
   </div>
 
@@ -198,6 +196,7 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
     const searchInput = document.getElementById('search-input');
     const toolsListEl = document.getElementById('tools-list');
     const emptyStateEl = document.getElementById('empty-state');
+    const skeletonStateEl = document.getElementById('skeleton-state');
     const loadingSentinel = document.getElementById('loading-sentinel');
     const loadingSpinner = document.getElementById('loading-spinner');
     const endMessage = document.getElementById('end-message');
@@ -205,46 +204,34 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
     const categoryButtons = document.querySelectorAll('.category-btn');
 
     // 配置
-    const ITEMS_PER_PAGE = 15;
+    const ITEMS_PER_PAGE = 20;
 
     // 简化的状态
-    let allTools = [];           // 全部数据
-    let filteredTools = [];      // 筛选后的数据
-    let displayedCount = 0;      // 已显示数量
-    let isLoading = false;       // 是否加载中
-    let observer = null;         // Observer 实例
+    let allTools = [];
+    let filteredTools = [];
+    let displayedCount = 0;
+    let isLoading = false;
+    let observer = null;
 
     // 搜索和筛选状态
     let currentCategory = 'all';
     let searchQuery = '';
     let fuse = null;
 
-    // 初始化主题
+    // 主题切换
     function initTheme() {
-      const savedTheme = localStorage.getItem('theme') || 'emerald';
-      console.log('🎨 initTheme - 读取的主题:', savedTheme);
-      console.log('🎨 设置前 document.documentElement:', document.documentElement.getAttribute('data-theme'));
-
+      const savedTheme = localStorage.getItem('theme') || 'light';
       document.documentElement.setAttribute('data-theme', savedTheme);
-
-      console.log('🎨 设置后 document.documentElement:', document.documentElement.getAttribute('data-theme'));
-      console.log('🎨 当前页面所有 data-theme:', document.querySelectorAll('[data-theme]'));
     }
 
-    window.setTheme = function(theme) {
-      console.log('🎨 setTheme 被调用 - 切换到主题:', theme);
-      console.log('🎨 设置前:', document.documentElement.getAttribute('data-theme'));
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    }
 
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-
-      console.log('🎨 设置后:', document.documentElement.getAttribute('data-theme'));
-
-      // 延迟检查，让 DOM 更新
-      setTimeout(() => {
-        console.log('🎨 100ms 后的 data-theme:', document.documentElement.getAttribute('data-theme'));
-      }, 100);
-    };
+    window.toggleTheme = toggleTheme;
 
     // 初始化 Fuse.js
     async function initFuse() {
@@ -264,12 +251,10 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
         ignoreLocation: true
       });
 
-      // 初始化数据
       allTools = toolsData;
       filteredTools = filterTools();
       console.log('🔍 筛选后数据量:', filteredTools.length);
 
-      // 初始加载
       initObserver();
       loadNextPage();
     }
@@ -294,18 +279,13 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
 
     // 初始化 Observer
     function initObserver() {
-      // 先断开旧的
       if (observer) {
         observer.disconnect();
       }
 
-      // 创建新的 Observer
       observer = new IntersectionObserver(
         (entries) => {
-          console.log('👀 Observer 触发', entries[0].isIntersecting);
-
           if (entries[0].isIntersecting && !isLoading) {
-            console.log('✅ 开始加载下一页');
             loadNextPage();
           }
         },
@@ -315,66 +295,71 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
         }
       );
 
-      // 确保元素存在再观察
       if (loadingSentinel) {
         observer.observe(loadingSentinel);
-        console.log('🎯 Observer 已启动');
       }
     }
 
     // 加载下一页
     function loadNextPage() {
-      // 防止重复加载
       if (isLoading) {
-        console.log('⏸️  正在加载中,跳过');
         return;
       }
 
-      // 检查是否已加载全部
       if (displayedCount >= filteredTools.length) {
-        console.log('🏁 已加载全部数据');
         showEndState();
         return;
       }
 
-      console.log(`📄 加载第 ${Math.floor(displayedCount / ITEMS_PER_PAGE) + 1} 页`);
       isLoading = true;
 
-      // 显示加载 spinner
-      loadingSpinner.classList.remove('hidden');
-      endMessage.classList.add('hidden');
+      // 隐藏骨架屏
+      if (skeletonStateEl) {
+        skeletonStateEl.classList.add('hidden');
+      }
+      toolsListEl.classList.remove('hidden');
 
-      // 计算要加载的数据
       const start = displayedCount;
       const end = Math.min(start + ITEMS_PER_PAGE, filteredTools.length);
       const newItems = filteredTools.slice(start, end);
 
-      console.log(`📦 加载 ${newItems.length} 条数据 (第 ${start}-${end} 条)`);
-
-      // 渲染数据
       renderTools(newItems, displayedCount === 0);
 
-      // 更新计数
       displayedCount = end;
       isLoading = false;
 
-      // 检查是否还有更多
       if (displayedCount >= filteredTools.length) {
-        console.log('✅ 已加载全部');
         showEndState();
         if (observer) observer.disconnect();
-      } else {
-        console.log(`⏳ 还有 ${filteredTools.length - displayedCount} 条数据`);
-        // 隐藏 spinner,但保持 loadingSentinel 可见
-        loadingSpinner.classList.add('hidden');
       }
     }
 
     // 显示已加载全部状态
     function showEndState() {
       loadingSpinner.classList.add('hidden');
-      endMessage.classList.remove('hidden');
-      totalCountEl.textContent = displayedCount;
+
+      // 如果没有数据，不显示消息
+      if (displayedCount === 0) {
+        endMessage.classList.add('hidden');
+        return;
+      }
+
+      // 如果数据量≥200，提示用户搜索
+      if (displayedCount >= 200) {
+        endMessage.classList.remove('hidden');
+        totalCountEl.innerHTML = `数据过多，建议使用搜索功能精确定位`;
+        totalCountEl.parentElement.style.cursor = 'pointer';
+        totalCountEl.parentElement.onclick = () => {
+          searchInput.focus();
+          searchInput.select();
+        };
+      } else {
+        // 正常显示"已加载全部"消息
+        endMessage.classList.remove('hidden');
+        totalCountEl.textContent = `已加载全部 ${displayedCount} 条数据`;
+        totalCountEl.parentElement.style.cursor = 'default';
+        totalCountEl.parentElement.onclick = null;
+      }
     }
 
     // 重置加载状态
@@ -383,69 +368,83 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
       isLoading = false;
 
       toolsListEl.innerHTML = '';
-      loadingSpinner.classList.remove('hidden');
-      endMessage.classList.add('hidden');
 
-      // 重新过滤
+      // 先过滤数据
       filteredTools = filterTools();
       console.log('🔄 重置加载,筛选后:', filteredTools.length, '条');
 
-      // 重新初始化 Observer
       initObserver();
 
-      // 立即加载第一页
-      loadNextPage();
+      // 如果结果为空，直接显示空状态，不显示骨架屏
+      if (filteredTools.length === 0) {
+        if (skeletonStateEl) {
+          skeletonStateEl.classList.add('hidden');
+        }
+        toolsListEl.classList.add('hidden');
+        emptyStateEl.classList.remove('hidden');
+      } else {
+        // 有数据时，显示骨架屏并延迟加载
+        if (skeletonStateEl) {
+          skeletonStateEl.classList.remove('hidden');
+        }
+        toolsListEl.classList.add('hidden');
+        emptyStateEl.classList.add('hidden');
+
+        setTimeout(() => {
+          loadNextPage();
+        }, 300);
+      }
     }
 
-    // 渲染工具列表 - 两行列表式布局
+    // 渲染工具列表 - 响应式简洁列表
     function renderTools(tools, isFirstPage) {
+      // 隐藏骨架屏
+      if (skeletonStateEl) {
+        skeletonStateEl.classList.add('hidden');
+      }
+
+      // 空状态处理
       if (tools.length === 0) {
         toolsListEl.classList.add('hidden');
         emptyStateEl.classList.remove('hidden');
         return;
       }
 
+      // 有数据时显示列表，隐藏空状态
       toolsListEl.classList.remove('hidden');
       emptyStateEl.classList.add('hidden');
 
       const fragment = document.createDocumentFragment();
 
       tools.forEach((tool, index) => {
-        // 创建链接容器（整行可点击）
         const link = document.createElement('a');
         link.href = tool.url;
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
-        link.className = 'tool-item block border-b border-base-content/10 hover:bg-base-content/5 transition-colors';
+        link.className = 'tool-item block border-b border-base-content/5 hover:bg-base-content/[0.02] transition-colors';
 
-        // 第一页时添加淡入动画
         if (isFirstPage) {
           link.style.opacity = '0';
           link.style.transform = 'translateY(8px)';
-          link.style.transition = `opacity 0.3s ease-out ${index * 0.03}s, transform 0.3s ease-out ${index * 0.03}s`;
+          link.style.transition = `opacity 0.2s ease-out ${index * 0.02}s, transform 0.2s ease-out ${index * 0.02}s`;
         }
 
         link.innerHTML = `
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 px-4 py-3">
-            <!-- 左侧: 工具名称 + 简介 -->
+          <div class="flex items-center justify-between gap-3 sm:gap-4 py-2.5 sm:py-3.5">
             <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2 mb-1">
-                <span class="text-base font-semibold text-base-content truncate group-hover:text-primary transition-colors">
-                  ${tool.name}
-                </span>
+              <div class="text-sm sm:text-base font-semibold text-base-content mb-0.5 truncate">
+                ${tool.name}
               </div>
-              <p class="text-sm text-base-content/60 line-clamp-1 hidden md:block">
+              <div class="text-xs sm:text-sm text-base-content/40 truncate hidden sm:block">
                 ${tool.description}
-              </p>
+              </div>
             </div>
-
-            <!-- 右侧: 分类 + 链接图标 -->
-            <div class="flex items-center gap-3 md:gap-4">
-              <span class="px-2 py-0.5 rounded text-xs font-medium bg-base-200 text-base-content/70 dark:bg-base-content/10 dark:text-base-content/60 whitespace-nowrap">
+            <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+              <span class="px-2 sm:px-2.5 py-1 rounded-md text-xs font-medium bg-base-content/5 text-base-content/50 whitespace-nowrap">
                 ${tool.category || '未分类'}
               </span>
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-base-content/40 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-base-content/20 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
             </div>
           </div>
@@ -456,7 +455,6 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
 
       toolsListEl.appendChild(fragment);
 
-      // 触发动画
       if (isFirstPage) {
         requestAnimationFrame(() => {
           const items = toolsListEl.querySelectorAll('.tool-item');
@@ -473,11 +471,9 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
       categoryButtons.forEach(btn => {
         const category = btn.getAttribute('data-category');
         if (category === currentCategory) {
-          // 激活状态
-          btn.className = 'category-btn px-4 py-1.5 rounded-full bg-primary text-base-100 text-sm font-medium hover:opacity-90 transition-opacity cursor-pointer';
+          btn.className = 'category-btn px-4 py-2 rounded-lg bg-base-content text-base-100 text-sm font-medium hover:opacity-90 transition-opacity';
         } else {
-          // 非激活状态
-          btn.className = 'category-btn px-4 py-1.5 rounded-full bg-base-200 text-base-content text-sm font-medium hover:bg-base-300 transition-colors cursor-pointer dark:bg-base-content/10 dark:hover:bg-base-content/20';
+          btn.className = 'category-btn px-4 py-2 rounded-lg bg-base-content/5 text-base-content text-sm font-medium hover:bg-base-content/10 transition-colors border border-base-content/5';
         }
       });
     }
@@ -533,20 +529,6 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
         observer.disconnect();
       }
     });
-
-    // 添加自定义样式
-    const style = document.createElement('style');
-    style.textContent = `
-      #tools-list {
-        scroll-margin-top: 80px;
-      }
-
-      /* 平滑过渡 */
-      .transition-smooth {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-    `;
-    document.head.appendChild(style);
 
     // 初始化
     console.log('🚀 开始初始化...');
