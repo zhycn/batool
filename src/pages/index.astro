@@ -17,8 +17,8 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
 ---
 
 <Layout title="Batool - Tool Index">
-  <!-- DaisyUI 主题容器 -->
-  <div class="min-h-screen bg-base-100" data-theme="emerald">
+  <!-- DaisyUI 主题容器 - 主题由 JavaScript 在 <html> 元素上设置 -->
+  <div class="min-h-screen bg-base-100">
 
     <!-- 固定顶部 Header -->
     <header class="fixed top-0 left-0 right-0 z-50 h-20 bg-base-100 border-b border-base-content/10 transition-all duration-300">
@@ -195,12 +195,28 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
     // 初始化主题
     function initTheme() {
       const savedTheme = localStorage.getItem('theme') || 'emerald';
+      console.log('🎨 initTheme - 读取的主题:', savedTheme);
+      console.log('🎨 设置前 document.documentElement:', document.documentElement.getAttribute('data-theme'));
+
       document.documentElement.setAttribute('data-theme', savedTheme);
+
+      console.log('🎨 设置后 document.documentElement:', document.documentElement.getAttribute('data-theme'));
+      console.log('🎨 当前页面所有 data-theme:', document.querySelectorAll('[data-theme]'));
     }
 
     window.setTheme = function(theme) {
+      console.log('🎨 setTheme 被调用 - 切换到主题:', theme);
+      console.log('🎨 设置前:', document.documentElement.getAttribute('data-theme'));
+
       document.documentElement.setAttribute('data-theme', theme);
       localStorage.setItem('theme', theme);
+
+      console.log('🎨 设置后:', document.documentElement.getAttribute('data-theme'));
+
+      // 延迟检查，让 DOM 更新
+      setTimeout(() => {
+        console.log('🎨 100ms 后的 data-theme:', document.documentElement.getAttribute('data-theme'));
+      }, 100);
     };
 
     // 初始化 Fuse.js

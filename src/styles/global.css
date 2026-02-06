@@ -1,5 +1,7 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: emerald --default, winter, light;
+}
 
 /* ========================================
    BATOOL - Google Workspace 风格
