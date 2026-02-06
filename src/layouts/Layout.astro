@@ -18,7 +18,7 @@ const canonicalURL = Astro.site
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -45,6 +45,18 @@ const canonicalURL = Astro.site
 
     <!-- 主题颜色 -->
     <meta name="theme-color" content="#6366f1" />
+
+    <!-- 内联脚本:防止主题闪烁 - 在页面渲染前立即执行 -->
+    <script is:inline>
+      (function() {
+        try {
+          const theme = localStorage.getItem('theme') || 'light';
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
   </head>
   <body class="antialiased">
     <slot />

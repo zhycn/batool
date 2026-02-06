@@ -19,8 +19,8 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
 <Layout title="Batool - Tool Index">
   <div class="min-h-screen bg-base-100 flex flex-col">
 
-    <!-- 固定顶部 Header - 极简 -->
-    <header class="fixed top-0 left-0 right-0 z-50 h-14 bg-base-100/80 backdrop-blur-xl border-b border-base-content/5">
+    <!-- 固定顶部 Header - 纯色背景避免模糊不协调 -->
+    <header class="fixed top-0 left-0 right-0 z-50 h-14 bg-base-100 border-b border-base-content/5">
       <div class="h-full px-6 flex items-center justify-between">
         <!-- Brand -->
         <a href="/" class="flex items-center gap-2.5">
@@ -73,16 +73,26 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
           精选工具 · 搜索即达 · 点击即达
         </p>
 
-        <!-- 搜索框 -->
-        <div class="max-w-2xl mx-auto mb-8 sm:mb-12">
+        <!-- 搜索框 - 统一宽度 max-w-4xl -->
+        <div class="max-w-4xl mx-auto mb-8 sm:mb-12">
           <div class="relative">
             <input
               id="search-input"
               type="text"
-              placeholder="搜索工具..."
-              class="w-full px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base rounded-xl sm:rounded-2xl border-2 border-base-content/10 bg-base-100 focus:border-base-content/30 focus:outline-none transition-colors placeholder:text-base-content/30"
+              class="w-full px-4 sm:px-6 pr-24 sm:pr-28 py-3 sm:py-4 text-sm sm:text-base rounded-xl sm:rounded-2xl border-2 border-base-content/10 bg-base-100 focus:border-base-content/30 focus:outline-none transition-colors"
             />
             <div class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+              <!-- 清除按钮 - 有输入时显示 -->
+              <button
+                id="clear-search"
+                type="button"
+                class="hidden p-1.5 rounded-md hover:bg-base-content/5 text-base-content/40 hover:text-base-content/60 transition-colors"
+                aria-label="清除搜索"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
               <kbd class="hidden md:inline-flex px-2 py-1 text-xs font-medium text-base-content/40 bg-base-content/5 rounded-md">⌘K</kbd>
             </div>
           </div>
@@ -109,22 +119,25 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
         </div>
       </div>
 
-      <!-- 工具列表 -->
+      <!-- 工具列表 - 带外框容器 -->
       <div class="flex-1 px-4 sm:px-6 pb-8 sm:pb-12">
         <div class="max-w-4xl mx-auto">
-          <!-- 空状态 -->
-          <div id="empty-state" class="hidden text-center py-16 sm:py-20">
-            <div class="text-5xl sm:text-6xl mb-4 sm:mb-6 opacity-20">🔍</div>
-            <h3 class="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-base-content/50">未找到匹配的工具</h3>
-            <p class="text-base-content/30 text-sm">尝试调整搜索词或选择其他分类</p>
-          </div>
+          <!-- 统一外框容器 - 参考 daisyUI menu 组件 -->
+          <div class="menu rounded-xl border border-base-content/10 bg-base-100/50 w-full p-0">
 
-          <!-- 骨架屏 -->
-          <div id="skeleton-state" class="border-t border-base-content/10">
+            <!-- 空状态 -->
+            <div id="empty-state" class="hidden text-center py-16 sm:py-20">
+              <div class="text-5xl sm:text-6xl mb-4 sm:mb-6 opacity-20">🔍</div>
+              <h3 class="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-base-content/50">未找到匹配的工具</h3>
+              <p class="text-base-content/30 text-sm">尝试调整搜索词或选择其他分类</p>
+            </div>
+
+            <!-- 骨架屏 -->
+            <ul id="skeleton-state" class="hidden">
             {
               Array.from({ length: 5 }).map(() => (
-                <div class="skeleton-item border-b border-base-content/5 py-3.5">
-                  <div class="flex items-center justify-between gap-4">
+                <li class="border-b border-base-content/5 last:border-b-0">
+                  <div class="flex items-center justify-between gap-4 px-4 sm:px-6 py-3.5">
                     <div class="flex-1 min-w-0 space-y-2">
                       <div class="skeleton h-5 w-32 rounded"></div>
                       <div class="skeleton h-4 w-full max-w-md rounded"></div>
@@ -134,23 +147,24 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
                       <div class="skeleton h-4 w-4 rounded"></div>
                     </div>
                   </div>
-                </div>
+                </li>
               ))
             }
-          </div>
+            </ul>
 
           <!-- 工具列表 -->
-          <div id="tools-list" class="border-t border-base-content/10 hidden">
+          <ul id="tools-list" class="hidden">
             <!-- 由 JS 动态渲染 -->
-          </div>
+          </ul>
+          <!-- daisyUI menu 组件结束 -->
+        </div>
 
-          <!-- 加载状态 -->
-          <div id="loading-container" class="py-6 sm:py-8">
-            <div id="loading-sentinel" class="min-h-[60px] flex items-center justify-center">
-              <span id="loading-spinner" class="loading loading-spinner hidden"></span>
-              <div id="end-message" class="hidden text-center text-base-content/30 text-sm cursor-pointer hover:text-base-content/50 transition-colors" title="点击聚焦搜索框">
-                <span id="total-count">已加载全部 0 条数据</span>
-              </div>
+        <!-- 加载状态 - 移到 menu 容器外，避免被 overflow-hidden 裁剪 -->
+        <div id="loading-container" class="py-6 sm:py-8">
+          <div id="loading-sentinel" class="min-h-[60px] flex items-center justify-center">
+            <span id="loading-spinner" class="loading loading-spinner hidden"></span>
+            <div id="end-message" class="hidden text-center text-base-content/30 text-sm cursor-pointer hover:text-base-content/50 transition-colors" title="点击聚焦搜索框">
+              <span id="total-count">已加载全部 0 条数据</span>
             </div>
           </div>
         </div>
@@ -194,9 +208,11 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
 
     // DOM 元素
     const searchInput = document.getElementById('search-input');
+    const clearSearchBtn = document.getElementById('clear-search');
     const toolsListEl = document.getElementById('tools-list');
     const emptyStateEl = document.getElementById('empty-state');
     const skeletonStateEl = document.getElementById('skeleton-state');
+    const loadingContainer = document.getElementById('loading-container');
     const loadingSentinel = document.getElementById('loading-sentinel');
     const loadingSpinner = document.getElementById('loading-spinner');
     const endMessage = document.getElementById('end-message');
@@ -375,13 +391,14 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
 
       initObserver();
 
-      // 如果结果为空，直接显示空状态，不显示骨架屏
+      // 如果结果为空，直接显示空状态，不显示骨架屏，隐藏加载容器
       if (filteredTools.length === 0) {
         if (skeletonStateEl) {
           skeletonStateEl.classList.add('hidden');
         }
         toolsListEl.classList.add('hidden');
         emptyStateEl.classList.remove('hidden');
+        loadingContainer.classList.add('hidden');  // 空状态时隐藏加载容器
       } else {
         // 有数据时，显示骨架屏并延迟加载
         if (skeletonStateEl) {
@@ -389,6 +406,7 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
         }
         toolsListEl.classList.add('hidden');
         emptyStateEl.classList.add('hidden');
+        loadingContainer.classList.remove('hidden');  // 显示加载容器以支持滚动
 
         setTimeout(() => {
           loadNextPage();
@@ -396,7 +414,7 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
       }
     }
 
-    // 渲染工具列表 - 响应式简洁列表
+    // 渲染工具列表 - 参考 daisyUI menu 组件
     function renderTools(tools, isFirstPage) {
       // 隐藏骨架屏
       if (skeletonStateEl) {
@@ -417,11 +435,16 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
       const fragment = document.createDocumentFragment();
 
       tools.forEach((tool, index) => {
+        // 使用 <li> 符合 daisyUI menu 结构
+        const li = document.createElement('li');
+        li.className = 'tool-item';
+
         const link = document.createElement('a');
         link.href = tool.url;
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
-        link.className = 'tool-item block border-b border-base-content/5 hover:bg-base-content/[0.02] transition-colors';
+        // 使用 daisyUI 的 menu 样式 + 自定义 hover 效果
+        link.className = 'flex items-center justify-between gap-3 sm:gap-4 px-4 sm:px-6 py-3 sm:py-3.5 rounded-lg hover:bg-base-content/5 active:bg-base-content/[0.08] transition-colors border-b border-base-content/5 last:border-b-0';
 
         if (isFirstPage) {
           link.style.opacity = '0';
@@ -430,7 +453,7 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
         }
 
         link.innerHTML = `
-          <div class="flex items-center justify-between gap-3 sm:gap-4 py-2.5 sm:py-3.5">
+          <div class="flex items-center justify-between gap-3 sm:gap-4 w-full">
             <div class="flex-1 min-w-0">
               <div class="text-sm sm:text-base font-semibold text-base-content mb-0.5 truncate">
                 ${tool.name}
@@ -450,14 +473,15 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
           </div>
         `;
 
-        fragment.appendChild(link);
+        li.appendChild(link);
+        fragment.appendChild(li);
       });
 
       toolsListEl.appendChild(fragment);
 
       if (isFirstPage) {
         requestAnimationFrame(() => {
-          const items = toolsListEl.querySelectorAll('.tool-item');
+          const items = toolsListEl.querySelectorAll('.tool-item a');
           items.forEach(item => {
             item.style.opacity = '1';
             item.style.transform = 'translateY(0)';
@@ -493,10 +517,28 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
 
     // 搜索输入处理
     searchInput.addEventListener('input', debounce((e) => {
-      console.log('🔎 搜索:', e.target.value);
-      searchQuery = e.target.value;
+      const value = e.target.value;
+      console.log('🔎 搜索:', value);
+      searchQuery = value;
+
+      // 控制清除按钮显示
+      if (value.length > 0) {
+        clearSearchBtn.classList.remove('hidden');
+      } else {
+        clearSearchBtn.classList.add('hidden');
+      }
+
       resetLoading();
     }, 300));
+
+    // 清除按钮点击处理
+    clearSearchBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      searchQuery = '';
+      clearSearchBtn.classList.add('hidden');
+      searchInput.focus();
+      resetLoading();
+    });
 
     // 分类按钮点击处理
     categoryButtons.forEach(btn => {
@@ -518,6 +560,7 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
       if (e.key === 'Escape' && document.activeElement === searchInput) {
         searchInput.value = '';
         searchQuery = '';
+        clearSearchBtn.classList.add('hidden');
         resetLoading();
         searchInput.blur();
       }
