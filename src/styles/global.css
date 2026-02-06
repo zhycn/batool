@@ -25,7 +25,7 @@ html {
 
 /* 自定义滚动条 */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -34,20 +34,9 @@ html {
 
 ::-webkit-scrollbar-thumb {
   background: hsl(var(--bc) / 0.2);
-  border-radius: 5px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--bc) / 0.3);
-}
-
-/* 玻璃态增强 */
-@media (prefers-reduced-motion: no-preference) {
-  .backdrop-blur-xl {
-    backdrop-filter: blur(24px);
-  }
-
-  .backdrop-blur-sm {
-    backdrop-filter: blur(4px);
-  }
 }
