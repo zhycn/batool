@@ -1,2 +1,22 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+/* ========================================
+   BATOOL - Google Workspace 风格
+   使用 DaisyUI 内置主题,零自定义样式
+   ======================================== */
+
+/* 系统字体栈 - 性能最优 */
+html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 平滑滚动 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 流畅过渡 */
+.transition-smooth {
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
