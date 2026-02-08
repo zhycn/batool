@@ -31,7 +31,7 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
     <div class="flex-1 flex flex-col pt-14">
 
       <!-- Hero 区域 + 搜索框 -->
-      <div class="px-4 sm:px-6 pt-12 sm:pt-16 pb-8 sm:pb-12 text-center">
+      <div class="px-4 sm:px-6 pt-10 sm:pt-14 pb-6 sm:pb-8 text-center">
         <Hero />
 
         <SearchBox />
@@ -39,11 +39,11 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
         <Category categoryList={categoryList} tools={tools} />
       </div>
 
-      <!-- 工具列表 - 带外框容器 -->
-      <div class="flex-1 px-4 sm:px-6 pb-8 sm:pb-12">
+      <!-- 工具列表 -->
+      <div class="flex-1 px-4 sm:px-6 pb-8 sm:pb-10">
         <div class="max-w-5xl mx-auto">
-          <!-- 统一外框容器 - 参考 daisyUI menu 组件 -->
-          <div class="menu rounded-xl border border-base-content/10 bg-base-100/50 w-full p-0">
+          <!-- 统一外框容器 - Linear 风格 -->
+          <div class="rounded-lg border border-base-content/8 bg-base-100/30 backdrop-blur-sm overflow-hidden">
 
             <EmptyState />
 
@@ -52,14 +52,14 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
             {
               Array.from({ length: 5 }).map(() => (
                 <li class="border-b border-base-content/5 last:border-b-0">
-                  <div class="flex items-center justify-between gap-4 px-4 sm:px-6 py-3.5">
+                  <div class="flex items-center justify-between gap-4 px-4 sm:px-5 py-3">
                     <div class="flex-1 min-w-0 space-y-2">
-                      <div class="skeleton h-5 w-32 rounded"></div>
-                      <div class="skeleton h-4 w-full max-w-md rounded"></div>
+                      <div class="skeleton h-4.5 w-32 rounded-md"></div>
+                      <div class="skeleton h-3.5 w-full max-w-md rounded-md"></div>
                     </div>
                     <div class="flex items-center gap-3 shrink-0">
-                      <div class="skeleton h-7 w-16 rounded-md"></div>
-                      <div class="skeleton h-4 w-4 rounded"></div>
+                      <div class="skeleton h-6 w-14 rounded-md"></div>
+                      <div class="skeleton h-3.5 w-3.5 rounded-sm"></div>
                     </div>
                   </div>
                 </li>
@@ -67,18 +67,18 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
             }
             </ul>
 
-          <!-- 工具列表 -->
-          <ul id="tools-list" class="hidden">
-            <!-- 由 JS 动态渲染 -->
-          </ul>
-          <!-- daisyUI menu 组件结束 -->
+            <!-- 工具列表 -->
+            <ul id="tools-list" class="hidden">
+              <!-- 由 JS 动态渲染 -->
+            </ul>
+          </div>
         </div>
 
-        <!-- 加载状态 - 移到 menu 容器外，避免被 overflow-hidden 裁剪 -->
-        <div id="loading-container" class="py-6 sm:py-8">
+        <!-- 加载状态 -->
+        <div id="loading-container" class="py-5 sm:py-6">
           <div id="loading-sentinel" class="min-h-[60px] flex items-center justify-center">
-            <span id="loading-spinner" class="loading loading-spinner hidden"></span>
-            <div id="end-message" class="hidden text-center text-base-content/30 text-sm cursor-pointer hover:text-base-content/50 transition-colors" title="点击聚焦搜索框">
+            <span id="loading-spinner" class="loading loading-spinner loading-sm text-base-content/30 hidden"></span>
+            <div id="end-message" class="hidden text-center text-base-content/25 text-xs cursor-pointer hover:text-base-content/40 transition-colors" title="点击聚焦搜索框">
               <span id="total-count">已加载全部 0 条数据</span>
             </div>
           </div>
@@ -310,7 +310,7 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
       }
     }
 
-    // 渲染工具列表 - 参考 daisyUI menu 组件
+    // 渲染工具列表 - Linear 风格
     function renderTools(tools, isFirstPage) {
       // 隐藏骨架屏
       if (skeletonStateEl) {
@@ -331,38 +331,37 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
       const fragment = document.createDocumentFragment();
 
       tools.forEach((tool, index) => {
-        // 使用 <li> 符合 daisyUI menu 结构
         const li = document.createElement('li');
-        li.className = 'tool-item';
+        li.className = 'tool-item border-b border-base-content/5 last:border-b-0';
 
         const link = document.createElement('a');
         link.href = tool.url;
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
-        // 使用 daisyUI 的 menu 样式 + 自定义 hover 效果
-        link.className = 'flex items-center justify-between gap-3 sm:gap-4 px-4 sm:px-6 py-3 sm:py-3.5 rounded-lg hover:bg-base-content/5 active:bg-base-content/[0.08] transition-colors border-b border-base-content/5 last:border-b-0';
+        // Linear 风格：微妙 hover 效果
+        link.className = 'flex items-center justify-between gap-3 sm:gap-4 px-4 sm:px-5 py-3 hover:bg-base-content/[0.02] active:bg-base-content/[0.04] transition-colors duration-150';
 
         if (isFirstPage) {
           link.style.opacity = '0';
-          link.style.transform = 'translateY(8px)';
-          link.style.transition = `opacity 0.2s ease-out ${index * 0.02}s, transform 0.2s ease-out ${index * 0.02}s`;
+          link.style.transform = 'translateY(6px)';
+          link.style.transition = `opacity 0.2s ease-out ${index * 0.015}s, transform 0.2s ease-out ${index * 0.015}s`;
         }
 
         link.innerHTML = `
           <div class="flex items-center justify-between gap-3 sm:gap-4 w-full">
             <div class="flex-1 min-w-0">
-              <div class="text-sm sm:text-base font-semibold text-base-content mb-0.5 truncate">
+              <div class="text-sm font-medium text-base-content/90 mb-0.5 truncate">
                 ${tool.name}
               </div>
-              <div class="text-xs sm:text-sm text-base-content/40 truncate hidden sm:block">
+              <div class="text-xs text-base-content/35 truncate hidden sm:block">
                 ${tool.description}
               </div>
             </div>
-            <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-              <span class="px-2 sm:px-2.5 py-1 rounded-md text-xs font-medium bg-base-content/5 text-base-content/50 whitespace-nowrap">
+            <div class="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
+              <span class="px-2 py-1 rounded text-xs font-medium bg-base-content/4 text-base-content/40 whitespace-nowrap border border-base-content/4">
                 ${tool.category || '未分类'}
               </span>
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-base-content/20 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-base-content/15 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
             </div>
@@ -386,14 +385,14 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
       }
     }
 
-    // 更新分类按钮状态
+    // 更新分类按钮状态 - Linear 风格
     function updateCategoryButtons() {
       categoryButtons.forEach(btn => {
         const category = btn.getAttribute('data-category');
         if (category === currentCategory) {
-          btn.className = 'category-btn px-4 py-2 rounded-lg bg-base-content text-base-100 text-sm font-medium hover:opacity-90 transition-opacity';
+          btn.className = 'category-btn px-3.5 py-1.5 rounded-md bg-base-content text-base-100 text-xs font-medium hover:opacity-90 transition-opacity';
         } else {
-          btn.className = 'category-btn px-4 py-2 rounded-lg bg-base-content/5 text-base-content text-sm font-medium hover:bg-base-content/10 transition-colors border border-base-content/5';
+          btn.className = 'category-btn px-3.5 py-1.5 rounded-md bg-base-content/5 text-base-content/70 text-xs font-medium hover:bg-base-content/8 hover:text-base-content transition-all border border-base-content/5';
         }
       });
     }

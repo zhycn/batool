@@ -7,22 +7,22 @@ interface Props {
 const { categoryList, tools } = Astro.props;
 ---
 
-<!-- 分类过滤器 - 现代标签样式 -->
-<div class="flex flex-wrap justify-center gap-1.5 sm:gap-2">
-    <button
-      data-category="all"
-      class="category-btn px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-base-content text-base-100 text-xs sm:text-sm font-medium hover:opacity-90 transition-opacity"
-    >
-      全部 <span class="ml-1 sm:ml-1.5 opacity-60">({tools.length})</span>
-    </button>
-    {
-      categoryList.map(([cat, count]) => (
-        <button
-          data-category={cat}
-          class="category-btn px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-base-content/5 text-base-content text-xs sm:text-sm font-medium hover:bg-base-content/10 transition-colors border border-base-content/5"
-        >
-          {cat} <span class="ml-1 sm:ml-1.5 opacity-40">({count})</span>
-        </button>
-      ))
-    }
-  </div>
+<!-- 分类过滤器 - Linear 风格：精致标签 -->
+<div class="flex flex-wrap justify-center gap-1.5">
+  <button
+    data-category="all"
+    class="category-btn px-3.5 py-1.5 rounded-md bg-base-content text-base-100 text-xs font-medium hover:opacity-90 transition-opacity"
+  >
+    全部 <span class="ml-1.5 opacity-50">({tools.length})</span>
+  </button>
+  {
+    categoryList.map(([cat, count]) => (
+      <button
+        data-category={cat}
+        class="category-btn px-3.5 py-1.5 rounded-md bg-base-content/5 text-base-content/70 text-xs font-medium hover:bg-base-content/8 hover:text-base-content transition-all border border-base-content/5"
+      >
+        {cat} <span class="ml-1.5 opacity-40">({count})</span>
+      </button>
+    ))
+  }
+</div>

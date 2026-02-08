@@ -7,41 +7,44 @@
 const currentYear = new Date().getFullYear();
 ---
 
-<!-- 页脚 -->
-<footer class="w-full border-t border-base-content/5 bg-base-100">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6">
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 py-6 text-sm text-base-content/60">
-            <!-- 版权信息 -->
-            <div class="flex items-center">
-                <span>Copyright © {currentYear} Batool</span>
-            </div>
-            <!-- 技术栈链接 -->
-            <div class="flex items-center gap-1">
-                <span>Built with</span>
-                <a href="https://astro.build"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   aria-label="访问 Astro 官网（新窗口打开）"
-                   class="link link-hover hover:text-base-content transition-colors duration-300">
-                    Astro
-                </a>
-                <span class="mx-1" aria-hidden="true">·</span>
-                <a href="https://daisyui.com"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   aria-label="访问 DaisyUI 官网（新窗口打开）"
-                   class="link link-hover hover:text-base-content transition-colors duration-300">
-                    DaisyUI
-                </a>
-                <span class="mx-1" aria-hidden="true">·</span>
-                <a href="https://tailwindcss.com"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   aria-label="访问 TailwindCSS 官网（新窗口打开）"
-                   class="link link-hover hover:text-base-content transition-colors duration-300">
-                    TailwindCSS
-                </a>
-            </div>
-        </div>
+<!-- 页脚 - Linear 风格：精致简洁 -->
+<footer class="w-full border-t border-base-content/8 bg-base-100/50 backdrop-blur-sm">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 py-5 text-xs text-base-content/40">
+      <!-- 版权信息 -->
+      <div class="flex items-center">
+        <span>© {currentYear} Batool</span>
+      </div>
+      <!-- 技术栈链接 -->
+      <div class="flex items-center gap-2">
+        <span>Built with</span>
+        <a
+          href="https://astro.build"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="访问 Astro 官网（新窗口打开）"
+          class="hover:text-base-content/60 transition-colors duration-200">
+          Astro
+        </a>
+        <span aria-hidden="true">·</span>
+        <a
+          href="https://daisyui.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="访问 DaisyUI 官网（新窗口打开）"
+          class="hover:text-base-content/60 transition-colors duration-200">
+          DaisyUI
+        </a>
+        <span aria-hidden="true">·</span>
+        <a
+          href="https://tailwindcss.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="访问 TailwindCSS 官网（新窗口打开）"
+          class="hover:text-base-content/60 transition-colors duration-200">
+          TailwindCSS
+        </a>
+      </div>
     </div>
+  </div>
 </footer>
