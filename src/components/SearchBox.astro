@@ -7,12 +7,13 @@ const { searchQuery = '' } = Astro.props;
 ---
 
 <!-- 搜索框 - Linear 风格：精致微妙 -->
-<div class="max-w-5xl mx-auto mb-10 sm:mb-14">
+<div class="max-w-5xl mx-auto mb-6 sm:mb-8">
   <div class="relative group">
     <input
       id="search-input"
       type="text"
       placeholder="搜索工具..."
+      autocomplete="off"
       class="w-full px-4 sm:px-5 pr-24 sm:pr-28 py-3 sm:py-3.5 text-sm rounded-lg border border-base-content/10 bg-base-100/50 focus:border-base-content/20 focus:bg-base-100 focus:outline-none transition-all duration-200 placeholder:text-base-content/30"
     />
     <div class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">

@@ -40,10 +40,10 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
       </div>
 
       <!-- 工具列表 -->
-      <div class="flex-1 px-4 sm:px-6 pb-8 sm:pb-10">
+      <div class="flex-1 px-4 sm:px-6">
         <div class="max-w-5xl mx-auto">
           <!-- 统一外框容器 - Linear 风格 -->
-          <div class="rounded-lg border border-base-content/8 bg-base-100/30 backdrop-blur-sm overflow-hidden">
+          <div class="rounded-lg border border-base-content/8 bg-base-100/30 backdrop-blur-sm overflow-hidden mb-5 sm:mb-6">
 
             <EmptyState />
 
@@ -75,7 +75,7 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
         </div>
 
         <!-- 加载状态 -->
-        <div id="loading-container" class="py-5 sm:py-6">
+        <div id="loading-container" class="my-5 sm:my-6">
           <div id="loading-sentinel" class="min-h-[60px] flex items-center justify-center">
             <span id="loading-spinner" class="loading loading-spinner loading-sm text-base-content/30 hidden"></span>
             <div id="end-message" class="hidden text-center text-base-content/25 text-xs cursor-pointer hover:text-base-content/40 transition-colors" title="点击聚焦搜索框">
