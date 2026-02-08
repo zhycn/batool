@@ -1,0 +1,19 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = '工具快速索引',
+  description = '精选工具 · 搜索即达 · 点击即达'
+} = Astro.props;
+---
+
+<!-- 标题 -->
+<h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-base-content tracking-tight mb-2 sm:mb-3">
+    {title}
+</h1>
+<p class="text-base-content/50 text-sm sm:text-base md:text-lg mb-6 sm:mb-10">
+    {description}
+</p>
