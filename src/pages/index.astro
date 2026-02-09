@@ -158,8 +158,29 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
     function toggleTheme() {
       const currentTheme = document.documentElement.getAttribute('data-theme');
       const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+      // 防止主题切换时的闪烁: 临时禁用过渡动画
+      const style = document.createElement('style');
+      style.innerHTML = `
+        *, *::before, *::after {
+          transition: none !important;
+        }
+      `;
+      document.head.appendChild(style);
+
+      // 强制浏览器重排
+      document.documentElement.offsetHeight;
+
+      // 切换主题
       document.documentElement.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
+
+      // 使用 requestAnimationFrame 确保主题切换完成后再移除样式
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          document.head.removeChild(style);
+        });
+      });
     }
 
     window.toggleTheme = toggleTheme;
