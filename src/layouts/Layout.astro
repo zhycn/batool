@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { SOCIAL_CONFIG } from '../types/settings.ts';
+import { APP_CONFIG, SEO_CONFIG, SOCIAL_CONFIG, UI_CONFIG, getFullUrl } from '../types/settings.ts';
 
 interface Props {
   title?: string;
@@ -8,8 +8,8 @@ interface Props {
 }
 
 const {
-  title = 'Batool',
-  description = '你的个人工具索引站 —— 快速搜索、一键直达，所有工具尽在掌握。'
+  title = APP_CONFIG.APP_NAME,
+  description = APP_CONFIG.APP_DESCRIPTION
 } = Astro.props;
 
 // 安全地构建 canonical URL
@@ -19,7 +19,7 @@ const canonicalURL = Astro.site
 ---
 
 <!doctype html>
-<html lang="zh-CN" data-theme="light">
+<html lang={SEO_CONFIG.LANG} data-theme={UI_CONFIG.DEFAULT_THEME}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -28,7 +28,7 @@ const canonicalURL = Astro.site
     <link rel="icon" type="image/png" href="/favicon-16x16.ico" sizes="16x16" />
     <link rel="icon" type="image/png" href="/favicon-32x32.ico" sizes="32x32" />
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-    <meta name="apple-mobile-web-app-title" content="Batool" />
+    <meta name="apple-mobile-web-app-title" content={APP_CONFIG.APP_NAME} />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
 
@@ -38,31 +38,31 @@ const canonicalURL = Astro.site
     <!-- SEO 元标签 -->
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="keywords" content="工具索引,工具导航,开发者工具,AI工具" />
+    <meta name="keywords" content={SEO_CONFIG.KEYWORDS.join(', ')} />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:title" content={SOCIAL_CONFIG.TITLE}>
-    <meta property="og:description" content="为行动者设计的工具入口。极速搜索，一键直达官网。">
+    <meta property="og:title" content={SOCIAL_CONFIG.OG_TITLE}>
+    <meta property="og:description" content={SOCIAL_CONFIG.OG_DESCRIPTION}>
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://batool.vercel.app">
-    <meta property="og:image" content="https://batool.vercel.app/og.png">
+    <meta property="og:url" content={getFullUrl()}>
+    <meta property="og:image" content={getFullUrl(SOCIAL_CONFIG.OG_IMAGE)}>
 
     <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Batool – 直达，即专注。">
-    <meta name="twitter:description" content="为行动者设计的工具入口。极速搜索，一键直达官网。">
+    <meta name="twitter:card" content={SOCIAL_CONFIG.TWITTER_CARD} />
+    <meta name="twitter:title" content={SOCIAL_CONFIG.TWITTER_TITLE} />
+    <meta name="twitter:description" content={SOCIAL_CONFIG.TWITTER_DESCRIPTION} />
 
     <!-- 主题颜色 -->
-    <meta name="theme-color" content="#6366f1" />
+    <meta name="theme-color" content={SEO_CONFIG.THEME_COLOR} />
 
     <!-- 内联脚本:防止主题闪烁 - 在页面渲染前立即执行 -->
-    <script is:inline>
+    <script is:inline define:vars={{ DEFAULT_THEME: UI_CONFIG.DEFAULT_THEME }}>
       (function() {
         try {
-          const theme = localStorage.getItem('theme') || 'light';
+          const theme = localStorage.getItem('theme') || DEFAULT_THEME;
           document.documentElement.setAttribute('data-theme', theme);
         } catch (e) {
-          document.documentElement.setAttribute('data-theme', 'light');
+          document.documentElement.setAttribute('data-theme', DEFAULT_THEME);
         }
       })();
     </script>

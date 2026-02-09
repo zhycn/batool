@@ -176,59 +176,118 @@ pnpm build
 }
 ```
 
-### 调整搜索权重
+### 统一配置文件
 
-编辑 `src/pages/index.astro` 中的 Fuse.js 配置：
+从 **v1.0.0** 开始,Batool 采用统一的配置文件 `src/types/settings.ts` 管理所有可配置项。
+
+**配置结构:**
 
 ```typescript
-const fuseOptions = {
-  keys: [
-    { name: 'name', weight: 2 },        // 名称权重最高
-    { name: 'description', weight: 1.5 }, // 描述权重次之
-    { name: 'tags', weight: 1.2 }       // 标签权重最低
-  ],
-  threshold: 0.4,  // 匹配阈值(0-1)，越小越精确
-  minMatchCharLength: 1  // 最小匹配字符数
+// 应用基础配置
+APP_CONFIG = {
+  APP_NAME: 'Batool',
+  APP_DESCRIPTION: '极简 • 私有 • 极速的开发者工具启动面板',
+  APP_URL: 'https://batool-delta.vercel.app/',
+  GITHUB_REPO: 'https://github.com/zhycn/batool',
 }
+
+// 搜索配置
+SEARCH_CONFIG = {
+  FUSE_WEIGHTS: {
+    NAME: 2,           // 名称权重
+    DESCRIPTION: 1.5,  // 描述权重
+    CATEGORY: 1,       // 分类权重
+    TAGS: 1.2,         // 标签权重
+  },
+  FUSE_THRESHOLD: 0.4,         // 匹配阈值 (0-1, 越小越精确)
+  MIN_MATCH_CHAR_LENGTH: 1,    // 最小匹配字符数
+  DEBOUNCE_DELAY: 300,         // 搜索防抖延迟 (毫秒)
+}
+
+// UI 配置
+UI_CONFIG = {
+  DEFAULT_THEME: 'light',       // 默认主题
+  ITEMS_PER_PAGE: 20,           // 每页显示数量
+  LARGE_DATA_THRESHOLD: 200,    // 大数据量提示阈值
+  PLACEHOLDERS: {
+    SEARCH: '搜索工具...',      // 搜索框占位符
+    EMPTY_STATE: '没有找到匹配的工具',
+  },
+  SHORTCUTS: {
+    SEARCH: { key: 'k', requiresMeta: true },  // ⌘K / Ctrl+K
+    ESCAPE: 'Escape',                          // 清除搜索
+  },
+  ANIMATION: {
+    STAGGER_DELAY: 15,          // 列表项逐个显示延迟
+    FADE_IN_DURATION: 200,      // 淡入动画时长
+  },
+}
+
+// SEO 配置
+SEO_CONFIG = {
+  KEYWORDS: ['工具索引', '工具导航', '开发者工具', 'AI工具'],
+  THEME_COLOR: '#6366f1',
+  LANG: 'zh-CN',
+}
+```
+
+**自定义配置:**
+
+只需编辑 `src/types/settings.ts`,修改对应配置项即可:
+
+```typescript
+// 例如: 修改每页显示 30 个工具
+export const UI_CONFIG = {
+  ITEMS_PER_PAGE: 30,  // 改为 30
+  // ... 其他配置保持不变
+}
+
+// 例如: 调整搜索权重,更重视标签
+export const SEARCH_CONFIG = {
+  FUSE_WEIGHTS: {
+    NAME: 1.5,
+    TAGS: 2.5,  // 提高标签权重
+  },
+  // ...
+}
+
+// 例如: 修改默认主题为暗色
+export const UI_CONFIG = {
+  DEFAULT_THEME: 'dark' as const,
+  // ...
+}
+```
+
+**配置生效:**
+
+修改配置后需要重新构建项目:
+
+```bash
+pnpm build
 ```
 
 ### 自定义主题
 
-编辑 `src/layouts/Layout.astro` 修改 `data-theme` 属性：
+除了在 `settings.ts` 中配置默认主题,你也可以通过 CSS 自定义颜色变量:
 
-```astro
-<html data-theme="winter">
-  <!-- DaisyUI 提供的主题:
-    - light, dark, cupcake, cyberpunk
-    - synthwave, retro, corporate, fantasy
-    - 以及 30+ 其他主题
-  -->
-</html>
-```
-
-或自定义 CSS 变量：
+编辑 `src/styles/global.css`:
 
 ```css
 :root {
-  --primary: #your-color;
-  --secondary: #your-color;
-  --accent: #your-color;
+  --primary: #6366f1;      /* 主色调 */
+  --secondary: #ec4899;    /* 次要色 */
+  --accent: #8b5cf6;       /* 强调色 */
 }
 ```
 
-### 修改快捷键
+**可用主题:**
 
-在 `src/pages/index.astro` 中修改键盘事件监听：
+DaisyUI 提供 30+ 预设主题:
+- `light`, `dark`, `cupcake`, `cyberpunk`
+- `synthwave`, `retro`, `corporate`, `winter`
+- 以及更多...
 
-```typescript
-document.addEventListener('keydown', (e) => {
-  // 修改为你喜欢的快捷键
-  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-    e.preventDefault()
-    searchInput.focus()
-  }
-})
-```
+在 `settings.ts` 中修改 `UI_CONFIG.DEFAULT_THEME` 即可切换。
 
 ## 🌐 部署
 

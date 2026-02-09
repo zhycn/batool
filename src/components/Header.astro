@@ -1,4 +1,6 @@
 ---
+import { APP_CONFIG } from '../types/settings';
+
 /**
  * 顶部导航栏组件
  *
@@ -32,7 +34,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
       </div>
-      <span class="text-sm font-semibold text-base-content/90 tracking-tight">Batool</span>
+      <span class="text-sm font-semibold text-base-content/90 tracking-tight">{APP_CONFIG.APP_NAME}</span>
     </a>
 
     <!-- 操作区域: 主题切换 + GitHub 链接 -->
@@ -49,7 +51,7 @@
 
       <!-- GitHub 链接 -->
       <a
-        href="https://github.com/zhycn/batool"
+        href={APP_CONFIG.GITHUB_REPO}
         target="_blank"
         rel="noopener noreferrer"
         class="p-2 rounded-md hover:bg-base-content/5 active:bg-base-content/8 text-base-content/50 hover:text-base-content/70 transition-all duration-200"
