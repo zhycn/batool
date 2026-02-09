@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { SOCIAL_CONFIG } from '../types/settings.ts';
 
 interface Props {
   title?: string;
@@ -40,15 +41,16 @@ const canonicalURL = Astro.site
     <meta name="keywords" content="工具索引,工具导航,开发者工具,AI工具" />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:title" content={SOCIAL_CONFIG.TITLE}>
+    <meta property="og:description" content="为行动者设计的工具入口。极速搜索，一键直达官网。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://batool.vercel.app">
+    <meta property="og:image" content="https://batool.vercel.app/og.png">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:title" content="Batool – 直达，即专注。">
+    <meta name="twitter:description" content="为行动者设计的工具入口。极速搜索，一键直达官网。">
 
     <!-- 主题颜色 -->
     <meta name="theme-color" content="#6366f1" />

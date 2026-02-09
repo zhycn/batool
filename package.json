@@ -1,8 +1,8 @@
 {
   "name": "batool",
   "type": "module",
-  "version": "0.1.0",
-  "description": "",
+  "version": "1.0.0",
+  "description": "Batool：为行动者设计的工具入口。直达官网，零干扰，极速启动你的工作流。",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -14,11 +14,15 @@
     "url": "https://github.com/zhycn/batool/issues"
   },
   "keywords": [
+    "tools",
+    "search",
+    "index",
     "astro",
-    "tailwindcss",
-    "fusejs",
-    "open-source",
-    "batool"
+    "fuse.js",
+    "daisyui",
+    "personal dashboard",
+    "developer tools",
+    "ai tools"
   ],
   "scripts": {
     "dev": "astro dev",
