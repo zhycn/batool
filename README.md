@@ -1,79 +1,457 @@
+<div align="center">
+
 # Batool
 
-> **直达，即专注。**  
-> 一个为行动者设计的工具入口。
+### ⚡ 极简 • 私有 • 极速的开发者工具启动面板
 
-Batool 不是一个工具大全，而是一个**极简、私有、极速**的工具启动面板。  
-它不做推荐，不追热点，不堆功能——只确保你能在 **一秒内，从想法抵达行动**。
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://badge.fury.io/js/batool.svg)](https://www.npmjs.com/package/batool)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D22.0.0-brightgreen)](https://nodejs.org)
+[![Astro Version](https://img.shields.io/badge/Astro-5.17%2B-orange)](https://astro.build)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/yourname/batool)
+[在线演示](https://your-vercel-app.vercel.app) • [快速开始](#-快速开始) • [配置指南](#-配置说明) • [部署](#-部署)
 
-## 🧠 为什么需要 Batool？
+</div>
 
-- 你收藏了上百个工具，却总在关键时刻找不到
-- 你厌倦了充斥广告、过期链接的“AI 工具站”
-- 你需要一个**干净、可靠、完全由你掌控**的入口
+---
 
-Batool 的答案很简单：  
-**把工具列表交给你，把搜索速度交给 Fuse.js，把专注还给你自己。**
+## 📖 简介
 
-## ✨ 核心原则
+> **"直达，即专注。"**
 
-- **极简**：无多余元素，只有工具名称、描述、分类与直达链接
-- **极速**：静态生成 + 前端模糊搜索，毫秒响应
-- **私有**：数据完全由 `tools.json` 驱动，不依赖任何后端
-- **专注**：无推荐、无社交、无干扰 —— 只服务于“行动”本身
+Batool 是一个为开发者设计的极简工具入口平台。它不是工具大全，而是一个**私有、极速、专注**的工具启动面板。
+
+**核心理念:**
+
+- ✅ **一秒直达** - 从想法到行动，只需一次搜索
+- ✅ **完全私有** - 数据本地化，无追踪，无广告
+- ✅ **毫秒响应** - 静态生成 + Fuse.js 模糊搜索
+- ✅ **高度可定制** - JSON 驱动，几分钟搭建专属工具站
+
+### 🎯 为什么选择 Batool？
+
+- 🔖 **收藏夹灾难** - 收藏了几百个工具，关键时刻却找不到？
+- 🚫 **广告满天飞** - 厌倦了充斥广告、过期链接的"AI 工具站"？
+- 🔒 **隐私担忧** - 担心工具数据被第三方收集和分析？
+- ⚡ **追求效率** - 需要一个干净、快速、可靠的工具入口？
+
+**Batool 的答案很简单：**
+
+> 把工具列表交给你，把搜索速度交给 Fuse.js，把专注还给你自己。
+
+## ✨ 核心特性
+
+<details>
+<summary><strong>🔍 智能模糊搜索</strong></summary>
+
+- 基于 [Fuse.js](https://fusejs.io/) 的强大搜索引擎
+- 支持中文、拼音、英文混合搜索
+- 可配置的多字段权重(name > description > tags)
+- 毫秒级响应，零延迟体验
+
+</details>
+
+<details>
+<summary><strong>🎨 优雅设计</strong></summary>
+
+- 基于 [DaisyUI](https://daisyui.com/) 的现代化 UI
+- 响应式布局，完美适配移动端和桌面端
+- Linear 风格设计，简洁而不简单
+- 语义化组件，易于定制主题
+
+</details>
+
+<details>
+<summary><strong>⚡ 极速性能</strong></summary>
+
+- [Astro 5](https://astro.build/) 静态站点生成
+- 零运行时依赖，超快首屏加载
+- 按需导入，Fuse.js 动态加载
+- Lighthouse 满分性能优化
+
+</details>
+
+<details>
+<summary><strong>🔒 数据私有</strong></summary>
+
+- 完全本地化部署，无任何第三方追踪
+- 所有工具数据存储在 `tools.json`
+- 支持私有仓库部署，数据完全掌控
+- 无广告、无推荐、无干扰
+
+</details>
+
+<details>
+<summary><strong>⌨️ 键盘友好</strong></summary>
+
+- `⌘K` / `Ctrl+K` - 快速聚焦搜索框
+- `Escape` - 清空搜索并失焦
+- 流畅的键盘导航体验
+
+</details>
 
 ## 🛠️ 技术栈
 
-- [Astro 5](https://astro.build/) – 内容优先的静态站点生成器
-- [daisyUI](https://daisyui.com/) – 简洁优雅的 Tailwind 组件库
-- [Fuse.js](https://fusejs.io/) – 轻量级模糊搜索，支持中文/拼音
-- JSON 驱动 – 所有数据来自 `public/tools.json`
+| 技术 | 版本 | 用途 |
+|------|------|------|
+| [Astro](https://astro.build/) | 5.17+ | 静态站点生成器 |
+| [Tailwind CSS](https://tailwindcss.com/) | 4.x | 原子化 CSS 框架 |
+| [DaisyUI](https://daisyui.com/) | 5.x | 组件库与主题系统 |
+| [Fuse.js](https://fusejs.io/) | 7.x | 模糊搜索引擎 |
+| [TypeScript](https://www.typescriptlang.org/) | Strict | 类型安全 |
 
 ## 🚀 快速开始
 
+### 环境要求
+
+- **Node.js** >= 22.0.0
+- **pnpm** (推荐) 或 npm/yarn
+
+### 1. 克隆项目
+
 ```bash
-git clone https://github.com/yourname/batool.git
+git clone https://github.com/zhycn/batool.git
 cd batool
-npm install
-npm run dev
 ```
 
-编辑 `public/tools.json`，填入你的工具列表：
+### 2. 安装依赖
+
+```bash
+# 使用 pnpm (推荐)
+pnpm install
+
+# 或使用 npm
+npm install
+```
+
+### 3. 启动开发服务器
+
+```bash
+pnpm dev
+```
+
+访问 `http://localhost:4321` 查看效果。
+
+### 4. 添加你的工具
+
+编辑 `public/tools.json`：
 
 ```json
 [
   {
-    "name": "Ollama",
-    "tagline": "Run LLMs locally",
-    "description": "在本地运行大语言模型的开源框架",
-    "category": "AI / 本地模型",
-    "url": "https://ollama.com"
+    "name": "ChatGPT",
+    "description": "OpenAI 开发的对话式 AI 助手，强大的自然语言理解和生成能力。",
+    "category": "AI 工具",
+    "url": "https://chat.openai.com",
+    "tags": ["聊天", "GPT", "助手"]
+  },
+  {
+    "name": "GitHub",
+    "description": "全球最大的代码托管平台，版本控制，开源项目聚集地。",
+    "category": "开发工具",
+    "url": "https://github.com",
+    "tags": ["Git", "版本控制", "开源"]
   }
 ]
 ```
 
-然后访问 `http://localhost:4321`。
+### 5. 构建生产版本
+
+```bash
+pnpm build
+```
+
+构建产物将输出到 `./dist/` 目录。
+
+## 🔧 配置说明
+
+### 自定义工具数据
+
+所有工具数据存储在 `public/tools.json`，支持以下字段：
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `name` | string | ✅ | 工具名称 |
+| `description` | string | ✅ | 工具描述 |
+| `category` | string | ✅ | 工具分类 |
+| `url` | string | ✅ | 工具链接 |
+| `tags` | string[] | ❌ | 标签数组，用于搜索 |
+
+**示例：**
+
+```json
+{
+  "name": "Ollama",
+  "description": "本地运行大语言模型，简单易用，开发者友好。",
+  "category": "AI 工具",
+  "url": "https://ollama.com",
+  "tags": ["LLM", "本地部署", "开源"]
+}
+```
+
+### 调整搜索权重
+
+编辑 `src/pages/index.astro` 中的 Fuse.js 配置：
+
+```typescript
+const fuseOptions = {
+  keys: [
+    { name: 'name', weight: 2 },        // 名称权重最高
+    { name: 'description', weight: 1.5 }, // 描述权重次之
+    { name: 'tags', weight: 1.2 }       // 标签权重最低
+  ],
+  threshold: 0.4,  // 匹配阈值(0-1)，越小越精确
+  minMatchCharLength: 1  // 最小匹配字符数
+}
+```
+
+### 自定义主题
+
+编辑 `src/layouts/Layout.astro` 修改 `data-theme` 属性：
+
+```astro
+<html data-theme="winter">
+  <!-- DaisyUI 提供的主题:
+    - light, dark, cupcake, cyberpunk
+    - synthwave, retro, corporate, fantasy
+    - 以及 30+ 其他主题
+  -->
+</html>
+```
+
+或自定义 CSS 变量：
+
+```css
+:root {
+  --primary: #your-color;
+  --secondary: #your-color;
+  --accent: #your-color;
+}
+```
+
+### 修改快捷键
+
+在 `src/pages/index.astro` 中修改键盘事件监听：
+
+```typescript
+document.addEventListener('keydown', (e) => {
+  // 修改为你喜欢的快捷键
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault()
+    searchInput.focus()
+  }
+})
+```
+
+## 📦 项目结构
+
+```
+batool/
+├── public/
+│   └── tools.json          # 工具数据源
+├── src/
+│   ├── layouts/
+│   │   └── Layout.astro    # 主布局(HTML 结构、SEO 元标签)
+│   ├── pages/
+│   │   └── index.astro     # 首页(搜索、筛选逻辑)
+│   ├── styles/
+│   │   └── global.css      # 全局样式(Tailwind + DaisyUI)
+│   ├── types/
+│   │   └── tool.ts         # TypeScript 类型定义
+│   └── components/         # 可复用组件
+├── astro.config.mjs        # Astro 配置
+├── package.json
+├── tailwind.config.js      # Tailwind 配置
+└── tsconfig.json           # TypeScript 配置
+```
 
 ## 🌐 部署
 
-一键部署到 Vercel：
+### Vercel (推荐)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/yourname/batool)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/zhycn/batool)
 
-## 📜 收录标准（如果你公开维护）
+1. 点击上方按钮
+2. 导入你的 Git 仓库
+3. Vercel 自动检测 Astro 并配置
+4. 点击 **Deploy**
 
-我们只收录：
-- **仍在活跃维护** 的工具（非 abandonware）
-- **有明确用途与价值** 的工具（非营销页或玩具项目）
-- **提供真实官网链接**（非 affiliate 或跳转页）
+### Netlify
 
-## 📎 定位说明
+```bash
+# 安装 Netlify CLI
+npm install -g netlify-cli
 
-> Batool 不追求“最全”，只追求“值得”。  
-> 因为真正的效率，始于专注。
+# 构建项目
+pnpm build
+
+# 部署
+netlify deploy --prod --dir=dist
+```
+
+### GitHub Pages
+
+1. 在 `astro.config.mjs` 中配置 `base`：
+
+```javascript
+export default defineConfig({
+  base: '/batool',  // 你的仓库名
+  // ...
+})
+```
+
+1. 构建并推送：
+
+```bash
+pnpm build
+# 将 dist 目录内容推送到 gh-pages 分支
+```
+
+### Cloudflare Pages
+
+```bash
+# 使用 Wrangler CLI
+npm install -g wrangler
+wrangler pages publish dist --project-name=batool
+```
+
+### 其他平台
+
+Batool 是纯静态站点，可部署到任何支持静态网站的平台：
+
+- **AWS Amplify**
+- **Google Firebase Hosting**
+- **Azure Static Web Apps**
+- **自托管服务器** (Nginx/Apache)
+
+## 🔍 开发指南
+
+### 本地开发
+
+```bash
+# 启动开发服务器(热重载)
+pnpm dev
+
+# 类型检查
+pnpm astro check
+
+# 构建生产版本
+pnpm build
+
+# 预览构建后的站点
+pnpm preview
+```
+
+### 添加新页面
+
+在 `src/pages/` 创建 `.astro` 文件：
+
+```astro
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="页面标题">
+  <main>
+    <h1>新页面</h1>
+  </main>
+</Layout>
+```
+
+### 添加新组件
+
+在 `src/components/` 创建 `.astro` 文件：
+
+```astro
+---
+// src/components/MyComponent.astro
+const { title } = Astro.props;
+---
+
+<div class="card">
+  <h2>{title}</h2>
+  <slot />  <!-- 插槽内容 -->
+</div>
+```
+
+## ❓ 常见问题
+
+### <strong>Q: 为什么选择 Batool 而非书签管理器？</strong>
+
+**A:** Batool 专注于**快速检索**而非简单存储。通过模糊搜索，你可以一秒找到工具，无需翻阅多层文件夹。同时支持标签、分类等多维度筛选。
+
+### <strong>Q: 是否支持多语言？</strong>
+
+**A:** 当前界面为中文，但数据结构完全支持任何语言。搜索功能兼容英文、中文和拼音混合查询。
+
+### <strong>Q: 如何备份我的工具数据？</strong>
+
+**A:** 只需备份 `public/tools.json` 文件即可。所有工具数据都存储在这一个文件中，建议将其纳入版本控制。
+
+### <strong>Q: 搜索速度如何？</strong>
+
+**A:** Fuse.js 在客户端运行，即使有 1000+ 工具，搜索响应也在 10ms 以内。静态生成确保首屏加载极快。
+
+### <strong>Q: 可以离线使用吗？</strong>
+
+**A:** 可以。构建后的 `dist/` 目录是完全自包含的静态文件，可部署到内网服务器或本地文件系统。
+
+### <strong>Q: 如何优化 SEO？</strong>
+
+**A:** 编辑 `src/layouts/Layout.astro` 中的元标签：
+
+```astro
+<meta name="description" content="你的描述" />
+<meta property="og:title" content="Batool - 开发者工具启动面板" />
+<meta property="og:image" content="/preview-image.png" />
+```
+
+## 📝 待办事项
+
+- [ ] 支持搜索历史记录
+- [ ] 添加导出/导入功能
+- [ ] 支持多语言界面
+- [ ] 添加暗色模式切换
+- [ ] 支持自定义 favicon
+- [ ] 添加工具评分/收藏功能
+
+## 🤝 贡献指南
+
+我们欢迎各种形式的贡献！
+
+### 报告问题
+
+请在 [Issues](https://github.com/zhycn/batool/issues) 中报告 Bug 或提出功能请求。
+
+### 提交代码
+
+1. Fork 本仓库
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'feat: add some amazing feature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 开启 Pull Request
+
+**提交规范：**
+
+- `feat:` - 新功能
+- `fix:` - Bug 修复
+- `docs:` - 文档更新
+- `style:` - 代码格式调整
+- `refactor:` - 代码重构
+- `perf:` - 性能优化
+- `test:` - 测试相关
+- `chore:` - 构建/工具链相关
+
+## 📄 许可证
+
+本项目采用 [MIT](LICENSE) 许可证。
 
 ---
 
-MIT © [你的名字]
+<div align="center">
+
+**[⬆ 返回顶部](#batool)**
+
+Made with ❤️ by [zhycn](https://github.com/zhycn)
+
+</div>
