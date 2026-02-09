@@ -71,7 +71,8 @@ export const UI_CONFIG = {
   /** 占位符文本 */
   PLACEHOLDERS: {
     SEARCH: '搜索工具...',
-    EMPTY_STATE: '没有找到匹配的工具',
+    EMPTY_STATE_MESSAGE: '没有找到匹配的工具',
+    EMPTY_STATE_DESCRIPTION: '尝试调整搜索词或选择其他分类',
   } as const,
 
   /** 动画配置 */
