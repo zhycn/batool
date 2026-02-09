@@ -100,6 +100,8 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
 
   <!-- 客户端脚本 -->
   <script>
+    import { debounce } from '../utils/debounce';
+
     // 从全局变量获取工具数据和配置
     const toolsData = window.__TOOLS__ || [];
     const uiConfig = window.__UI_CONFIG__ || {
@@ -435,19 +437,6 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
           btn.className = 'category-btn px-3.5 py-1.5 rounded-md bg-base-content/5 text-base-content/70 text-xs font-medium hover:bg-base-content/8 hover:text-base-content transition-all border border-base-content/5';
         }
       });
-    }
-
-    // 防抖函数
-    function debounce(func, wait) {
-      let timeout;
-      return function executedFunction(...args) {
-        const later = () => {
-          clearTimeout(timeout);
-          func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-      };
     }
 
     // 搜索输入处理
