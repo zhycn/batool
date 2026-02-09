@@ -31,12 +31,11 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
     <!-- 主内容区 -->
     <div class="flex-1 flex flex-col pt-14">
 
+      <Hero />
+
       <!-- Hero 区域 + 搜索框 -->
       <div class="px-4 sm:px-6 pt-10 sm:pt-14 pb-6 sm:pb-8 text-center">
-        <Hero />
-
         <SearchBox />
-
         <Category categoryList={categoryList} totalCount={tools.length} />
       </div>
 

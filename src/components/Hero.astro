@@ -1,22 +1,17 @@
 ---
-interface Props {
-  title?: string;
-  description?: string;
-}
-
-const {
-  title = '工具快速索引',
-  description = '精选工具 · 搜索即达 · 点击即达'
-} = Astro.props;
 ---
 
-<!-- 标题 - Linear 风格：精致简洁 -->
-  <h1 class="text-5xl md:text-6xl font-bold tracking-tight bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
-    Batool
-  </h1>
-  <p class="mt-4 text-2xl text-base-content/90 max-w-2xl mx-auto font-medium leading-snug">
-    直达，即专注。
-  </p>
-  <p class="mt-4 text-lg text-base-content/70 max-w-xl mx-auto mb-5 sm:mb-6">
-    一个为开发者设计的极简工具入口。直达官网，零干扰。
-  </p>
+<!-- Hero 区域 - 极简黑白排版风格 -->
+<div class="w-full px-6 py-10 text-center sm:px-5 sm:py-16 md:py-[80px]">
+  <div class="mx-auto max-w-2xl">
+    <!-- 主标题 -->
+    <h1 class="text-[clamp(48px,8vw,96px)] font-black tracking-tighter leading-[0.9] text-base-content">
+      Batool
+    </h1>
+
+    <!-- 副标题 -->
+    <p class="mt-6 text-[clamp(18px,2.5vw,24px)] font-bold tracking-tight leading-tight text-base-content/80">
+      一个为开发者设计的极简工具入口
+    </p>
+  </div>
+</div>
