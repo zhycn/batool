@@ -37,7 +37,7 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
 
         <SearchBox />
 
-        <Category categoryList={categoryList} tools={tools} />
+        <Category categoryList={categoryList} totalCount={tools.length} />
       </div>
 
       <!-- 工具列表 -->

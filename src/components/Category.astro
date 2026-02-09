@@ -1,19 +1,19 @@
 ---
 interface Props {
   categoryList: [string, number][];
-  tools: any[];
+  totalCount: number;
 }
 
-const { categoryList, tools } = Astro.props;
+const { categoryList, totalCount } = Astro.props;
 ---
 
-<!-- 分类过滤器 - Linear 风格：精致标签 -->
+<!-- 分类过滤器 -->
 <div class="flex flex-wrap justify-center gap-1.5">
   <button
     data-category="all"
     class="category-btn px-3.5 py-1.5 rounded-md bg-base-content text-base-100 text-xs font-medium hover:opacity-90 transition-opacity"
   >
-    全部 <span class="ml-1.5 opacity-50">({tools.length})</span>
+    全部 <span class="ml-1.5 opacity-50">({totalCount})</span>
   </button>
   {
     categoryList.map(([cat, count]) => (
@@ -21,7 +21,7 @@ const { categoryList, tools } = Astro.props;
         data-category={cat}
         class="category-btn px-3.5 py-1.5 rounded-md bg-base-content/5 text-base-content/70 text-xs font-medium hover:bg-base-content/8 hover:text-base-content transition-all border border-base-content/5"
       >
-        {cat} <span class="ml-1.5 opacity-40">({count})</span>
+        {cat} <span class="ml-1.5 opacity-50">({count})</span>
       </button>
     ))
   }
