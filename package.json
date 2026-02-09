@@ -2,7 +2,7 @@
   "name": "batool",
   "type": "module",
   "version": "1.0.0",
-  "description": "Batool：为行动者设计的工具入口。直达官网，零干扰，极速启动你的工作流。",
+  "description": "Batool：开发者的极简工具入口。直达官网，零干扰。",
   "license": "MIT",
   "repository": {
     "type": "git",
