@@ -178,7 +178,7 @@ pnpm build
 
 ### 统一配置文件
 
-从 **v1.0.0** 开始,Batool 采用统一的配置文件 `src/types/settings.ts` 管理所有可配置项。
+Batool 采用统一的配置文件 `src/types/settings.ts` 管理所有可配置项。
 
 **配置结构:**
 
