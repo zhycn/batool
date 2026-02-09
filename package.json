@@ -1,7 +1,25 @@
 {
   "name": "batool",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "description": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zhycn/batool.git"
+  },
+  "author": "zhycn",
+  "homepage": "https://github.com/zhycn/batool#readme",
+  "bugs": {
+    "url": "https://github.com/zhycn/batool/issues"
+  },
+  "keywords": [
+    "astro",
+    "tailwindcss",
+    "fusejs",
+    "open-source",
+    "batool"
+  ],
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -14,5 +32,8 @@
     "daisyui": "^5.5.17",
     "fuse.js": "^7.1.0",
     "tailwindcss": "^4.1.18"
+  },
+  "engines": {
+    "node": ">=22.0.0"
   }
 }
