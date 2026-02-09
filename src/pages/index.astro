@@ -33,8 +33,8 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
 
       <Hero />
 
-      <!-- Hero 区域 + 搜索框 -->
-      <div class="px-4 sm:px-6 pt-10 sm:pt-14 pb-6 sm:pb-8 text-center">
+      <!-- 搜索框 + 分类列表 -->
+      <div class="px-4 py-6 sm:py-8 text-center">
         <SearchBox />
         <Category categoryList={categoryList} totalCount={tools.length} />
       </div>
