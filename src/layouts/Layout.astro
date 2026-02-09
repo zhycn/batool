@@ -1,62 +1,61 @@
 ---
 import '../styles/global.css';
-import { APP_CONFIG, SEO_CONFIG, SOCIAL_CONFIG, UI_CONFIG, getFullUrl } from '../types/settings.ts';
+import { APP_CONFIG, getFullUrl } from '../types/settings.ts';
 
 interface Props {
+  lang?: string;
   title?: string;
   description?: string;
+  socialTitle?: string;
+  socialDescription?: string;
+  themeColor?: string;
+  theme?: string;
 }
 
 const {
-  title = APP_CONFIG.APP_NAME,
-  description = APP_CONFIG.APP_DESCRIPTION
+  lang = APP_CONFIG.APP_LANG,
+  title = APP_CONFIG.APP_TITLE,
+  description = APP_CONFIG.APP_DESCRIPTION,
+  socialTitle = APP_CONFIG.SOCIAL_TITLE || title,
+  socialDescription = APP_CONFIG.SOCIAL_DESCRIPTION || description,
+  themeColor = APP_CONFIG.THEME_COLOR,
+  theme = APP_CONFIG.DEFAULT_THEME || 'light'
 } = Astro.props;
-
-// 安全地构建 canonical URL
-const canonicalURL = Astro.site
-  ? new URL(Astro.url.pathname, Astro.site)
-  : new URL(Astro.url.pathname, 'http://localhost:4321');
 ---
 
 <!doctype html>
-<html lang={SEO_CONFIG.LANG} data-theme={UI_CONFIG.DEFAULT_THEME}>
+<html lang={lang} data-theme={theme}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/png" href="/favicon-16x16.ico" sizes="16x16" />
-    <link rel="icon" type="image/png" href="/favicon-32x32.ico" sizes="32x32" />
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <meta name="apple-mobile-web-app-title" content={APP_CONFIG.APP_NAME} />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-
     <meta name="generator" content={Astro.generator} />
-    <link rel="canonical" href={canonicalURL} />
 
     <!-- SEO 元标签 -->
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="keywords" content={SEO_CONFIG.KEYWORDS.join(', ')} />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:title" content={SOCIAL_CONFIG.OG_TITLE}>
-    <meta property="og:description" content={SOCIAL_CONFIG.OG_DESCRIPTION}>
+    <meta property="og:title" content={socialTitle}>
+    <meta property="og:description" content={socialDescription}>
     <meta property="og:type" content="website">
     <meta property="og:url" content={getFullUrl()}>
-    <meta property="og:image" content={getFullUrl(SOCIAL_CONFIG.OG_IMAGE)}>
+    <meta property="og:image" content="/og-image.jpg">
 
     <!-- Twitter -->
-    <meta name="twitter:card" content={SOCIAL_CONFIG.TWITTER_CARD} />
-    <meta name="twitter:title" content={SOCIAL_CONFIG.TWITTER_TITLE} />
-    <meta name="twitter:description" content={SOCIAL_CONFIG.TWITTER_DESCRIPTION} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={socialTitle} />
+    <meta name="twitter:description" content={socialDescription} />
 
     <!-- 主题颜色 -->
-    <meta name="theme-color" content={SEO_CONFIG.THEME_COLOR} />
+    <meta name="theme-color" content={themeColor} />
 
     <!-- 内联脚本:防止主题闪烁 - 在页面渲染前立即执行 -->
-    <script is:inline define:vars={{ DEFAULT_THEME: UI_CONFIG.DEFAULT_THEME }}>
+    <script is:inline define:vars={{ DEFAULT_THEME: theme }}>
       (function() {
         try {
           const theme = localStorage.getItem('theme') || DEFAULT_THEME;
@@ -67,7 +66,7 @@ const canonicalURL = Astro.site
       })();
     </script>
   </head>
-  <body class="antialiased">
+  <body>
     <slot />
   </body>
 </html>

@@ -1,7 +1,6 @@
 {
   "name": "Batool",
   "short_name": "Batool",
-  "description": "Your personal, instantly searchable index of essential tools.",
   "start_url": "/",
   "icons": [
     {

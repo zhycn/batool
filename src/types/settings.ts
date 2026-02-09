@@ -8,90 +8,41 @@
 // ==================== 应用基础配置 ====================
 
 export const APP_CONFIG = {
+  /** 应用语言 */
+  APP_LANG: 'zh-CN',
+
   /** 应用名称 */
   APP_NAME: 'Batool',
 
+  /** 应用标题 */
+  APP_TITLE: 'Batool – 开发者的极简工具入口',
+
   /** 应用描述 */
-  APP_DESCRIPTION: '极简 • 私有 • 极速的开发者工具启动面板',
+  APP_DESCRIPTION: 'Batool：开发者的极简工具入口。直达官网，零干扰。',
 
   /** 应用 URL */
   APP_URL: 'https://batool-delta.vercel.app/',
 
-  /** GitHub 仓库地址 */
+  /** 应用主题颜色 */
+  THEME_COLOR: '#fafafa',
+
+  /** 默认主题 (light | dark) */
+  DEFAULT_THEME: 'light',
+
+  /** 应用 GitHub 仓库地址 */
   GITHUB_REPO: 'https://github.com/zhycn/batool',
+
+  /** 社交媒体标题 */
+  SOCIAL_TITLE: 'Batool – 开发者的极简工具入口',
+
+  /** 社交媒体描述 */
+  SOCIAL_DESCRIPTION: 'Batool：开发者的极简工具入口。直达官网，零干扰。',
 } as const;
 
-// ==================== SEO 配置 ====================
-
-export const SEO_CONFIG = {
-  /** 页面关键词 */
-  KEYWORDS: ['工具索引', '工具导航', '开发者工具', 'AI工具', '效率工具', 'Batool'],
-
-  /** 主题颜色 (影响浏览器 UI) */
-  THEME_COLOR: '#6366f1',
-
-  /** 默认语言 */
-  LANG: 'zh-CN',
-} as const;
-
-// ==================== 社交媒体配置 ====================
-
-export const SOCIAL_CONFIG = {
-  /** Open Graph 标题 */
-  OG_TITLE: 'Batool – 开发者的极简工具启动面板',
-
-  /** Open Graph 描述 */
-  OG_DESCRIPTION: '为行动者设计的工具入口。极速搜索,一键直达官网。完全私有,零干扰。',
-
-  /** Open Graph 图片路径 */
-  OG_IMAGE: '/og.png',
-
-  /** Twitter Card 类型 */
-  TWITTER_CARD: 'summary_large_image' as const,
-
-  /** Twitter 标题 */
-  TWITTER_TITLE: 'Batool – 直达,即专注。',
-
-  /** Twitter 描述 */
-  TWITTER_DESCRIPTION: '极简工具入口,毫秒级模糊搜索,完全私有化部署。',
-} as const;
-
-// ==================== 搜索配置 ====================
-
-export const SEARCH_CONFIG = {
-  /** Fuse.js 搜索权重配置 */
-  FUSE_WEIGHTS: {
-    /** 名称权重 */
-    NAME: 2,
-
-    /** 描述权重 */
-    DESCRIPTION: 1.5,
-
-    /** 分类权重 */
-    CATEGORY: 1,
-
-    /** 标签权重 */
-    TAGS: 1.2,
-  } as const,
-
-  /** Fuse.js 匹配阈值 (0-1, 越小越精确) */
-  FUSE_THRESHOLD: 0.4,
-
-  /** 最小匹配字符数 */
-  MIN_MATCH_CHAR_LENGTH: 1,
-
-  /** 是否忽略位置 (提升中文搜索效果) */
-  IGNORE_LOCATION: true,
-
-  /** 搜索输入防抖延迟 (毫秒) */
-  DEBOUNCE_DELAY: 300,
-} as const;
 
 // ==================== UI 配置 ====================
 
 export const UI_CONFIG = {
-  /** 默认主题 (light | dark) */
-  DEFAULT_THEME: 'light' as const,
 
   /** 每页显示的工具数量 */
   ITEMS_PER_PAGE: 20,
@@ -145,6 +96,53 @@ export const UI_CONFIG = {
   } as const,
 } as const;
 
+
+/**
+ * 获取完整的应用 URL
+ */
+export const getFullUrl = (path: string = ''): string => {
+  const baseUrl = APP_CONFIG.APP_URL.replace(/\/$/, '');
+  return path ? `${baseUrl}${path.startsWith('/') ? path : `/${path}`}` : baseUrl;
+};
+
+// ==================== End ====================
+
+
+
+
+// ==================== 搜索配置 ====================
+
+export const SEARCH_CONFIG = {
+  /** Fuse.js 搜索权重配置 */
+  FUSE_WEIGHTS: {
+    /** 名称权重 */
+    NAME: 2,
+
+    /** 描述权重 */
+    DESCRIPTION: 1.5,
+
+    /** 分类权重 */
+    CATEGORY: 1,
+
+    /** 标签权重 */
+    TAGS: 1.2,
+  } as const,
+
+  /** Fuse.js 匹配阈值 (0-1, 越小越精确) */
+  FUSE_THRESHOLD: 0.4,
+
+  /** 最小匹配字符数 */
+  MIN_MATCH_CHAR_LENGTH: 1,
+
+  /** 是否忽略位置 (提升中文搜索效果) */
+  IGNORE_LOCATION: true,
+
+  /** 搜索输入防抖延迟 (毫秒) */
+  DEBOUNCE_DELAY: 300,
+} as const;
+
+
+
 // ==================== 分类配置 ====================
 
 export const CATEGORY_CONFIG = {
@@ -190,8 +188,6 @@ export const TOOL_LIST_CONFIG = {
 
 export const SETTINGS = {
   APP: APP_CONFIG,
-  SEO: SEO_CONFIG,
-  SOCIAL: SOCIAL_CONFIG,
   SEARCH: SEARCH_CONFIG,
   UI: UI_CONFIG,
   CATEGORY: CATEGORY_CONFIG,
@@ -202,8 +198,6 @@ export const SETTINGS = {
 
 export type Settings = typeof SETTINGS;
 export type AppConfig = typeof APP_CONFIG;
-export type SeoConfig = typeof SEO_CONFIG;
-export type SocialConfig = typeof SOCIAL_CONFIG;
 export type SearchConfig = typeof SEARCH_CONFIG;
 export type UiConfig = typeof UI_CONFIG;
 export type CategoryConfig = typeof CATEGORY_CONFIG;
@@ -228,12 +222,4 @@ export function getFuseConfig() {
     minMatchCharLength: SEARCH_CONFIG.MIN_MATCH_CHAR_LENGTH,
     ignoreLocation: SEARCH_CONFIG.IGNORE_LOCATION,
   };
-}
-
-/**
- * 获取完整的应用 URL
- */
-export function getFullUrl(path: string = ''): string {
-  const baseUrl = APP_CONFIG.APP_URL.replace(/\/$/, '');
-  return path ? `${baseUrl}${path.startsWith('/') ? path : `/${path}`}` : baseUrl;
 }
