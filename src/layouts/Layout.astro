@@ -23,7 +23,14 @@ const canonicalURL = Astro.site
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/favicon-16x16.ico" sizes="16x16" />
+    <link rel="icon" type="image/png" href="/favicon-32x32.ico" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <meta name="apple-mobile-web-app-title" content="Batool" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalURL} />
 
