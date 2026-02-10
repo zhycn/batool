@@ -50,9 +50,6 @@ export const UI_CONFIG = {
   /** 大数据量提示阈值 (超过此数量显示"建议搜索"提示) */
   LARGE_DATA_THRESHOLD: 200,
 
-  /** 骨架屏显示数量 */
-  SKELETON_COUNT: 5,
-
   /** 初始加载延迟 (毫秒,用于显示骨架屏) */
   INITIAL_LOAD_DELAY: 300,
 

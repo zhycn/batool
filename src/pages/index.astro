@@ -274,7 +274,7 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
       // 如果数据量≥阈值，提示用户搜索
       if (displayedCount >= uiConfig.LARGE_DATA_THRESHOLD) {
         endMessage.classList.remove('hidden');
-        totalCountEl.innerHTML = `数据过多，建议使用搜索功能精确定位`;
+        totalCountEl.innerHTML = `数据较多，建议使用搜索功能精确定位`;
         totalCountEl.parentElement.style.cursor = 'pointer';
         totalCountEl.parentElement.onclick = () => {
           searchInput.focus();
