@@ -18,7 +18,7 @@ export const APP_CONFIG = {
   APP_TITLE: 'Batool – 开发者的极简工具入口',
 
   /** 应用描述 */
-  APP_DESCRIPTION: 'Batool：开发者的极简工具入口。直达官网，零干扰。',
+  APP_DESCRIPTION: 'Batool 是一个为开发者设计的极简工具入口。直达官网，零干扰。',
 
   /** 应用 URL */
   APP_URL: 'https://batool-delta.vercel.app/',
@@ -36,7 +36,7 @@ export const APP_CONFIG = {
   SOCIAL_TITLE: 'Batool – 开发者的极简工具入口',
 
   /** 社交媒体描述 */
-  SOCIAL_DESCRIPTION: 'Batool：开发者的极简工具入口。直达官网，零干扰。',
+  SOCIAL_DESCRIPTION: '一个为开发者设计的极简工具入口。直达官网，零干扰。',
 } as const;
 
 

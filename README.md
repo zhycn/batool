@@ -2,7 +2,7 @@
 
 # Batool
 
-### ⚡ 一个为开发者设计的极简工具入口。直达官网，零干扰。
+### ⚡ 开发者的极简工具入口。直达官网，零干扰
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D22.0.0-brightgreen)](https://nodejs.org)
@@ -18,24 +18,23 @@
 
 > **"直达，即专注。"**
 
-Batool 是一个为开发者设计的极简工具入口。直达官网，零干扰。
+Batool 是一个为开发者设计的极简工具入口。它只做一件事：**让你快速找到并直达工具官网**。
 
-**核心理念:**
+## 为什么需要 Batool？
 
-- ✅ **一秒直达** - 从想法到行动，只需一次搜索
-- ✅ **完全私有** - 数据本地化，无追踪，无广告
-- ✅ **毫秒响应** - 静态生成 + Fuse.js 模糊搜索
-- ✅ **高度可定制** - JSON 驱动，几分钟搭建专属工具站
+- 收藏夹里塞满了 `Vercel`、`Ollama`、`Astro Docs`，却总找不到？
+- “AI 工具站”充斥过期链接与推广内容？
+- 你需要一个**干净、快速、完全自主**的启动入口？
 
-### 🎯 为什么选择 Batool？
+Batool 提供：
 
-- 🔖 **收藏夹混乱** —— 工具太多，关键时刻反而找不到？  
-- 🚫 **工具站噪音大** —— 厌倦了充斥广告、链接失效、内容注水的“AI 工具大全”？  
-- 🔒 **数据不自主** —— 不想把常用工具列表交给第三方平台？  
-- ⚡ **追求零摩擦** —— 需要一个干净、快速、完全由你掌控的入口？  
+- 🔍 **模糊搜索**：支持中文、拼音、英文混合查询
+- ⚡ **极速加载**：静态生成，首屏无 JS
+- 🔒 **完全私有**：数据来自 `public/tools.json`，可本地部署
+- 🎨 **简洁 UI**：键盘友好，支持暗色模式
 
-> Batool 官方维护一份**精选开发者工具集**，确保链接有效、分类清晰。  
-> 欢迎通过 Issue 或 PR 提交优质工具 —— 我们只收录真正值得信赖的项目。
+> Batool 自带一份**精选开发者工具集**，确保链接有效、分类清晰。  
+> 欢迎通过 Issue 或 PR 提交优质工具 —— 我们只收录真正值得信赖的工具。
 
 **Batool 的答案很简单：**
 
@@ -186,7 +185,8 @@ Batool 采用统一的配置文件 `src/types/settings.ts` 管理所有可配置
 // 应用基础配置
 APP_CONFIG = {
   APP_NAME: 'Batool',
-  APP_DESCRIPTION: '极简 • 私有 • 极速的开发者工具启动面板',
+  APP_TITLE: 'Batool – 开发者的极简工具入口'
+  APP_DESCRIPTION: 'Batool 是一个为开发者设计的极简工具入口。直达官网，零干扰。',
   APP_URL: 'https://batool-delta.vercel.app/',
   GITHUB_REPO: 'https://github.com/zhycn/batool',
 }
@@ -283,6 +283,7 @@ pnpm build
 **可用主题:**
 
 DaisyUI 提供 30+ 预设主题:
+
 - `light`, `dark`, `cupcake`, `cyberpunk`
 - `synthwave`, `retro`, `corporate`, `winter`
 - 以及更多...
