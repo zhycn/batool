@@ -31,6 +31,16 @@ const { size = 24 } = Astro.props;
 <label class="swap swap-rotate hover:text-base-content/70 transition-colors duration-200" aria-label="切换明暗主题">
   <!-- checkbox 用于控制图标切换 -->
   <input type="checkbox" class="theme-controller" onchange="toggleTheme()" />
+  <!-- 立即初始化 checkbox 状态，避免页面加载时的图标闪烁 -->
+  <script is:inline>
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      const checkbox = document.querySelector('.theme-controller');
+      if (checkbox) {
+        checkbox.checked = savedTheme === 'dark';
+      }
+    })();
+  </script>
 
   <!-- 太阳图标 - 当 checkbox 选中时显示（dark 模式） -->
   <svg
