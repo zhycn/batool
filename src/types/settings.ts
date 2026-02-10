@@ -106,11 +106,6 @@ export const getFullUrl = (path: string = ''): string => {
   return path ? `${baseUrl}${path.startsWith('/') ? path : `/${path}`}` : baseUrl;
 };
 
-// ==================== End ====================
-
-
-
-
 // ==================== 搜索配置 ====================
 
 export const SEARCH_CONFIG = {
@@ -141,86 +136,3 @@ export const SEARCH_CONFIG = {
   /** 搜索输入防抖延迟 (毫秒) */
   DEBOUNCE_DELAY: 300,
 } as const;
-
-
-
-// ==================== 分类配置 ====================
-
-export const CATEGORY_CONFIG = {
-  /** "全部" 分类的显示名称 */
-  ALL_CATEGORY_NAME: '全部',
-
-  /** 未分类工具的分类名称 */
-  UNCATEGORY_NAME: '未分类',
-
-  /** 分类按钮激活状态样式类 */
-  ACTIVE_CLASS: 'px-3.5 py-1.5 rounded-md bg-base-content text-base-100 text-xs font-medium hover:opacity-90 transition-opacity',
-
-  /** 分类按钮非激活状态样式类 */
-  INACTIVE_CLASS: 'px-3.5 py-1.5 rounded-md bg-base-content/5 text-base-content/70 text-xs font-medium hover:bg-base-content/8 hover:text-base-content transition-all border border-base-content/5',
-} as const;
-
-// ==================== 工具列表配置 ====================
-
-export const TOOL_LIST_CONFIG = {
-  /** 工具链接打开方式 */
-  LINK_TARGET: '_blank' as const,
-
-  /** 链接 rel 属性 (安全性和 SEO) */
-  LINK_REL: 'noopener noreferrer' as const,
-
-  /** 容器边框样式 */
-  CONTAINER_BORDER: 'border-base-content/8',
-
-  /** 容器背景样式 */
-  CONTAINER_BG: 'bg-base-100/30 backdrop-blur-sm',
-
-  /** 列表项边框样式 */
-  ITEM_BORDER: 'border-base-content/5',
-
-  /** 列表项 hover 背景样式 */
-  ITEM_HOVER_BG: 'hover:bg-base-content/[0.02]',
-
-  /** 列表项激活背景样式 */
-  ITEM_ACTIVE_BG: 'active:bg-base-content/[0.04]',
-} as const;
-
-// ==================== 导出所有配置的汇总类型 ====================
-
-export const SETTINGS = {
-  APP: APP_CONFIG,
-  SEARCH: SEARCH_CONFIG,
-  UI: UI_CONFIG,
-  CATEGORY: CATEGORY_CONFIG,
-  TOOL_LIST: TOOL_LIST_CONFIG,
-} as const;
-
-// ==================== 类型导出 ====================
-
-export type Settings = typeof SETTINGS;
-export type AppConfig = typeof APP_CONFIG;
-export type SearchConfig = typeof SEARCH_CONFIG;
-export type UiConfig = typeof UI_CONFIG;
-export type CategoryConfig = typeof CATEGORY_CONFIG;
-export type ToolListConfig = typeof TOOL_LIST_CONFIG;
-
-// ==================== 辅助函数 ====================
-
-/**
- * 获取 Fuse.js 配置对象
- */
-export function getFuseConfig() {
-  return {
-    keys: [
-      { name: 'name', weight: SEARCH_CONFIG.FUSE_WEIGHTS.NAME },
-      { name: 'description', weight: SEARCH_CONFIG.FUSE_WEIGHTS.DESCRIPTION },
-      { name: 'category', weight: SEARCH_CONFIG.FUSE_WEIGHTS.CATEGORY },
-      { name: 'tags', weight: SEARCH_CONFIG.FUSE_WEIGHTS.TAGS },
-    ],
-    threshold: SEARCH_CONFIG.FUSE_THRESHOLD,
-    includeScore: false,
-    shouldSort: true,
-    minMatchCharLength: SEARCH_CONFIG.MIN_MATCH_CHAR_LENGTH,
-    ignoreLocation: SEARCH_CONFIG.IGNORE_LOCATION,
-  };
-}

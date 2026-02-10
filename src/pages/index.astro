@@ -5,9 +5,11 @@ import Hero from '../components/Hero.astro';
 import SearchBox from '../components/SearchBox.astro';
 import Category from '../components/Category.astro';
 import EmptyState from '../components/EmptyState.astro';
+import Skeleton from '../components/Skeleton.astro';
+import LoadingContainer from '../components/LoadingContainer.astro';
 import Footer from '../components/Footer.astro';
 import type { Tool } from '../types/tool';
-import { CATEGORY_CONFIG, UI_CONFIG, getFuseConfig } from '../types/settings';
+import { UI_CONFIG } from '../types/settings';
 
 // 加载工具数据
 const toolsData = await import('../../public/tools.json');
@@ -15,7 +17,7 @@ const tools: Tool[] = toolsData.default as Tool[];
 
 // 获取所有分类并统计
 const categories = tools.reduce((acc, tool) => {
-  const cat = tool.category || CATEGORY_CONFIG.UNCATEGORY_NAME;
+  const cat = tool.category || '未分类';
   acc[cat] = (acc[cat] || 0) + 1;
   return acc;
 }, {} as Record<string, number>);
@@ -23,7 +25,7 @@ const categories = tools.reduce((acc, tool) => {
 const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
 ---
 
-<Layout title="Batool - Tool Index">
+<Layout>
   <div class="min-h-screen bg-base-100 flex flex-col">
 
     <Header />
@@ -46,26 +48,7 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
           <div class="rounded-lg border border-base-content/8 bg-base-100/30 backdrop-blur-sm overflow-hidden mb-5 sm:mb-6">
 
             <EmptyState />
-
-            <!-- 骨架屏 -->
-            <ul id="skeleton-state" class="hidden">
-            {
-              Array.from({ length: 5 }).map(() => (
-                <li class="border-b border-base-content/5 last:border-b-0">
-                  <div class="flex items-center justify-between gap-4 px-4 sm:px-5 py-3">
-                    <div class="flex-1 min-w-0 space-y-2">
-                      <div class="skeleton h-4.5 w-32 rounded-md"></div>
-                      <div class="skeleton h-3.5 w-full max-w-md rounded-md"></div>
-                    </div>
-                    <div class="flex items-center gap-3 shrink-0">
-                      <div class="skeleton h-6 w-14 rounded-md"></div>
-                      <div class="skeleton h-3.5 w-3.5 rounded-sm"></div>
-                    </div>
-                  </div>
-                </li>
-              ))
-            }
-            </ul>
+            <Skeleton />
 
             <!-- 工具列表 -->
             <ul id="tools-list" class="hidden">
@@ -74,17 +57,7 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
           </div>
         </div>
 
-        <!-- 加载状态 -->
-        <div id="loading-container" class="my-5 sm:my-6">
-          <div id="loading-sentinel" class="min-h-[60px] flex items-center justify-center">
-            <span id="loading-spinner" class="loading loading-spinner loading-sm text-base-content/30 hidden"></span>
-            <div id="end-message" class="hidden text-center text-base-content/25 text-xs cursor-pointer hover:text-base-content/40 transition-colors" title="点击聚焦搜索框">
-              <span id="total-count">已加载全部 0 条数据</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
+        <LoadingContainer />
     </div>
 
     <Footer />
