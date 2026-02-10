@@ -9,7 +9,7 @@ import Skeleton from '../components/Skeleton.astro';
 import LoadingContainer from '../components/LoadingContainer.astro';
 import Footer from '../components/Footer.astro';
 import type { Tool } from '../types/tool';
-import { UI_CONFIG } from '../types/settings';
+import { UI_CONFIG, SEARCH_CONFIG } from '../types/settings';
 
 // 加载工具数据
 const toolsData = await import('../../public/tools.json');
@@ -65,9 +65,10 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
   </div>
 
   <!-- 服务端数据传递到客户端 -->
-  <script define:vars={{ tools, uiConfig: UI_CONFIG, searchConfig: typeof import('../types/settings').SEARCH_CONFIG }}>
+  <script define:vars={{ tools, uiConfig: UI_CONFIG, searchConfig: SEARCH_CONFIG }}>
     window.__TOOLS__ = tools;
     window.__UI_CONFIG__ = uiConfig;
+    window.__SEARCH_CONFIG__ = searchConfig;
   </script>
 
   <!-- 客户端脚本 -->
@@ -88,7 +89,7 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
       ANIMATION: { STAGGER_DELAY: 15, FADE_IN_DURATION: 200, INITIAL_TRANSLATE_Y: 6 }
     };
 
-    const searchConfig = {
+    const searchConfig = window.__SEARCH_CONFIG__ || {
       FUSE_WEIGHTS: { NAME: 2, DESCRIPTION: 1.5, CATEGORY: 1, TAGS: 1.2 },
       FUSE_THRESHOLD: 0.4,
       MIN_MATCH_CHAR_LENGTH: 1,
