@@ -28,7 +28,7 @@ const { size = 24 } = Astro.props;
 </style>
 
 <!-- 主题切换按钮 - DaisyUI Swap 组件 -->
-<label class="swap swap-rotate hover:text-base-content/70 transition-colors duration-200" aria-label="切换明暗主题">
+<label class="swap swap-rotate text-base-content/60 hover:text-base-content transition-colors duration-200" aria-label="切换明暗主题">
   <!-- checkbox 用于控制图标切换 -->
   <input type="checkbox" class="theme-controller" onchange="toggleTheme()" />
   <!-- 立即初始化 checkbox 状态，避免页面加载时的图标闪烁 -->
