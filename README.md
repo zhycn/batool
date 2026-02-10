@@ -2,7 +2,7 @@
 
 # Batool
 
-### ⚡ 极简 • 私有 • 极速的开发者工具启动面板
+### ⚡ 一个为开发者设计的极简工具入口。直达官网，零干扰。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D22.0.0-brightgreen)](https://nodejs.org)
@@ -18,7 +18,7 @@
 
 > **"直达，即专注。"**
 
-Batool 是一个为开发者设计的极简工具入口平台。它不是工具大全，而是一个**私有、极速、专注**的工具启动面板。
+Batool 是一个为开发者设计的极简工具入口。直达官网，零干扰。
 
 **核心理念:**
 
