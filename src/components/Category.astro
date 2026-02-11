@@ -12,11 +12,12 @@ const { categoryList, totalCount } = Astro.props;
   - 移动端：单行横向滚动
   - PC端：自动换行多行展示
   - 统一边框颜色为 border-base-content/10
--->
-
-<!-- 移动端：横向滚动容器 -->
+--><!-- 移动端：横向滚动容器 -->
 <div class="w-full md:hidden overflow-x-auto overflow-y-hidden">
-  <div class="flex justify-center gap-2 min-w-max px-6 mx-auto" style="max-width: fit-content;">
+  <div
+    class="flex justify-center gap-2 min-w-max px-6 mx-auto"
+    style="max-width: fit-content;"
+  >
     <!-- 全部按钮 -->
     <button
       data-category="all"
