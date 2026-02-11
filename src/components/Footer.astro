@@ -1,5 +1,6 @@
 ---
 import { APP_CONFIG } from '../types/settings';
+const appName = APP_CONFIG.APP_NAME;
 const currentYear = new Date().getFullYear();
 ---
 
@@ -9,11 +10,11 @@ const currentYear = new Date().getFullYear();
   - 统一内边距为 6 单位
 -->
 <footer class="w-full border-t border-base-content/10 bg-base-100/50 backdrop-blur-sm">
-  <div class="max-w-7xl mx-auto px-6 lg:px-8">
-    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 py-6 text-xs text-base-content/40">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row items-center justify-between py-6 gap-4 text-xs text-base-content/40">
       <!-- 版权信息 -->
       <div class="flex items-center">
-        <span>Copyright © {currentYear} {APP_CONFIG.APP_NAME}</span>
+        <span>Copyright © {currentYear} {appName}</span>
       </div>
       <!-- 技术栈链接 -->
       <div class="flex items-center gap-2">
