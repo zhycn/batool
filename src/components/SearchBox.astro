@@ -5,13 +5,16 @@ const { placeholder = UI_CONFIG.PLACEHOLDERS.SEARCH } = Astro.props;
 ---
 
 <!--
-  大尺寸居中搜索框（参考 heroicons）
-  - 更大的宽度和高度
-  - 醒目的阴影效果
-  - 圆角边框
+  搜索框 + 分类标签容器 - 参考 heroicons 设计风格
+  - 100% 宽度搜索框
+  - 分类标签在搜索框下方
+  - 下边线分隔
 -->
-<div class="max-w-3xl mx-auto mb-6 sm:mb-8 px-4">
-  <div class="relative group">
+
+<!-- 搜索区域容器 - 带下边线 -->
+<div class="border-b border-base-content/10 mb-8 py-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="relative group">
     <!-- 搜索输入框 -->
     <input
       id="search-input"
@@ -37,6 +40,7 @@ const { placeholder = UI_CONFIG.PLACEHOLDERS.SEARCH } = Astro.props;
 
       <!-- 快捷键提示 -->
       <kbd class="hidden md:inline-flex px-2.5 py-1.5 text-xs font-medium text-base-content/30 bg-base-content/5 rounded-lg border border-base-content/5 transition-colors duration-200">⌘K</kbd>
+      </div>
     </div>
   </div>
 </div>
