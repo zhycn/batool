@@ -1,19 +1,14 @@
-<!-- 骨架屏 -->
-<ul id="skeleton-state" class="hidden">
+<!-- 骨架屏 - 按钮网格风格 -->
+<div id="skeleton-state" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
 {
-    Array.from({ length: 5 }).map(() => (
-    <li class="border-b border-base-content/5 last:border-b-0">
-        <div class="flex items-center justify-between gap-4 px-4 sm:px-5 py-3 sm:py-3.5">
-        <div class="flex-1 min-w-0 space-y-2">
-            <div class="skeleton h-4.5 w-32 rounded-md"></div>
-            <div class="skeleton h-3.5 w-full max-w-md rounded-md"></div>
+    Array.from({ length: 12 }).map(() => (
+    <a class="btn btn-xl rounded-full flex items-center justify-between gap-3 h-auto py-3 px-4 sm:px-5 bg-base-100 border border-base-content/10 pointer-events-none">
+        <div class="flex-1 min-w-0 flex items-cente">
+            <div class="skeleton h-4 w-24 sm:w-32 rounded-md"></div>
+            <div class="skeleton h-5 w-12 sm:w-16 rounded-full"></div>
         </div>
-        <div class="flex items-center gap-3 shrink-0">
-            <div class="skeleton h-6 w-14 rounded-md"></div>
-            <div class="skeleton h-3.5 w-3.5 rounded-sm"></div>
-        </div>
-        </div>
-    </li>
+        <div class="skeleton h-3.5 w-3.5 sm:w-4 rounded-sm"></div>
+    </a>
     ))
 }
-</ul>
+</div>

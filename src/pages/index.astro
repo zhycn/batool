@@ -43,18 +43,15 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
 
       <!-- 工具列表 -->
       <div class="flex-1 px-4 sm:px-6">
-        <div class="max-w-4xl mx-auto">
-          <!-- 统一外框容器 - Linear 风格 -->
-          <div class="rounded-lg border border-base-content/8 bg-base-100/30 backdrop-blur-sm overflow-hidden mb-5 sm:mb-6">
+        <div class="max-w-7xl mx-auto">
 
             <EmptyState />
             <Skeleton />
 
             <!-- 工具列表 -->
-            <ul id="tools-list" class="hidden">
+            <div id="tools-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
               <!-- 由 JS 动态渲染 -->
-            </ul>
-          </div>
+            </div>
         </div>
 
         <LoadingContainer />
@@ -250,7 +247,7 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
       const end = Math.min(start + uiConfig.ITEMS_PER_PAGE, filteredTools.length);
       const newItems = filteredTools.slice(start, end);
 
-      renderTools(newItems, displayedCount === 0);
+      renderToolButtons(newItems, displayedCount === 0);
 
       displayedCount = end;
       isLoading = false;
@@ -325,8 +322,8 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
       }
     }
 
-    // 渲染工具列表 - Linear 风格
-    function renderTools(tools, isFirstPage) {
+    // 渲染工具按钮网格 - 按钮风格
+    function renderToolButtons(tools, isFirstPage) {
       // 隐藏骨架屏
       if (skeletonStateEl) {
         skeletonStateEl.classList.add('hidden');
@@ -346,52 +343,50 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
       const fragment = document.createDocumentFragment();
 
       tools.forEach((tool, index) => {
-        const li = document.createElement('li');
-        li.className = 'tool-item border-b border-base-content/5 last:border-b-0';
+        const a = document.createElement('a');
+        a.href = tool.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
 
-        const link = document.createElement('a');
-        link.href = tool.url;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        // Linear 风格：微妙 hover 效果
-        link.className = 'flex items-center justify-between gap-3 sm:gap-4 px-4 sm:px-5 py-3 hover:bg-base-content/[0.02] active:bg-base-content/[0.04] transition-colors duration-150';
+        // DaisyUI 按钮样式 + 自定义样式
+        a.className = 'btn btn-xl rounded-full flex items-center justify-between';
 
+        // 首页动画效果
         if (isFirstPage) {
-          link.style.opacity = '0';
-          link.style.transform = `translateY(${uiConfig.ANIMATION.INITIAL_TRANSLATE_Y}px)`;
-          link.style.transition = `opacity ${uiConfig.ANIMATION.FADE_IN_DURATION}ms ease-out ${index * uiConfig.ANIMATION.STAGGER_DELAY}ms, transform ${uiConfig.ANIMATION.FADE_IN_DURATION}ms ease-out ${index * uiConfig.ANIMATION.STAGGER_DELAY}ms`;
+          a.style.opacity = '0';
+          a.style.transform = `translateY(${uiConfig.ANIMATION.INITIAL_TRANSLATE_Y}px)`;
+          a.style.transition = `opacity ${uiConfig.ANIMATION.FADE_IN_DURATION}ms ease-out ${index * uiConfig.ANIMATION.STAGGER_DELAY}ms, transform ${uiConfig.ANIMATION.FADE_IN_DURATION}ms ease-out ${index * uiConfig.ANIMATION.STAGGER_DELAY}ms`;
         }
 
-        link.innerHTML = `
-          <div class="flex items-center justify-between gap-3 sm:gap-4 w-full">
-            <div class="flex-1 min-w-0">
-              <div class="text-sm font-medium text-base-content/90 mb-0.5 truncate">
-                ${tool.name}
-              </div>
-              <div class="text-xs text-base-content/35 truncate hidden sm:block">
-                ${tool.description}
-              </div>
-            </div>
-            <div class="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
-              <span class="px-2 py-1 rounded text-xs font-medium bg-base-content/4 text-base-content/40 whitespace-nowrap border border-base-content/4">
+        // 按钮内容：工具名称 + 分类标签 + 外部链接图标
+        a.innerHTML = `
+          <div class="flex-1 min-w-0 flex items-center gap-2 sm:gap-3">
+            <span class="flex-shrink-0 text-base-content/30 hover:text-base-content/60 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4.5 4.5 0 00-6.364 0l-3.879 3.88a2.25 2.25 0 00-.676 1.059l-1.08 2.16a.75.75 0 00.933.933l2.16-1.08a2.25 2.25 0 001.059-.676l3.879-3.879zM18.75 10.5a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z" />
+              </svg>
+            </span>
+            <span class="line-clamp-1 text-sm sm:text-base text-left font-medium text-base-content/90">
+              ${tool.name}
+            </span>
+          </div>
+          
+          <div class="flex-1 min-w-0 flex items-center justify-end gap-3">
+            <span class="px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary whitespace-nowrap border border-primary/10">
                 ${tool.category || '未分类'}
               </span>
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-base-content/15 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </div>
           </div>
         `;
 
-        li.appendChild(link);
-        fragment.appendChild(li);
+        fragment.appendChild(a);
       });
 
       toolsListEl.appendChild(fragment);
 
+      // 触发动画
       if (isFirstPage) {
         requestAnimationFrame(() => {
-          const items = toolsListEl.querySelectorAll('.tool-item a');
+          const items = toolsListEl.querySelectorAll('#tools-list > a');
           items.forEach(item => {
             item.style.opacity = '1';
             item.style.transform = 'translateY(0)';
