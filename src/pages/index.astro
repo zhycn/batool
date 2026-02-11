@@ -39,11 +39,13 @@ const lastUpdate = new Date(stats.mtime).toISOString().split('T')[0];
       license="MIT License"
     />
 
+    <!-- 搜索框 -->
+    <SearchBox />
+
     <!-- 主内容区 -->
     <div class="flex-1 flex flex-col">
-      <!-- 搜索框 + 分类列表 -->
+      <!-- 分类列表 -->
       <div class="py-8 sm:py-10">
-        <SearchBox />
         <Category categoryList={categoryList} totalCount={tools.length} />
       </div>
 
