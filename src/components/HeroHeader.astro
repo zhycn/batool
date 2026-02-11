@@ -1,0 +1,144 @@
+---
+import { APP_CONFIG } from '../types/settings';
+import ToggleTheme from './icons/ToggleTheme.astro';
+
+interface Props {
+  toolCount?: number;
+  lastUpdate?: string;
+  license?: string;
+}
+
+const {
+  toolCount = 0,
+  lastUpdate = '2024-06-01',
+  license = 'MIT License'
+} = Astro.props;
+---
+
+<!--
+  HeroHeader 组件 - Header 和 Hero 融合设计
+  参考 heroicons 布局风格
+  - 顶部独立导航块（Logo + 主题切换）
+  - Hero 区域分为左右两栏
+  - 背景图片覆盖整个区域
+-->
+
+<div class="w-full border-b border-base-content/10">
+  <section class="relative w-full overflow-hidden">
+
+    <!-- 背景图片层 -->
+    <div class="absolute inset-0 z-0">
+      <div
+        class="w-full h-full bg-cover bg-center bg-no-repeat"
+        style="background-image: url('/bg.jpg');"
+      ></div>
+      <!-- 渐变遮罩层 - 降低透明度，让背景图更明显 -->
+      <div class="absolute inset-0 bg-gradient-to-br from-base-100/85 via-base-100/80 to-base-100/75"></div>
+    </div>
+
+    <!-- 内容区域 -->
+    <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- 顶部导航块 - 独立的完整块 -->
+      <div class="flex items-center justify-between py-6 border-b border-base-content/5">
+        <!-- Logo + Batool -->
+        <div class="flex items-center gap-3">
+          <img src="/favicon.svg" alt="Batool" class="w-8 h-8" />
+          <span class="text-xl font-bold text-base-content tracking-tight">Batool</span>
+        </div>
+
+        <!-- 主题切换按钮 -->
+        <div class="flex items-center">
+          <ToggleTheme />
+        </div>
+      </div>
+
+      <!-- Hero 内容区域 - 左右两栏布局 -->
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-12 py-12 sm:py-16 lg:py-20">
+
+        <!-- 左侧内容区域 -->
+        <div class="flex-1 w-full max-w-2xl text-center lg:text-left">
+
+          <!-- 标签区域 -->
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-6">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary border border-primary/20">
+              {toolCount} tools
+            </span>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-base-content/5 text-base-content/70 border border-base-content/10">
+              {license}
+            </span>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-base-content/5 text-base-content/70 border border-base-content/10">
+              Last Update: {lastUpdate}
+            </span>
+          </div>
+
+          <!-- Hero 标题 -->
+          <h1 class="text-[clamp(40px,6vw,64px)] font-black tracking-tight leading-[1.1] text-base-content mb-6">
+            开发者的极简工具入口
+          </h1>
+
+          <!-- 副标题 -->
+          <p class="text-lg sm:text-xl text-base-content/70 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+            快速找到并直达工具官网，零干扰
+          </p>
+
+          <!-- 链接列表 -->
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3">
+            <a
+              href={APP_CONFIG.GITHUB_REPO}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-base-content/5 hover:bg-base-content/10 text-base-content/80 hover:text-base-content transition-all duration-200 border border-base-content/10"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm font-medium">GitHub</span>
+            </a>
+
+            <a
+              href={`${APP_CONFIG.GITHUB_REPO}/issues`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-base-content/5 hover:bg-base-content/10 text-base-content/80 hover:text-base-content transition-all duration-200 border border-base-content/10"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+              </svg>
+              <span class="text-sm font-medium">提交工具</span>
+            </a>
+
+            <a
+              href={`${APP_CONFIG.GITHUB_REPO}/blob/main/public/tools.json`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-base-content/5 hover:bg-base-content/10 text-base-content/80 hover:text-base-content transition-all duration-200 border border-base-content/10"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span class="text-sm font-medium">下载数据</span>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- 右侧图片区域 - 桌面端显示，移动端隐藏 -->
+        <div class="hidden lg:flex lg:w-80 xl:w-96 items-center justify-center">
+          <!-- 占位图 - 后续替换为实际图片 -->
+          <div class="w-full aspect-[4/3] rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-base-content/10 flex items-center justify-center shadow-xl">
+            <div class="text-center p-8">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 mx-auto mb-4 text-base-content/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <p class="text-base-content/30 text-sm font-medium">工具展示图</p>
+              <p class="text-base-content/20 text-xs mt-1">敬请期待</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+</div>

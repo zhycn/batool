@@ -1,7 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import Hero from '../components/Hero.astro';
+import HeroHeader from '../components/HeroHeader.astro';
 import SearchBox from '../components/SearchBox.astro';
 import Category from '../components/Category.astro';
 import EmptyState from '../components/EmptyState.astro';
@@ -23,18 +22,25 @@ const categories = tools.reduce((acc, tool) => {
 }, {} as Record<string, number>);
 
 const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
+
+// 获取最后更新时间（从 tools.json 的修改时间）
+const fs = await import('fs/promises');
+const stats = await fs.stat('public/tools.json');
+const lastUpdate = new Date(stats.mtime).toISOString().split('T')[0];
 ---
 
 <Layout>
   <div class="min-h-screen bg-base-100 flex flex-col">
 
-    <Header />
+    <!-- HeroHeader - 整合 Header 和 Hero -->
+    <HeroHeader
+      toolCount={tools.length}
+      lastUpdate={lastUpdate}
+      license="MIT License"
+    />
 
     <!-- 主内容区 -->
-    <div class="flex-1 flex flex-col pt-14">
-
-      <Hero />
-
+    <div class="flex-1 flex flex-col">
       <!-- 搜索框 + 分类列表 -->
       <div class="py-8 sm:py-10">
         <SearchBox />
