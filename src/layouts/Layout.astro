@@ -1,6 +1,6 @@
 ---
-import '../styles/global.css';
-import { APP_CONFIG, getFullUrl } from '../types/settings.ts';
+import "../styles/global.css";
+import { APP_CONFIG, getFullUrl } from "../types/settings.ts";
 
 interface Props {
   lang?: string;
@@ -19,7 +19,7 @@ const {
   socialTitle = APP_CONFIG.SOCIAL_TITLE || title,
   socialDescription = APP_CONFIG.SOCIAL_DESCRIPTION || description,
   themeColor = APP_CONFIG.THEME_COLOR,
-  theme = APP_CONFIG.DEFAULT_THEME || 'light'
+  theme = APP_CONFIG.DEFAULT_THEME || "light",
 } = Astro.props;
 ---
 
@@ -27,7 +27,7 @@ const {
 <html lang={lang} data-theme={theme}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="apple-mobile-web-app-title" content={APP_CONFIG.APP_NAME} />
@@ -40,11 +40,11 @@ const {
     <meta name="description" content={description} />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:title" content={socialTitle}>
-    <meta property="og:description" content={socialDescription}>
-    <meta property="og:type" content="website">
-    <meta property="og:url" content={getFullUrl()}>
-    <meta property="og:image" content="/og-image.jpg">
+    <meta property="og:title" content={socialTitle} />
+    <meta property="og:description" content={socialDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={getFullUrl()} />
+    <meta property="og:image" content="/og-image.jpg" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -56,12 +56,12 @@ const {
 
     <!-- 内联脚本:防止主题闪烁 - 在页面渲染前立即执行 -->
     <script is:inline define:vars={{ DEFAULT_THEME: theme }}>
-      (function() {
+      (function () {
         try {
-          const theme = localStorage.getItem('theme') || DEFAULT_THEME;
-          document.documentElement.setAttribute('data-theme', theme);
+          const theme = localStorage.getItem("theme") || DEFAULT_THEME;
+          document.documentElement.setAttribute("data-theme", theme);
         } catch (e) {
-          document.documentElement.setAttribute('data-theme', DEFAULT_THEME);
+          document.documentElement.setAttribute("data-theme", DEFAULT_THEME);
         }
       })();
     </script>

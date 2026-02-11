@@ -1,5 +1,6 @@
 ---
 import { APP_CONFIG } from '../types/settings';
+import Logo from './Logo.astro'
 import ToggleTheme from './ToggleTheme.astro';
 
 interface Props {
@@ -42,10 +43,7 @@ const {
       <!-- 顶部导航块 -->
       <div class="flex items-center justify-between py-6 border-b border-base-content/10">
         <!-- Logo + Batool -->
-        <div class="flex items-center gap-3">
-          <img src="/favicon.svg" alt="Batool" class="w-8 h-8" />
-          <span class="text-xl font-bold text-base-content tracking-tight">Batool</span>
-        </div>
+        <Logo />
 
         <!-- 主题切换按钮 -->
         <div class="flex items-center">
