@@ -1430,21 +1430,21 @@
   {
     "name": "Claude",
     "description": "Anthropic 开发的 AI 助手，擅长长文本处理、代码分析和创意写作。",
-    "category": "AI 工具",
+    "category": "数据库工具",
     "url": "https://claude.ai",
     "tags": ["聊天", "AI", "助手"]
   },
   {
     "name": "Tailwind CSS",
     "description": "实用优先的 CSS 框架，快速构建现代网站。高度可定制，响应式设计。",
-    "category": "Web 开发",
+    "category": "Web 开发3",
     "url": "https://tailwindcss.com",
     "tags": ["CSS", "框架", "样式"]
   },
   {
     "name": "Obsidian",
     "description": "基于 Markdown 的知识管理工具，双向链接，插件丰富。本地存储，数据私有。",
-    "category": "效率工具",
+    "category": "Agent Skills",
     "url": "https://obsidian.md",
     "tags": ["笔记", "知识库", "Markdown"]
   },
@@ -1458,7 +1458,7 @@
   {
     "name": "Font Awesome",
     "description": "最流行的图标库，数千个免费图标。支持 SVG 和字体图标。",
-    "category": "字体图标库",
+    "category": "运营工具",
     "url": "https://fontawesome.com",
     "tags": ["图标", "UI资源", "矢量"]
   },

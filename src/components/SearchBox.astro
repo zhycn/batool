@@ -1,8 +1,12 @@
 ---
 import { UI_CONFIG } from "../types/settings";
+import Category from "./Category.astro";
 
-const { placeholder = UI_CONFIG.PLACEHOLDERS.SEARCH || "搜索工具..." } =
-  Astro.props;
+const {
+  placeholder = UI_CONFIG.PLACEHOLDERS.SEARCH || "搜索工具...",
+  categoryList = [],
+  totalCount = 0,
+} = Astro.props;
 ---
 
 <!--
@@ -64,5 +68,10 @@ const { placeholder = UI_CONFIG.PLACEHOLDERS.SEARCH || "搜索工具..." } =
         <kbd class="kbd hidden md:inline-flex text-base-content/50">⌘K</kbd>
       </div>
     </label>
+  </div>
+
+  <div class="max-w-7xl mx-auto pt-4 px-4 sm:px-6 lg:px-8">
+    <!-- 分类列表 -->
+    <Category categoryList={categoryList} totalCount={totalCount} />
   </div>
 </div>

@@ -8,13 +8,40 @@ const { categoryList, totalCount } = Astro.props;
 ---
 
 <!--
-  分类过滤器组件
-  - 横向滚动条样式
-  - 支持移动端横向滑动
+  分类过滤器组件 - 响应式布局
+  - 移动端：单行横向滚动
+  - PC端：自动换行多行展示
   - 统一边框颜色为 border-base-content/10
 -->
-<div class="w-full overflow-x-auto overflow-y-hidden">
-  <div class="flex justify-center gap-2 sm:gap-2.5 min-w-max px-6 mx-auto" style="max-width: fit-content;">
+
+<!-- 移动端：横向滚动容器 -->
+<div class="w-full md:hidden overflow-x-auto overflow-y-hidden">
+  <div class="flex justify-center gap-2 min-w-max px-6 mx-auto" style="max-width: fit-content;">
+    <!-- 全部按钮 -->
+    <button
+      data-category="all"
+      class="category-btn px-4 py-2 rounded-full bg-primary text-primary-content text-sm font-medium hover:bg-primary/90 transition-all duration-200 whitespace-nowrap border border-transparent"
+    >
+      全部 <span class="ml-1.5 opacity-70">({totalCount})</span>
+    </button>
+
+    <!-- 分类按钮列表 -->
+    {
+      categoryList.map(([cat, count]) => (
+        <button
+          data-category={cat}
+          class="category-btn px-4 py-2 rounded-full bg-base-content/5 text-base-content/70 text-sm font-medium hover:bg-base-content/10 hover:text-base-content transition-all duration-200 border border-base-content/10 whitespace-nowrap"
+        >
+          {cat} <span class="ml-1.5 opacity-50">({count})</span>
+        </button>
+      ))
+    }
+  </div>
+</div>
+
+<!-- PC端：自动换行多行展示 -->
+<div class="hidden md:block w-full">
+  <div class="flex flex-wrap justify-center gap-2 sm:gap-2.5 px-6 py-2">
     <!-- 全部按钮 -->
     <button
       data-category="all"
@@ -38,12 +65,12 @@ const { categoryList, totalCount } = Astro.props;
 </div>
 
 <style>
-  /* 隐藏滚动条但保持可滚动 - 必要的自定义样式 */
-  div {
+  /* 隐藏移动端滚动条但保持可滚动 - 必要的自定义样式 */
+  .overflow-x-auto {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  div::-webkit-scrollbar {
+  .overflow-x-auto::-webkit-scrollbar {
     display: none;
   }
 </style>
