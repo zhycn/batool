@@ -8,17 +8,17 @@ const { categoryList, totalCount } = Astro.props;
 ---
 
 <!--
-  分类过滤器 - 横向滚动条样式
+  分类过滤器组件
+  - 横向滚动条样式
   - 支持移动端横向滑动
-  - 隐藏滚动条但保持可滚动
-  - 选中状态高亮
+  - 统一边框颜色为 border-base-content/10
 -->
-<div class="w-full overflow-x-auto overflow-y-hidden scrollbar-hide">
-  <div class="flex justify-center gap-2 sm:gap-2.5 min-w-max px-4 mx-auto" style="max-width: fit-content;">
+<div class="w-full overflow-x-auto overflow-y-hidden">
+  <div class="flex justify-center gap-2 sm:gap-2.5 min-w-max px-6 mx-auto" style="max-width: fit-content;">
     <!-- 全部按钮 -->
     <button
       data-category="all"
-      class="category-btn px-4 py-2 rounded-full bg-primary text-primary-content text-sm font-medium hover:bg-primary/90 transition-all duration-200 whitespace-nowrap"
+      class="category-btn px-4 py-2 rounded-full bg-primary text-primary-content text-sm font-medium hover:bg-primary/90 transition-all duration-200 whitespace-nowrap border border-transparent"
     >
       全部 <span class="ml-1.5 opacity-70">({totalCount})</span>
     </button>
@@ -28,7 +28,7 @@ const { categoryList, totalCount } = Astro.props;
       categoryList.map(([cat, count]) => (
         <button
           data-category={cat}
-          class="category-btn px-4 py-2 rounded-full bg-base-content/5 text-base-content/70 text-sm font-medium hover:bg-base-content/10 hover:text-base-content transition-all duration-200 border border-base-content/5 whitespace-nowrap"
+          class="category-btn px-4 py-2 rounded-full bg-base-content/5 text-base-content/70 text-sm font-medium hover:bg-base-content/10 hover:text-base-content transition-all duration-200 border border-base-content/10 whitespace-nowrap"
         >
           {cat} <span class="ml-1.5 opacity-50">({count})</span>
         </button>
@@ -38,12 +38,12 @@ const { categoryList, totalCount } = Astro.props;
 </div>
 
 <style>
-  /* 隐藏滚动条但保持可滚动 */
-  .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  /* 隐藏滚动条但保持可滚动 - 必要的自定义样式 */
+  div {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;  /* Chrome, Safari and Opera */
+  div::-webkit-scrollbar {
+    display: none;
   }
 </style>
