@@ -3,34 +3,20 @@ import { APP_CONFIG } from '../types/settings';
 import Logo from './icons/Logo.astro';
 import Github from './icons/Github.astro';
 import ToggleTheme from './icons/ToggleTheme.astro';
-/**
- * 顶部导航栏组件
- *
- * 固定在页面顶部的导航栏，提供品牌标识、主题切换和外部链接功能
- *
- * @description
- * - 固定定位 (z-50) 确保始终在顶层
- * - 纯色背景 (bg-base-100) 避免与下方渐变背景的模糊效果冲突
- * - 高度 56px (h-14)，响应式布局
- *
- * @features
- * - 品牌标识: Batool Logo 和名称
- * - 主题切换: 调用全局 toggleTheme() 函数
- * - GitHub 链接: 外部链接，新标签页打开
- *
- * @component
- */
 ---
 
 <!--
-  固定顶部导航栏 - Linear 风格
-  特点：极致简洁、微妙边框、完美间距
+  固定顶部导航栏
+  - 固定定位 (z-50) 确保始终在顶层
+  - 半透明背景 + 毛玻璃效果
+  - 高度 56px (h-14)，响应式布局
 -->
 <header class="fixed top-0 left-0 right-0 z-50 h-14 bg-base-100/80 backdrop-blur-xl border-b border-base-content/8">
   <div class="h-full px-4 sm:px-6 flex items-center justify-between">
+    <!-- 品牌 Logo -->
     <Logo />
 
-    <!-- 操作区域: 主题切换 + GitHub 链接 -->
+    <!-- 右侧操作区 -->
     <div class="flex items-center gap-4">
       <ToggleTheme />
       <Github />

@@ -7,22 +7,43 @@ interface Props {
 const { categoryList, totalCount } = Astro.props;
 ---
 
-<!-- 分类过滤器 -->
-<div class="flex flex-wrap justify-center gap-2 sm:gap-2.5">
-  <button
-    data-category="all"
-    class="category-btn px-3.5 py-1.5 rounded-md bg-primary text-white text-xs font-medium hover:bg-primary/90 transition-all duration-200"
-  >
-    全部 <span class="ml-1.5 opacity-50">({totalCount})</span>
-  </button>
-  {
-    categoryList.map(([cat, count]) => (
-      <button
-        data-category={cat}
-        class="category-btn px-3.5 py-1.5 rounded-md bg-base-content/5 text-base-content/70 text-xs font-medium hover:bg-base-content/8 hover:text-base-content transition-all duration-200 border border-base-content/5"
-      >
-        {cat} <span class="ml-1.5 opacity-50">({count})</span>
-      </button>
-    ))
-  }
+<!--
+  分类过滤器 - 横向滚动条样式
+  - 支持移动端横向滑动
+  - 隐藏滚动条但保持可滚动
+  - 选中状态高亮
+-->
+<div class="w-full overflow-x-auto overflow-y-hidden scrollbar-hide">
+  <div class="flex justify-center gap-2 sm:gap-2.5 min-w-max px-4 mx-auto" style="max-width: fit-content;">
+    <!-- 全部按钮 -->
+    <button
+      data-category="all"
+      class="category-btn px-4 py-2 rounded-full bg-primary text-primary-content text-sm font-medium hover:bg-primary/90 transition-all duration-200 whitespace-nowrap"
+    >
+      全部 <span class="ml-1.5 opacity-70">({totalCount})</span>
+    </button>
+
+    <!-- 分类按钮列表 -->
+    {
+      categoryList.map(([cat, count]) => (
+        <button
+          data-category={cat}
+          class="category-btn px-4 py-2 rounded-full bg-base-content/5 text-base-content/70 text-sm font-medium hover:bg-base-content/10 hover:text-base-content transition-all duration-200 border border-base-content/5 whitespace-nowrap"
+        >
+          {cat} <span class="ml-1.5 opacity-50">({count})</span>
+        </button>
+      ))
+    }
+  </div>
 </div>
+
+<style>
+  /* 隐藏滚动条但保持可滚动 */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+</style>

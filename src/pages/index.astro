@@ -36,7 +36,7 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
       <Hero />
 
       <!-- 搜索框 + 分类列表 -->
-      <div class="px-4 py-6 sm:py-8 text-center">
+      <div class="py-8 sm:py-10">
         <SearchBox />
         <Category categoryList={categoryList} totalCount={tools.length} />
       </div>
@@ -395,14 +395,14 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
       }
     }
 
-    // 更新分类按钮状态 - Linear 风格
+    // 更新分类按钮状态
     function updateCategoryButtons() {
       categoryButtons.forEach(btn => {
         const category = btn.getAttribute('data-category');
         if (category === currentCategory) {
-          btn.className = 'category-btn px-3.5 py-1.5 rounded-md bg-primary text-white text-xs font-medium hover:bg-primary/90 transition-all duration-200';
+          btn.className = 'category-btn px-4 py-2 rounded-full bg-primary text-primary-content text-sm font-medium hover:bg-primary/90 transition-all duration-200 whitespace-nowrap';
         } else {
-          btn.className = 'category-btn px-3.5 py-1.5 rounded-md bg-base-content/5 text-base-content/70 text-xs font-medium hover:bg-base-content/8 hover:text-base-content transition-all duration-200 border border-base-content/5';
+          btn.className = 'category-btn px-4 py-2 rounded-full bg-base-content/5 text-base-content/70 text-sm font-medium hover:bg-base-content/10 hover:text-base-content transition-all duration-200 border border-base-content/5 whitespace-nowrap';
         }
       });
     }
