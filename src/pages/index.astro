@@ -1,369 +1,346 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import Category from '../components/Category.astro';
-import EmptyState from '../components/EmptyState.astro';
-import Skeleton from '../components/Skeleton.astro';
-import LoadingContainer from '../components/LoadingContainer.astro';
-import Footer from '../components/Footer.astro';
-import type { Tool } from '../types/tool';
-import { UI_CONFIG, SEARCH_CONFIG } from '../types/settings';
+import HomeLayout from "../layouts/HomeLayout.astro";
+import EmptyState from "../components/EmptyState.astro";
+import Skeleton from "../components/Skeleton.astro";
+import LoadingContainer from "../components/LoadingContainer.astro";
+import type { Tool } from "../types/tool";
+import { UI_CONFIG, SEARCH_CONFIG } from "../types/settings";
 
 // 加载工具数据
-const toolsData = await import('../../public/tools.json');
+const toolsData = await import("../../public/tools.json");
 const tools: Tool[] = toolsData.default as Tool[];
 
 // 获取所有分类并统计
-const categories = tools.reduce((acc, tool) => {
-  const cat = tool.category || '未分类';
-  acc[cat] = (acc[cat] || 0) + 1;
-  return acc;
-}, {} as Record<string, number>);
+const categories = tools.reduce(
+  (acc, tool) => {
+    const cat = tool.category || "未分类";
+    acc[cat] = (acc[cat] || 0) + 1;
+    return acc;
+  },
+  {} as Record<string, number>,
+);
 
+// 按工具数量排序分类
 const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
-
-// 获取最后更新时间（从 tools.json 的修改时间）
-const fs = await import('fs/promises');
-const stats = await fs.stat('public/tools.json');
 ---
 
-<Layout>
-  <div class="min-h-screen bg-base-100 flex flex-col">
-
-    <!-- Header - 整合 Header 和 Hero -->
-    <Header
-      toolCount={tools.length}
-    />
-
-    <!-- 搜索框 + 分类列表 -->
-    <Category categoryList={categoryList} totalCount={tools.length} />
-
-    <!-- 主内容区 -->
-    <div class="flex-1 flex flex-col">
-
+<HomeLayout totalCount={tools.length} categoryList={categoryList}>
+  <!-- 主内容区 -->
+  <div class="w-full py-6">
+    <!-- 工具列表 -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <EmptyState />
+      <Skeleton />
       <!-- 工具列表 -->
-      <div class="flex-1 px-4 sm:px-6">
-        <div class="max-w-7xl mx-auto">
-
-            <EmptyState />
-            <Skeleton />
-
-            <!-- 工具列表 -->
-            <div id="tools-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
-              <!-- 由 JS 动态渲染 -->
-            </div>
-        </div>
-
-        <LoadingContainer />
+      <div
+        id="tools-list"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4"
+      >
+        <!-- 由 JS 动态渲染 -->
+      </div>
+      <LoadingContainer />
     </div>
 
-    <Footer />
+    <!-- 服务端数据传递到客户端 -->
+    <script
+      define:vars={{ tools, uiConfig: UI_CONFIG, searchConfig: SEARCH_CONFIG }}
+    >
+      window.__TOOLS__ = tools;
+      window.__UI_CONFIG__ = uiConfig;
+      window.__SEARCH_CONFIG__ = searchConfig;
+    </script>
 
-  </div>
+    <!-- 客户端脚本 -->
+    <script>
+      import type Fuse from "fuse.js";
+      import { debounce } from "../utils/debounce";
 
-  <!-- 服务端数据传递到客户端 -->
-  <script define:vars={{ tools, uiConfig: UI_CONFIG, searchConfig: SEARCH_CONFIG }}>
-    window.__TOOLS__ = tools;
-    window.__UI_CONFIG__ = uiConfig;
-    window.__SEARCH_CONFIG__ = searchConfig;
-  </script>
+      // 从全局变量获取工具数据和配置
+      const toolsData = window.__TOOLS__;
+      const uiConfig = window.__UI_CONFIG__;
+      const searchConfig = window.__SEARCH_CONFIG__;
 
-  <!-- 客户端脚本 -->
-  <script>
-    import { debounce } from '../utils/debounce';
+      console.log("📦 总数据量:", toolsData.length);
 
-    // 从全局变量获取工具数据和配置
-    const toolsData = window.__TOOLS__ || [];
-    const uiConfig = window.__UI_CONFIG__ || {
-      ITEMS_PER_PAGE: 20,
-      DEFAULT_THEME: 'light',
-      DEBOUNCE_DELAY: 300,
-      SHORTCUTS: { SEARCH: { key: 'k', requiresMeta: true }, ESCAPE: 'Escape' },
-      LARGE_DATA_THRESHOLD: 200,
-      PLACEHOLDERS: { SEARCH: '搜索工具...', EMPTY_STATE: '没有找到匹配的工具' },
-      INITIAL_LOAD_DELAY: 300,
-      OBSERVER: { ROOT_MARGIN: '100px', THRESHOLD: 0.1 },
-      ANIMATION: { STAGGER_DELAY: 15, FADE_IN_DURATION: 200, INITIAL_TRANSLATE_Y: 6 }
-    };
+      // DOM 元素
+      const searchInput = document.getElementById("search-input");
+      const clearSearchBtn = document.getElementById("clear-search");
+      const toolsListEl = document.getElementById("tools-list");
+      const emptyStateEl = document.getElementById("empty-state");
+      const skeletonStateEl = document.getElementById("skeleton-state");
+      const loadingContainer = document.getElementById("loading-container");
+      const loadingSentinel = document.getElementById("loading-sentinel");
+      const loadingSpinner = document.getElementById("loading-spinner");
+      const endMessage = document.getElementById("end-message");
+      const totalCountEl = document.getElementById("total-count");
+      const categoryButtons = document.querySelectorAll(".category-btn");
 
-    const searchConfig = window.__SEARCH_CONFIG__ || {
-      FUSE_WEIGHTS: { NAME: 2, DESCRIPTION: 1.5, CATEGORY: 1, TAGS: 1.2 },
-      FUSE_THRESHOLD: 0.4,
-      MIN_MATCH_CHAR_LENGTH: 1,
-      IGNORE_LOCATION: true,
-      DEBOUNCE_DELAY: 300
-    };
+      // 简化的状态
+      let allTools: never[] = [];
+      let filteredTools: string | any[] = [];
+      let displayedCount = 0;
+      let isLoading = false;
+      let observer: IntersectionObserver | null = null;
 
-    console.log('📦 总数据量:', toolsData.length);
+      // 搜索和筛选状态
+      let currentCategory = "all";
+      let searchQuery = "";
+      let fuse: string | Fuse<unknown> | null = null;
 
-    // DOM 元素
-    const searchInput = document.getElementById('search-input');
-    const clearSearchBtn = document.getElementById('clear-search');
-    const toolsListEl = document.getElementById('tools-list');
-    const emptyStateEl = document.getElementById('empty-state');
-    const skeletonStateEl = document.getElementById('skeleton-state');
-    const loadingContainer = document.getElementById('loading-container');
-    const loadingSentinel = document.getElementById('loading-sentinel');
-    const loadingSpinner = document.getElementById('loading-spinner');
-    const endMessage = document.getElementById('end-message');
-    const totalCountEl = document.getElementById('total-count');
-    const categoryButtons = document.querySelectorAll('.category-btn');
+      // 主题切换
+      function initTheme() {
+        const savedTheme =
+          localStorage.getItem("theme") || uiConfig.DEFAULT_THEME;
+        document.documentElement.setAttribute("data-theme", savedTheme);
+      }
 
-    // 简化的状态
-    let allTools = [];
-    let filteredTools = [];
-    let displayedCount = 0;
-    let isLoading = false;
-    let observer = null;
+      function toggleTheme() {
+        const currentTheme =
+          document.documentElement.getAttribute("data-theme");
+        const newTheme = currentTheme === "light" ? "dark" : "light";
 
-    // 搜索和筛选状态
-    let currentCategory = 'all';
-    let searchQuery = '';
-    let fuse = null;
-
-    // 主题切换
-    function initTheme() {
-      const savedTheme = localStorage.getItem('theme') || uiConfig.DEFAULT_THEME;
-      document.documentElement.setAttribute('data-theme', savedTheme);
-    }
-
-    function toggleTheme() {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-
-      // 防止主题切换时的闪烁: 临时禁用过渡动画
-      const style = document.createElement('style');
-      style.innerHTML = `
+        // 防止主题切换时的闪烁: 临时禁用过渡动画
+        const style = document.createElement("style");
+        style.innerHTML = `
         *, *::before, *::after {
           transition: none !important;
         }
       `;
-      document.head.appendChild(style);
+        document.head.appendChild(style);
+        // 强制浏览器重排
+        document.documentElement.offsetHeight;
 
-      // 强制浏览器重排
-      document.documentElement.offsetHeight;
+        // 切换主题
+        document.documentElement.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
 
-      // 切换主题
-      document.documentElement.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-
-      // 使用 requestAnimationFrame 确保主题切换完成后再移除样式
-      requestAnimationFrame(() => {
+        // 使用 requestAnimationFrame 确保主题切换完成后再移除样式
         requestAnimationFrame(() => {
-          document.head.removeChild(style);
+          requestAnimationFrame(() => {
+            document.head.removeChild(style);
+          });
         });
-      });
-    }
-
-    window.toggleTheme = toggleTheme;
-
-    // 初始化 Fuse.js
-    async function initFuse() {
-      const { default: Fuse } = await import('fuse.js');
-
-      fuse = new Fuse(toolsData, {
-        keys: [
-          { name: 'name', weight: searchConfig.FUSE_WEIGHTS.NAME },
-          { name: 'description', weight: searchConfig.FUSE_WEIGHTS.DESCRIPTION },
-          { name: 'category', weight: searchConfig.FUSE_WEIGHTS.CATEGORY },
-          { name: 'tags', weight: searchConfig.FUSE_WEIGHTS.TAGS }
-        ],
-        threshold: searchConfig.FUSE_THRESHOLD,
-        includeScore: false,
-        shouldSort: true,
-        minMatchCharLength: searchConfig.MIN_MATCH_CHAR_LENGTH,
-        ignoreLocation: searchConfig.IGNORE_LOCATION
-      });
-
-      allTools = toolsData;
-      filteredTools = filterTools();
-      console.log('🔍 筛选后数据量:', filteredTools.length);
-
-      initObserver();
-      loadNextPage();
-    }
-
-    // 过滤工具
-    function filterTools() {
-      let filtered = allTools;
-
-      if (currentCategory !== 'all') {
-        filtered = filtered.filter(tool => tool.category === currentCategory);
       }
 
-      if (searchQuery.trim() && fuse) {
-        const results = fuse.search(searchQuery);
-        filtered = filtered.filter(tool =>
-          results.some(r => r.item === tool)
+      window.toggleTheme = toggleTheme;
+
+      // 初始化 Fuse.js
+      async function initFuse() {
+        const { default: Fuse } = await import("fuse.js");
+
+        fuse = new Fuse(toolsData, {
+          keys: [
+            { name: "name", weight: searchConfig.FUSE_WEIGHTS.NAME },
+            {
+              name: "description",
+              weight: searchConfig.FUSE_WEIGHTS.DESCRIPTION,
+            },
+            { name: "category", weight: searchConfig.FUSE_WEIGHTS.CATEGORY },
+            { name: "tags", weight: searchConfig.FUSE_WEIGHTS.TAGS },
+          ],
+          threshold: searchConfig.FUSE_THRESHOLD,
+          includeScore: false,
+          shouldSort: true,
+          minMatchCharLength: searchConfig.MIN_MATCH_CHAR_LENGTH,
+          ignoreLocation: searchConfig.IGNORE_LOCATION,
+        });
+
+        allTools = toolsData;
+        filteredTools = filterTools();
+        console.log("🔍 筛选后数据量:", filteredTools.length);
+
+        initObserver();
+        loadNextPage();
+      }
+
+      // 过滤工具
+      function filterTools() {
+        let filtered = allTools;
+
+        if (currentCategory !== "all") {
+          filtered = filtered.filter(
+            (tool) => tool.category === currentCategory,
+          );
+        }
+
+        if (searchQuery.trim() && fuse) {
+          const results = fuse.search(searchQuery);
+          filtered = filtered.filter((tool) =>
+            results.some((r: { item: any }) => r.item === tool),
+          );
+        }
+
+        return filtered;
+      }
+
+      // 初始化 Observer
+      function initObserver() {
+        if (observer) {
+          observer.disconnect();
+        }
+
+        observer = new IntersectionObserver(
+          (entries) => {
+            if (entries[0].isIntersecting && !isLoading) {
+              loadNextPage();
+            }
+          },
+          {
+            rootMargin: uiConfig.OBSERVER.ROOT_MARGIN,
+            threshold: uiConfig.OBSERVER.THRESHOLD,
+          },
         );
+
+        if (loadingSentinel) {
+          observer.observe(loadingSentinel);
+        }
       }
 
-      return filtered;
-    }
+      // 加载下一页
+      function loadNextPage() {
+        if (isLoading) {
+          return;
+        }
 
-    // 初始化 Observer
-    function initObserver() {
-      if (observer) {
-        observer.disconnect();
+        if (displayedCount >= filteredTools.length) {
+          showEndState();
+          return;
+        }
+
+        isLoading = true;
+
+        // 隐藏骨架屏
+        if (skeletonStateEl) {
+          skeletonStateEl.classList.add("hidden");
+        }
+        toolsListEl.classList.remove("hidden");
+
+        const start = displayedCount;
+        const end = Math.min(
+          start + uiConfig.ITEMS_PER_PAGE,
+          filteredTools.length,
+        );
+        const newItems = filteredTools.slice(start, end);
+
+        renderToolButtons(newItems, displayedCount === 0);
+
+        displayedCount = end;
+        isLoading = false;
+
+        if (displayedCount >= filteredTools.length) {
+          showEndState();
+          if (observer) observer.disconnect();
+        }
       }
 
-      observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting && !isLoading) {
-            loadNextPage();
+      // 显示已加载全部状态
+      function showEndState() {
+        loadingSpinner.classList.add("hidden");
+
+        // 如果没有数据，不显示消息
+        if (displayedCount === 0) {
+          endMessage.classList.add("hidden");
+          return;
+        }
+
+        // 如果数据量≥阈值，提示用户搜索
+        if (displayedCount >= uiConfig.LARGE_DATA_THRESHOLD) {
+          endMessage.classList.remove("hidden");
+          totalCountEl.innerHTML = `数据较多，建议使用搜索功能精确定位`;
+          totalCountEl.parentElement.style.cursor = "pointer";
+          totalCountEl.parentElement.onclick = () => {
+            searchInput.focus();
+            searchInput.select();
+          };
+        } else {
+          // 正常显示"已加载全部"消息
+          endMessage.classList.remove("hidden");
+          totalCountEl.textContent = `已加载全部 ${displayedCount} 条数据`;
+          totalCountEl.parentElement.style.cursor = "default";
+          totalCountEl.parentElement.onclick = null;
+        }
+      }
+
+      // 重置加载状态
+      function resetLoading() {
+        displayedCount = 0;
+        isLoading = false;
+
+        toolsListEl.innerHTML = "";
+
+        // 先过滤数据
+        filteredTools = filterTools();
+        console.log("🔄 重置加载,筛选后:", filteredTools.length, "条");
+
+        initObserver();
+
+        // 如果结果为空，直接显示空状态，不显示骨架屏，隐藏加载容器
+        if (filteredTools.length === 0) {
+          if (skeletonStateEl) {
+            skeletonStateEl.classList.add("hidden");
           }
-        },
-        {
-          rootMargin: uiConfig.OBSERVER.ROOT_MARGIN,
-          threshold: uiConfig.OBSERVER.THRESHOLD
+          toolsListEl.classList.add("hidden");
+          emptyStateEl.classList.remove("hidden");
+          loadingContainer.classList.add("hidden"); // 空状态时隐藏加载容器
+        } else {
+          // 有数据时，显示骨架屏并延迟加载
+          if (skeletonStateEl) {
+            skeletonStateEl.classList.remove("hidden");
+          }
+          toolsListEl.classList.add("hidden");
+          emptyStateEl.classList.add("hidden");
+          loadingContainer.classList.remove("hidden"); // 显示加载容器以支持滚动
+
+          setTimeout(() => {
+            loadNextPage();
+          }, uiConfig.INITIAL_LOAD_DELAY);
         }
-      );
-
-      if (loadingSentinel) {
-        observer.observe(loadingSentinel);
-      }
-    }
-
-    // 加载下一页
-    function loadNextPage() {
-      if (isLoading) {
-        return;
       }
 
-      if (displayedCount >= filteredTools.length) {
-        showEndState();
-        return;
-      }
-
-      isLoading = true;
-
-      // 隐藏骨架屏
-      if (skeletonStateEl) {
-        skeletonStateEl.classList.add('hidden');
-      }
-      toolsListEl.classList.remove('hidden');
-
-      const start = displayedCount;
-      const end = Math.min(start + uiConfig.ITEMS_PER_PAGE, filteredTools.length);
-      const newItems = filteredTools.slice(start, end);
-
-      renderToolButtons(newItems, displayedCount === 0);
-
-      displayedCount = end;
-      isLoading = false;
-
-      if (displayedCount >= filteredTools.length) {
-        showEndState();
-        if (observer) observer.disconnect();
-      }
-    }
-
-    // 显示已加载全部状态
-    function showEndState() {
-      loadingSpinner.classList.add('hidden');
-
-      // 如果没有数据，不显示消息
-      if (displayedCount === 0) {
-        endMessage.classList.add('hidden');
-        return;
-      }
-
-      // 如果数据量≥阈值，提示用户搜索
-      if (displayedCount >= uiConfig.LARGE_DATA_THRESHOLD) {
-        endMessage.classList.remove('hidden');
-        totalCountEl.innerHTML = `数据较多，建议使用搜索功能精确定位`;
-        totalCountEl.parentElement.style.cursor = 'pointer';
-        totalCountEl.parentElement.onclick = () => {
-          searchInput.focus();
-          searchInput.select();
-        };
-      } else {
-        // 正常显示"已加载全部"消息
-        endMessage.classList.remove('hidden');
-        totalCountEl.textContent = `已加载全部 ${displayedCount} 条数据`;
-        totalCountEl.parentElement.style.cursor = 'default';
-        totalCountEl.parentElement.onclick = null;
-      }
-    }
-
-    // 重置加载状态
-    function resetLoading() {
-      displayedCount = 0;
-      isLoading = false;
-
-      toolsListEl.innerHTML = '';
-
-      // 先过滤数据
-      filteredTools = filterTools();
-      console.log('🔄 重置加载,筛选后:', filteredTools.length, '条');
-
-      initObserver();
-
-      // 如果结果为空，直接显示空状态，不显示骨架屏，隐藏加载容器
-      if (filteredTools.length === 0) {
+      // 渲染工具按钮网格 - 按钮风格
+      function renderToolButtons(tools: any[], isFirstPage: boolean) {
+        // 隐藏骨架屏
         if (skeletonStateEl) {
-          skeletonStateEl.classList.add('hidden');
-        }
-        toolsListEl.classList.add('hidden');
-        emptyStateEl.classList.remove('hidden');
-        loadingContainer.classList.add('hidden');  // 空状态时隐藏加载容器
-      } else {
-        // 有数据时，显示骨架屏并延迟加载
-        if (skeletonStateEl) {
-          skeletonStateEl.classList.remove('hidden');
-        }
-        toolsListEl.classList.add('hidden');
-        emptyStateEl.classList.add('hidden');
-        loadingContainer.classList.remove('hidden');  // 显示加载容器以支持滚动
-
-        setTimeout(() => {
-          loadNextPage();
-        }, uiConfig.INITIAL_LOAD_DELAY);
-      }
-    }
-
-    // 渲染工具按钮网格 - 按钮风格
-    function renderToolButtons(tools, isFirstPage) {
-      // 隐藏骨架屏
-      if (skeletonStateEl) {
-        skeletonStateEl.classList.add('hidden');
-      }
-
-      // 空状态处理
-      if (tools.length === 0) {
-        toolsListEl.classList.add('hidden');
-        emptyStateEl.classList.remove('hidden');
-        return;
-      }
-
-      // 有数据时显示列表，隐藏空状态
-      toolsListEl.classList.remove('hidden');
-      emptyStateEl.classList.add('hidden');
-
-      const fragment = document.createDocumentFragment();
-
-      tools.forEach((tool, index) => {
-        const a = document.createElement('a');
-        a.href = tool.url;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-
-        // DaisyUI 按钮样式 + 自定义样式
-        a.className = 'btn btn-xl rounded-full flex items-center justify-between';
-
-        // 首页动画效果
-        if (isFirstPage) {
-          a.style.opacity = '0';
-          a.style.transform = `translateY(${uiConfig.ANIMATION.INITIAL_TRANSLATE_Y}px)`;
-          a.style.transition = `opacity ${uiConfig.ANIMATION.FADE_IN_DURATION}ms ease-out ${index * uiConfig.ANIMATION.STAGGER_DELAY}ms, transform ${uiConfig.ANIMATION.FADE_IN_DURATION}ms ease-out ${index * uiConfig.ANIMATION.STAGGER_DELAY}ms`;
+          skeletonStateEl.classList.add("hidden");
         }
 
-        // 按钮内容：工具名称 + 分类标签 + 外部链接图标
-        a.innerHTML = `
+        // 空状态处理
+        if (tools.length === 0) {
+          toolsListEl.classList.add("hidden");
+          emptyStateEl.classList.remove("hidden");
+          return;
+        }
+
+        // 有数据时显示列表，隐藏空状态
+        toolsListEl.classList.remove("hidden");
+        emptyStateEl.classList.add("hidden");
+
+        const fragment = document.createDocumentFragment();
+
+        tools.forEach(
+          (tool: { url: string; name: any; category: any }, index: number) => {
+            const a = document.createElement("a");
+            a.href = tool.url;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+
+            // DaisyUI 按钮样式 + 自定义样式
+            a.className =
+              "btn btn-xl rounded-full flex items-center justify-between";
+
+            // 首页动画效果
+            if (isFirstPage) {
+              a.style.opacity = "0";
+              a.style.transform = `translateY(${uiConfig.ANIMATION.INITIAL_TRANSLATE_Y}px)`;
+              a.style.transition = `opacity ${uiConfig.ANIMATION.FADE_IN_DURATION}ms ease-out ${index * uiConfig.ANIMATION.STAGGER_DELAY}ms, transform ${uiConfig.ANIMATION.FADE_IN_DURATION}ms ease-out ${index * uiConfig.ANIMATION.STAGGER_DELAY}ms`;
+            }
+
+            // 按钮内容：工具名称 + 分类标签 + 外部链接图标
+            a.innerHTML = `
           <div class="flex-1 min-w-0 flex items-center gap-2 sm:gap-3">
             <span class="flex-shrink-0 text-base-content/30 hover:text-base-content/60 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4.5 4.5 0 00-6.364 0l-3.879 3.88a2.25 2.25 0 00-.676 1.059l-1.08 2.16a.75.75 0 00.933.933l2.16-1.08a2.25 2.25 0 001.059-.676l3.879-3.879zM18.75 10.5a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
               </svg>
             </span>
             <span class="line-clamp-1 text-sm sm:text-base text-left font-medium text-base-content/90">
@@ -373,103 +350,117 @@ const stats = await fs.stat('public/tools.json');
           
           <div class="flex-1 min-w-0 flex items-center justify-end gap-3">
             <span class="px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary whitespace-nowrap border border-primary/10">
-                ${tool.category || '未分类'}
+                ${tool.category || "未分类"}
               </span>
           </div>
         `;
 
-        fragment.appendChild(a);
-      });
+            fragment.appendChild(a);
+          },
+        );
 
-      toolsListEl.appendChild(fragment);
+        toolsListEl.appendChild(fragment);
 
-      // 触发动画
-      if (isFirstPage) {
-        requestAnimationFrame(() => {
-          const items = toolsListEl.querySelectorAll('#tools-list > a');
-          items.forEach(item => {
-            item.style.opacity = '1';
-            item.style.transform = 'translateY(0)';
+        // 触发动画
+        if (isFirstPage) {
+          requestAnimationFrame(() => {
+            const items = toolsListEl.querySelectorAll("#tools-list > a");
+            items.forEach((item) => {
+              item.style.opacity = "1";
+              item.style.transform = "translateY(0)";
+            });
           });
+        }
+      }
+
+      // 更新分类按钮状态
+      function updateCategoryButtons() {
+        categoryButtons.forEach((btn) => {
+          const category = btn.getAttribute("data-category");
+          if (category === currentCategory) {
+            btn.className =
+              "category-btn px-4 py-2 rounded-full bg-primary text-primary-content text-sm font-medium hover:bg-primary/90 transition-all duration-200 whitespace-nowrap border border-transparent";
+          } else {
+            btn.className =
+              "category-btn px-4 py-2 rounded-full bg-base-content/5 text-base-content/70 text-sm font-medium hover:bg-base-content/10 hover:text-base-content transition-all duration-200 border border-base-content/10 whitespace-nowrap";
+          }
         });
       }
-    }
 
-    // 更新分类按钮状态
-    function updateCategoryButtons() {
-      categoryButtons.forEach(btn => {
-        const category = btn.getAttribute('data-category');
-        if (category === currentCategory) {
-          btn.className = 'category-btn px-4 py-2 rounded-full bg-primary text-primary-content text-sm font-medium hover:bg-primary/90 transition-all duration-200 whitespace-nowrap border border-transparent';
-        } else {
-          btn.className = 'category-btn px-4 py-2 rounded-full bg-base-content/5 text-base-content/70 text-sm font-medium hover:bg-base-content/10 hover:text-base-content transition-all duration-200 border border-base-content/10 whitespace-nowrap';
+      // 搜索输入处理
+      searchInput.addEventListener(
+        "input",
+        debounce((e) => {
+          const value = e.target.value;
+          console.log("🔎 搜索:", value);
+          searchQuery = value;
+
+          // 控制清除按钮显示
+          if (value.length > 0) {
+            clearSearchBtn.classList.remove("hidden");
+          } else {
+            clearSearchBtn.classList.add("hidden");
+          }
+
+          resetLoading();
+        }, searchConfig.DEBOUNCE_DELAY),
+      );
+
+      // 清除按钮点击处理
+      clearSearchBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        searchQuery = "";
+        clearSearchBtn.classList.add("hidden");
+        searchInput.focus();
+        resetLoading();
+      });
+
+      // 分类按钮点击处理
+      categoryButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          console.log("🏷️  分类:", btn.getAttribute("data-category"));
+          currentCategory = btn.getAttribute("data-category") || "all";
+          updateCategoryButtons();
+          resetLoading();
+        });
+      });
+
+      // 快捷键支持
+      document.addEventListener("keydown", (e) => {
+        // 搜索快捷键 (⌘K / Ctrl+K)
+        if (
+          uiConfig.SHORTCUTS.SEARCH.requiresMeta &&
+          (e.metaKey || e.ctrlKey) &&
+          e.key === uiConfig.SHORTCUTS.SEARCH.key
+        ) {
+          e.preventDefault();
+          searchInput.focus();
+          searchInput.select();
+        }
+        // Escape 清除搜索
+        if (
+          e.key === uiConfig.SHORTCUTS.ESCAPE &&
+          document.activeElement === searchInput
+        ) {
+          searchInput.value = "";
+          searchQuery = "";
+          clearSearchBtn.classList.add("hidden");
+          resetLoading();
+          searchInput.blur();
         }
       });
-    }
 
-    // 搜索输入处理
-    searchInput.addEventListener('input', debounce((e) => {
-      const value = e.target.value;
-      console.log('🔎 搜索:', value);
-      searchQuery = value;
-
-      // 控制清除按钮显示
-      if (value.length > 0) {
-        clearSearchBtn.classList.remove('hidden');
-      } else {
-        clearSearchBtn.classList.add('hidden');
-      }
-
-      resetLoading();
-    }, searchConfig.DEBOUNCE_DELAY));
-
-    // 清除按钮点击处理
-    clearSearchBtn.addEventListener('click', () => {
-      searchInput.value = '';
-      searchQuery = '';
-      clearSearchBtn.classList.add('hidden');
-      searchInput.focus();
-      resetLoading();
-    });
-
-    // 分类按钮点击处理
-    categoryButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        console.log('🏷️  分类:', btn.getAttribute('data-category'));
-        currentCategory = btn.getAttribute('data-category') || 'all';
-        updateCategoryButtons();
-        resetLoading();
+      // 页面卸载时清理
+      window.addEventListener("beforeunload", () => {
+        if (observer) {
+          observer.disconnect();
+        }
       });
-    });
 
-    // 快捷键支持
-    document.addEventListener('keydown', (e) => {
-      // 搜索快捷键 (⌘K / Ctrl+K)
-      if (uiConfig.SHORTCUTS.SEARCH.requiresMeta && (e.metaKey || e.ctrlKey) && e.key === uiConfig.SHORTCUTS.SEARCH.key) {
-        e.preventDefault();
-        searchInput.focus();
-        searchInput.select();
-      }
-      // Escape 清除搜索
-      if (e.key === uiConfig.SHORTCUTS.ESCAPE && document.activeElement === searchInput) {
-        searchInput.value = '';
-        searchQuery = '';
-        clearSearchBtn.classList.add('hidden');
-        resetLoading();
-        searchInput.blur();
-      }
-    });
-
-    // 页面卸载时清理
-    window.addEventListener('beforeunload', () => {
-      if (observer) {
-        observer.disconnect();
-      }
-    });
-
-    // 初始化
-    console.log('🚀 开始初始化...');
-    initTheme();
-    initFuse();
-  </script>
-</Layout>
+      // 初始化
+      console.log("🚀 开始初始化...");
+      initTheme();
+      initFuse();
+    </script>
+  </div>
+</HomeLayout>

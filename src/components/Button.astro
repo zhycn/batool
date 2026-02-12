@@ -1,0 +1,49 @@
+---
+
+---
+
+<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-10">
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4"
+  >
+    {
+      Array.from({ length: 120 }).map((_, index) => (
+        <div
+          class="tooltip"
+          data-tip="hello"
+          role="region"
+          aria-label={`Item ${index + 1}: Claude Code + ${index}, category: 未分类`}
+        >
+          <a class="btn btn-lg rounded-full flex items-center justify-between w-full min-h-12 p-3 sm:p-4 transition-colors duration-200">
+            <div class="flex-1 min-w-0 flex items-center gap-2 sm:gap-3">
+              <span class="shrink-0 text-base-content/50 hover:text-base-content/80 transition-colors">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-5 sm:size-6"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+                  />
+                </svg>
+              </span>
+              <span class="line-clamp-1 text-sm sm:text-base text-left font-medium text-base-content">
+                Claude Code + {index}
+              </span>
+            </div>
+
+            <span class="shrink-0 px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/10 whitespace-nowrap">
+              未分类
+            </span>
+          </a>
+        </div>
+      ))
+    }
+  </div>
+</div>

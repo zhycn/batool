@@ -1,0 +1,22 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Category from "../components/Category.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  totalCount: number;
+  categoryList: [string, number][];
+}
+
+const { totalCount, categoryList } = Astro.props;
+---
+
+<Layout>
+  <div class="min-h-screen bg-base-100 flex flex-col">
+    <Header toolCount={totalCount} />
+    <Category categoryList={categoryList} totalCount={totalCount} />
+    <slot />
+    <Footer />
+  </div>
+</Layout>
