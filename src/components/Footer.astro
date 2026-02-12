@@ -1,20 +1,18 @@
 ---
 import { APP_CONFIG } from "../types/settings";
-const appName = APP_CONFIG.APP_NAME;
 const currentYear = new Date().getFullYear();
+const appName = APP_CONFIG.APP_NAME || "Batool";
 ---
 
 <!--
   页脚组件
-  - 统一边框颜色为 border-base-content/10
-  - 统一内边距为 6 单位
 -->
 <footer
-  class="w-full border-t border-base-content/5 bg-base-100/50 backdrop-blur-sm"
+  class="w-full border-t border-base-content/5 bg-base-100/50 shrink-0"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div
-      class="flex flex-col sm:flex-row items-center justify-between py-6 gap-4 text-xs text-base-content/50"
+      class="flex flex-col sm:flex-row items-center justify-between py-8 sm:py-6 gap-4 text-sm text-base-content/50"
     >
       <!-- 版权信息 -->
       <aside class="flex items-center gap-2">
@@ -22,14 +20,14 @@ const currentYear = new Date().getFullYear();
         <p>Copyright © {currentYear} - All right reserved</p>
       </aside>
       <!-- 技术栈链接 -->
-      <div class="flex items-center gap-2">
+      <div class="flex items-center flex-wrap justify-center gap-2">
         <span>Built with</span>
         <a
           href="https://astro.build"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="访问 Astro 官网（新窗口打开）"
-          class="link link-hover text-base-content/40 hover:text-primary transition-colors duration-200"
+          class="link link-hover text-base-content/50 hover:text-primary transition-colors duration-200"
         >
           Astro
         </a>
@@ -39,7 +37,7 @@ const currentYear = new Date().getFullYear();
           target="_blank"
           rel="noopener noreferrer"
           aria-label="访问 DaisyUI 官网（新窗口打开）"
-          class="link link-hover text-base-content/40 hover:text-primary transition-colors duration-200"
+          class="link link-hover text-base-content/50 hover:text-primary transition-colors duration-200"
         >
           DaisyUI
         </a>
@@ -49,7 +47,7 @@ const currentYear = new Date().getFullYear();
           target="_blank"
           rel="noopener noreferrer"
           aria-label="访问 TailwindCSS 官网（新窗口打开）"
-          class="link link-hover text-base-content/40 hover:text-primary transition-colors duration-200"
+          class="link link-hover text-base-content/50 hover:text-primary transition-colors duration-200"
         >
           TailwindCSS
         </a>

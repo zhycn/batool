@@ -5,7 +5,9 @@
  * @param wait - 等待时间(毫秒)，必须为正数
  * @param options - 配置选项
  * @param options.leading - 是否在开始时立即执行，默认为 false
- * @returns 防抖后的函数，包含 cancel 方法用于取消待执行的函数
+ * @returns 防抖后的函数。注意：仅在实际调用原函数时返回其结果，
+ *          否则返回 undefined。多次调用时，只有最后一次（或首次，若 leading=true）
+ *          的执行结果可能被返回。
  *
  * @example
  * ```ts

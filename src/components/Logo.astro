@@ -1,16 +1,20 @@
 ---
 import { APP_CONFIG } from "../types/settings";
-const { appName = APP_CONFIG.APP_NAME } = Astro.props;
+
+interface Props {
+  appName?: string;
+}
+
+const { appName = APP_CONFIG.APP_NAME } = Astro.props as Props;
 ---
 
-<a
-  href="/"
-  class="flex items-center gap-2 group"
-  title={appName}
-  aria-label="返回首页"
->
-  <img src="/favicon.svg" alt={appName} class="w-8 h-8" />
-  <span class="text-2xl font-bold text-base-content tracking-tight"
+<a href="/" class="flex items-center gap-2 group" aria-label="返回首页">
+  <img
+    src="/favicon.svg"
+    aria-hidden="true"
+    class="w-7 h-7 sm:w-8 sm:h-8"
+  />
+  <span class="text-xl sm:text-2xl font-bold text-base-content tracking-tight"
     >{appName}</span
   >
 </a>

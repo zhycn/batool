@@ -26,7 +26,7 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
 
 <HomeLayout totalCount={tools.length} categoryList={categoryList}>
   <!-- 主内容区 -->
-  <div class="w-full py-6">
+  <div class="w-full py-6 flex-grow">
     <!-- 工具列表 -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <EmptyState />
