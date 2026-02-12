@@ -14,6 +14,7 @@ export function renderToolButtons(
   }
 
   const fragment = document.createDocumentFragment();
+  const currentTheme = document.documentElement.getAttribute('data-theme');
 
   tools.forEach((tool, index) => {
     const a = document.createElement('a');
@@ -22,21 +23,17 @@ export function renderToolButtons(
     a.rel = 'noopener noreferrer';
 
     // DaisyUI 按钮样式 + 自定义样式（参考 Button.astro 设计，优化黑色主题效果）
-    a.className = 'btn btn-lg flex min-h-12 w-full items-center justify-between rounded-full p-3 transition-colors duration-200 sm:p-4 bg-base-200 hover:bg-base-300';
+    const baseClasses = 'btn btn-lg flex min-h-12 w-full items-center justify-between rounded-full p-3 transition-colors duration-200 sm:p-4';
+    const lightThemeClasses = 'bg-base-200 hover:bg-base-300';
+    const darkThemeClasses = 'bg-base-800 hover:bg-base-700';
     
-    // 根据当前主题调整按钮样式
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    if (currentTheme === 'dark') {
-      // 黑色主题下的特殊样式
-      a.classList.add('bg-base-800', 'hover:bg-base-700');
-      a.classList.remove('bg-base-200', 'hover:bg-base-300');
-    }
+    a.className = `${baseClasses} ${currentTheme === 'dark' ? darkThemeClasses : lightThemeClasses}`;
 
     // 首页动画效果
     if (isFirstPage) {
-      a.style.opacity = '0';
-      a.style.transform = `translateY(${uiConfig.ANIMATION.INITIAL_TRANSLATE_Y}px)`;
-      a.style.transition = `opacity ${uiConfig.ANIMATION.FADE_IN_DURATION}ms ease-out ${index * uiConfig.ANIMATION.STAGGER_DELAY}ms, transform ${uiConfig.ANIMATION.FADE_IN_DURATION}ms ease-out ${index * uiConfig.ANIMATION.STAGGER_DELAY}ms`;
+      a.classList.add('tool-button-enter');
+      // 使用CSS变量控制动画延迟
+      a.style.setProperty('--animation-delay', `${index * uiConfig.ANIMATION.STAGGER_DELAY}ms`);
     }
 
     // 按钮内容：工具名称 + 分类标签 + 外部链接图标（参考 Button.astro 设计）
@@ -65,14 +62,43 @@ export function renderToolButtons(
   // 触发动画
   if (isFirstPage) {
     requestAnimationFrame(() => {
-      const items = container.querySelectorAll('#tools-list > a');
+      const items = container.querySelectorAll('.tool-button-enter');
       items.forEach((item) => {
-        item.style.opacity = '1';
-        item.style.transform = 'translateY(0)';
+        item.classList.remove('tool-button-enter');
+        item.classList.add('tool-button-enter-active');
       });
     });
   }
 }
+
+// 添加CSS样式到文档头部
+function addAnimationStyles() {
+  // 检查是否已经添加了样式
+  if (document.getElementById('tool-button-animation-styles')) {
+    return;
+  }
+
+  const style = document.createElement('style');
+  style.id = 'tool-button-animation-styles';
+  style.textContent = `
+    .tool-button-enter {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 300ms ease-out var(--animation-delay, 0ms), 
+                  transform 300ms ease-out var(--animation-delay, 0ms);
+    }
+    
+    .tool-button-enter-active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  `;
+  
+  document.head.appendChild(style);
+}
+
+// 初始化时添加动画样式
+addAnimationStyles();
 
 export function showEmptyState(
   emptyEl: HTMLElement,

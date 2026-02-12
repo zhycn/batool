@@ -1,4 +1,13 @@
-// scripts/themeToggle.ts
+// scripts/themeManager.ts
+
+/**
+ * 初始化主题
+ * @param defaultTheme - 默认主题
+ */
+export function initTheme(defaultTheme: string) {
+  const saved = localStorage.getItem('theme') || defaultTheme;
+  document.documentElement.setAttribute('data-theme', saved);
+}
 
 /**
  * 主题切换函数
