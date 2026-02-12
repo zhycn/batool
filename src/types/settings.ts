@@ -9,41 +9,40 @@
 
 export const APP_CONFIG = {
   /** 应用语言 */
-  APP_LANG: 'zh-CN',
+  APP_LANG: "zh-CN",
 
   /** 应用名称 */
-  APP_NAME: 'Batool',
+  APP_NAME: "Batool",
 
   /** 应用标题 */
-  APP_TITLE: 'Batool – 开发者的极简工具入口',
+  APP_TITLE: "Batool – 开发者的极简工具入口",
 
   /** 应用描述 */
-  APP_DESCRIPTION: 'Batool 是一个为开发者设计的极简工具入口。直达官网，零干扰。',
+  APP_DESCRIPTION:
+    "Batool 是一个为开发者设计的极简工具入口。直达官网，零干扰。",
 
   /** 应用 URL */
-  APP_URL: 'https://batool-delta.vercel.app/',
+  APP_URL: "https://batool-delta.vercel.app/",
 
   /** 应用主题颜色 */
-  THEME_COLOR: '#fafafa',
+  THEME_COLOR: "#fafafa",
 
   /** 默认主题 (light | dark) */
-  DEFAULT_THEME: 'light',
+  DEFAULT_THEME: "light",
 
   /** 应用 GitHub 仓库地址 */
-  GITHUB_REPO: 'https://github.com/zhycn/batool',
+  GITHUB_REPO: "https://github.com/zhycn/batool",
 
   /** 社交媒体标题 */
-  SOCIAL_TITLE: 'Batool – 开发者的极简工具入口',
+  SOCIAL_TITLE: "Batool – 开发者的极简工具入口",
 
   /** 社交媒体描述 */
-  SOCIAL_DESCRIPTION: '一个为开发者设计的极简工具入口。直达官网，零干扰。',
+  SOCIAL_DESCRIPTION: "一个为开发者设计的极简工具入口。直达官网，零干扰。",
 } as const;
-
 
 // ==================== UI 配置 ====================
 
 export const UI_CONFIG = {
-
   /** 每页显示的工具数量 */
   ITEMS_PER_PAGE: 20,
 
@@ -57,19 +56,19 @@ export const UI_CONFIG = {
   SHORTCUTS: {
     /** 搜索快捷键 (metaKey | ctrlKey) + key */
     SEARCH: {
-      key: 'k',
+      key: "k",
       requiresMeta: true,
     },
 
     /** 清除/失焦快捷键 */
-    ESCAPE: 'Escape',
+    ESCAPE: "Escape",
   } as const,
 
   /** 占位符文本 */
   PLACEHOLDERS: {
-    SEARCH: '搜索工具...',
-    EMPTY_STATE_MESSAGE: '没有找到匹配的工具',
-    EMPTY_STATE_DESCRIPTION: '尝试调整搜索词或选择其他分类',
+    SEARCH: "搜索工具...",
+    EMPTY_STATE_MESSAGE: "没有找到匹配的工具",
+    EMPTY_STATE_DESCRIPTION: "尝试调整搜索词或选择其他分类",
   } as const,
 
   /** 动画配置 */
@@ -87,20 +86,21 @@ export const UI_CONFIG = {
   /** Intersection Observer 配置 */
   OBSERVER: {
     /** 根边距 (提前触发加载的距离) */
-    ROOT_MARGIN: '100px',
+    ROOT_MARGIN: "100px",
 
     /** 相交阈值 (0-1) */
     THRESHOLD: 0.1,
   } as const,
 } as const;
 
-
 /**
  * 获取完整的应用 URL
  */
-export const getFullUrl = (path: string = ''): string => {
-  const baseUrl = APP_CONFIG.APP_URL.replace(/\/$/, '');
-  return path ? `${baseUrl}${path.startsWith('/') ? path : `/${path}`}` : baseUrl;
+export const getFullUrl = (path: string = ""): string => {
+  const baseUrl = APP_CONFIG.APP_URL.replace(/\/$/, "");
+  return path
+    ? `${baseUrl}${path.startsWith("/") ? path : `/${path}`}`
+    : baseUrl;
 };
 
 // ==================== 搜索配置 ====================

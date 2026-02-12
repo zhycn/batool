@@ -78,13 +78,13 @@ Batool 提供：
 
 ## 🛠️ 技术栈
 
-| 技术 | 版本 | 用途 |
-|------|------|------|
-| [Astro](https://astro.build/) | 5.17+ | 静态站点生成器 |
-| [Tailwind CSS](https://tailwindcss.com/) | 4.x | 原子化 CSS 框架 |
-| [DaisyUI](https://daisyui.com/) | 5.x | 组件库与主题系统 |
-| [Fuse.js](https://fusejs.io/) | 7.x | 模糊搜索引擎 |
-| [TypeScript](https://www.typescriptlang.org/) | Strict | 类型安全 |
+| 技术                                          | 版本   | 用途             |
+| --------------------------------------------- | ------ | ---------------- |
+| [Astro](https://astro.build/)                 | 5.17+  | 静态站点生成器   |
+| [Tailwind CSS](https://tailwindcss.com/)      | 4.x    | 原子化 CSS 框架  |
+| [DaisyUI](https://daisyui.com/)               | 5.x    | 组件库与主题系统 |
+| [Fuse.js](https://fusejs.io/)                 | 7.x    | 模糊搜索引擎     |
+| [TypeScript](https://www.typescriptlang.org/) | Strict | 类型安全         |
 
 ## 🚀 快速开始
 
@@ -155,13 +155,13 @@ pnpm build
 
 所有工具数据存储在 `public/tools.json`，支持以下字段：
 
-| 字段 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| `name` | string | ✅ | 工具名称 |
-| `description` | string | ✅ | 工具描述 |
-| `category` | string | ✅ | 工具分类 |
-| `url` | string | ✅ | 工具链接 |
-| `tags` | string[] | ❌ | 标签数组，用于搜索 |
+| 字段          | 类型     | 必填 | 说明               |
+| ------------- | -------- | ---- | ------------------ |
+| `name`        | string   | ✅   | 工具名称           |
+| `description` | string   | ✅   | 工具描述           |
+| `category`    | string   | ✅   | 工具分类           |
+| `url`         | string   | ✅   | 工具链接           |
+| `tags`        | string[] | ❌   | 标签数组，用于搜索 |
 
 **示例：**
 
@@ -238,24 +238,24 @@ SEO_CONFIG = {
 ```typescript
 // 例如: 修改每页显示 30 个工具
 export const UI_CONFIG = {
-  ITEMS_PER_PAGE: 30,  // 改为 30
+  ITEMS_PER_PAGE: 30, // 改为 30
   // ... 其他配置保持不变
-}
+};
 
 // 例如: 调整搜索权重,更重视标签
 export const SEARCH_CONFIG = {
   FUSE_WEIGHTS: {
     NAME: 1.5,
-    TAGS: 2.5,  // 提高标签权重
+    TAGS: 2.5, // 提高标签权重
   },
   // ...
-}
+};
 
 // 例如: 修改默认主题为暗色
 export const UI_CONFIG = {
-  DEFAULT_THEME: 'dark' as const,
+  DEFAULT_THEME: "dark" as const,
   // ...
-}
+};
 ```
 
 **配置生效:**
@@ -274,9 +274,9 @@ pnpm build
 
 ```css
 :root {
-  --primary: #6366f1;      /* 主色调 */
-  --secondary: #ec4899;    /* 次要色 */
-  --accent: #8b5cf6;       /* 强调色 */
+  --primary: #6366f1; /* 主色调 */
+  --secondary: #ec4899; /* 次要色 */
+  --accent: #8b5cf6; /* 强调色 */
 }
 ```
 
@@ -320,9 +320,9 @@ netlify deploy --prod --dir=dist
 
 ```javascript
 export default defineConfig({
-  base: '/batool',  // 你的仓库名
+  base: "/batool", // 你的仓库名
   // ...
-})
+});
 ```
 
 1. 构建并推送：
@@ -373,7 +373,7 @@ pnpm preview
 
 ```astro
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="页面标题">
@@ -395,7 +395,8 @@ const { title } = Astro.props;
 
 <div class="card">
   <h2>{title}</h2>
-  <slot />  <!-- 插槽内容 -->
+  <slot />
+  <!-- 插槽内容 -->
 </div>
 ```
 

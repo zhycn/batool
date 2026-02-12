@@ -7,20 +7,18 @@ const appName = APP_CONFIG.APP_NAME || "Batool";
 <!--
   页脚组件
 -->
-<footer
-  class="w-full border-t border-base-content/5 bg-base-100/50 shrink-0"
->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<footer class="border-base-content/5 bg-base-100/50 w-full shrink-0 border-t">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div
-      class="flex flex-col sm:flex-row items-center justify-between py-8 sm:py-6 gap-4 text-sm text-base-content/50"
+      class="text-base-content/50 flex flex-col items-center justify-between gap-4 py-8 text-sm sm:flex-row sm:py-6"
     >
       <!-- 版权信息 -->
       <aside class="flex items-center gap-2">
-        <img src="/favicon.svg" alt={appName} class="w-6 h-6" />
+        <img src="/favicon.svg" alt={appName} class="h-6 w-6" />
         <p>Copyright © {currentYear} - All right reserved</p>
       </aside>
       <!-- 技术栈链接 -->
-      <div class="flex items-center flex-wrap justify-center gap-2">
+      <div class="flex flex-wrap items-center justify-center gap-2">
         <span>Built with</span>
         <a
           href="https://astro.build"

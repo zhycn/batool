@@ -8,13 +8,9 @@ interface Props {
 const { appName = APP_CONFIG.APP_NAME } = Astro.props as Props;
 ---
 
-<a href="/" class="flex items-center gap-2 group" aria-label="返回首页">
-  <img
-    src="/favicon.svg"
-    aria-hidden="true"
-    class="w-7 h-7 sm:w-8 sm:h-8"
-  />
-  <span class="text-xl sm:text-2xl font-bold text-base-content tracking-tight"
+<a href="/" class="group flex items-center gap-2" aria-label="返回首页">
+  <img src="/favicon.svg" aria-hidden="true" class="h-7 w-7 sm:h-8 sm:w-8" />
+  <span class="text-base-content text-xl font-bold tracking-tight sm:text-2xl"
     >{appName}</span
   >
 </a>

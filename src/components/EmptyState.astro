@@ -19,16 +19,16 @@ const {
   id="empty-state"
   role="status"
   aria-live="polite"
-  class="hidden text-center py-16 sm:py-24 lg:py-32"
+  class="hidden py-16 text-center sm:py-24 lg:py-32"
 >
-  <div class="mb-6 inline-flex text-base-content/50">
+  <div class="text-base-content/50 mb-6 inline-flex">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
       stroke-width="1.5"
       stroke="currentColor"
-      class="w-10 h-10 sm:w-12 sm:h-12"
+      class="h-10 w-10 sm:h-12 sm:w-12"
       focusable="false"
       aria-hidden="true"
     >
@@ -39,6 +39,6 @@ const {
       ></path>
     </svg>
   </div>
-  <h2 class="text-lg font-medium mb-2 text-base-content/80">{message}</h2>
+  <h2 class="text-base-content/80 mb-2 text-lg font-medium">{message}</h2>
   <p class="text-base-content/50 text-sm">{description}</p>
 </div>

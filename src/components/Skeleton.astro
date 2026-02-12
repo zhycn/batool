@@ -4,16 +4,16 @@
 
 <div
   id="skeleton-state"
-  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4"
+  class="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
 >
   {
     Array.from({ length: 12 }).map(() => (
       <div class="skeleton bg-base-200 rounded-full p-3 sm:px-5">
         <div class="flex items-center gap-3 sm:gap-4">
-          <div class="skeleton w-5 h-5 sm:w-6 sm:h-6 rounded-full shrink-0" />
+          <div class="skeleton h-5 w-5 shrink-0 rounded-full sm:h-6 sm:w-6" />
           <div class="flex-1 gap-2 sm:gap-3">
-            <div class="skeleton h-4 w-20 sm:w-24 rounded-md" />
-            <div class="skeleton h-5 w-12 sm:w-16 rounded-full" />
+            <div class="skeleton h-4 w-20 rounded-md sm:w-24" />
+            <div class="skeleton h-5 w-12 rounded-full sm:w-16" />
           </div>
         </div>
       </div>

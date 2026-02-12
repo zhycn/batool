@@ -29,7 +29,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deps:update": "pnpm update --latest"
+    "deps:update": "pnpm update --latest",
+    "format": "pnpm exec prettier . --write"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
@@ -40,5 +41,10 @@
   },
   "engines": {
     "node": ">=22.0.0"
+  },
+  "devDependencies": {
+    "prettier": "3.8.1",
+    "prettier-plugin-astro": "0.14.1",
+    "prettier-plugin-tailwindcss": "0.7.2"
   }
 }

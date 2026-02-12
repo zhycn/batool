@@ -8,14 +8,14 @@ const { placeholder = UI_CONFIG.PLACEHOLDERS.SEARCH || "搜索工具..." } =
 <!--
   搜索框组件 - 使用 DaisyUI input 和 kbd 组件
 -->
-<div class="max-w-3xl mx-auto">
+<div class="mx-auto max-w-3xl">
   <!-- DaisyUI input 组件 -->
   <label
-    class="input input-lg input-bordered flex items-center w-full gap-2 rounded-xl pr-2 border-base-content/20 outline-none focus:outline-0 shadow-none"
+    class="input input-lg input-bordered border-base-content/20 flex w-full items-center gap-2 rounded-xl pr-2 shadow-none outline-none focus:outline-0"
   >
     <!-- 搜索图标 -->
     <svg
-      class="h-5 w-5 opacity-50 shrink-0"
+      class="h-5 w-5 shrink-0 opacity-50"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="none"
@@ -32,7 +32,7 @@ const { placeholder = UI_CONFIG.PLACEHOLDERS.SEARCH || "搜索工具..." } =
       type="text"
       placeholder={placeholder}
       autocomplete="off"
-      class="grow bg-transparent border-none px-0"
+      class="grow border-none bg-transparent px-0"
     />
 
     <!-- 右侧操作区 -->
@@ -41,7 +41,7 @@ const { placeholder = UI_CONFIG.PLACEHOLDERS.SEARCH || "搜索工具..." } =
       <button
         id="clear-search"
         type="button"
-        class="hidden btn btn-ghost btn-circle btn-sm text-base-content/50"
+        class="btn btn-ghost btn-circle btn-sm text-base-content/50 hidden"
         aria-label="清除搜索"
       >
         <svg
@@ -60,7 +60,7 @@ const { placeholder = UI_CONFIG.PLACEHOLDERS.SEARCH || "搜索工具..." } =
       </button>
 
       <!-- DaisyUI kbd 组件 - 快捷键提示 -->
-      <kbd class="kbd hidden md:inline-flex text-base-content/50">⌘K</kbd>
+      <kbd class="kbd text-base-content/50 hidden md:inline-flex">⌘K</kbd>
     </div>
   </label>
 </div>
