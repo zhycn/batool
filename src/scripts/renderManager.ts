@@ -17,6 +17,7 @@ export function renderToolButtons(
   const currentTheme = document.documentElement.getAttribute('data-theme');
 
   tools.forEach((tool, index) => {
+    // 创建按钮元素
     const a = document.createElement('a');
     a.href = tool.url;
     a.target = '_blank';
@@ -54,7 +55,17 @@ export function renderToolButtons(
       </span>
     `;
 
-    fragment.appendChild(a);
+    // 如果有描述信息，添加tooltip
+    if (tool.description) {
+      const tooltipDiv = document.createElement('div');
+      tooltipDiv.className = 'tooltip';
+      tooltipDiv.setAttribute('data-tip', tool.description);
+      tooltipDiv.appendChild(a);
+      fragment.appendChild(tooltipDiv);
+    } else {
+      // 没有描述信息，直接添加按钮
+      fragment.appendChild(a);
+    }
   });
 
   container.appendChild(fragment);
