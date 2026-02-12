@@ -11,7 +11,7 @@ const { placeholder = UI_CONFIG.PLACEHOLDERS.SEARCH || '搜索工具...' } =
 <div class="mx-auto max-w-3xl">
   <!-- DaisyUI input 组件 -->
   <label
-    class="input input-lg input-bordered border-base-content/20 flex w-full items-center gap-2 rounded-xl pr-2 shadow-none outline-none focus:outline-0"
+    class="input input-lg input-bordered border-base-content/20 flex w-full items-center gap-3 rounded-xl pr-3 shadow-none outline-none focus:outline-0"
   >
     <!-- 搜索图标 -->
     <svg
@@ -36,7 +36,7 @@ const { placeholder = UI_CONFIG.PLACEHOLDERS.SEARCH || '搜索工具...' } =
     />
 
     <!-- 右侧操作区 -->
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-3">
       <!-- 清除按钮 -->
       <button
         id="clear-search"
@@ -55,7 +55,8 @@ const { placeholder = UI_CONFIG.PLACEHOLDERS.SEARCH || '搜索工具...' } =
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
-            d="M6 18L18 6M6 6l12 12"></path>
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
         </svg>
       </button>
 
