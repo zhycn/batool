@@ -33,7 +33,7 @@ const { size = 24 } = Astro.props;
   aria-label="切换明暗主题"
 >
   <!-- checkbox 用于控制图标切换 -->
-  <input type="checkbox" class="theme-controller" onchange="toggleTheme()" />
+  <input type="checkbox" class="theme-controller" />
   <!-- 立即初始化 checkbox 状态，避免页面加载时的图标闪烁 -->
   <script is:inline>
     (function () {
@@ -73,6 +73,27 @@ const { size = 24 } = Astro.props;
 </label>
 
 <script>
+  // 主题切换函数
+  function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    
+    // 防闪烁技巧
+    const style = document.createElement('style');
+    style.innerHTML = `*,*::before,*::after{transition:none!important}`;
+    document.head.appendChild(style);
+    document.documentElement.offsetHeight; // 强制重排
+    
+    // 切换主题
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    
+    // 移除防闪烁样式
+    requestAnimationFrame(() => requestAnimationFrame(() =>
+      document.head.removeChild(style)
+    ));
+  }
+
   // 同步 checkbox 状态与当前主题
   function syncCheckboxState() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -89,12 +110,26 @@ const { size = 24 } = Astro.props;
     }
   }
 
+  // 绑定事件
+  function bindEvents() {
+    const checkbox = document.querySelector('.theme-controller');
+    if (checkbox) {
+      checkbox.addEventListener('change', toggleTheme);
+    }
+  }
+
   // 页面加载时立即同步
   syncCheckboxState();
+  
+  // 绑定事件
+  bindEvents();
 
   // DOM 加载完成后再次确认
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', syncCheckboxState);
+    document.addEventListener('DOMContentLoaded', () => {
+      syncCheckboxState();
+      bindEvents();
+    });
   }
 
   // 监听主题变化，保持 checkbox 状态同步
@@ -103,4 +138,7 @@ const { size = 24 } = Astro.props;
     attributes: true,
     attributeFilter: ['data-theme'],
   });
+  
+  // 暴露 toggleTheme 函数到全局，供其他组件使用
+  window.toggleTheme = toggleTheme;
 </script>
