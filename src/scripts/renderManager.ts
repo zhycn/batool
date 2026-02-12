@@ -55,17 +55,9 @@ export function renderToolButtons(
       </span>
     `;
 
-    // 如果有描述信息，添加tooltip
-    if (tool.description) {
-      const tooltipDiv = document.createElement('div');
-      tooltipDiv.className = 'tooltip';
-      tooltipDiv.setAttribute('data-tip', tool.description);
-      tooltipDiv.appendChild(a);
-      fragment.appendChild(tooltipDiv);
-    } else {
-      // 没有描述信息，直接添加按钮
-      fragment.appendChild(a);
-    }
+    // 没有描述信息，直接添加按钮
+    fragment.appendChild(a);
+  
   });
 
   container.appendChild(fragment);
