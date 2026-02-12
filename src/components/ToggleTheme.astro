@@ -37,10 +37,10 @@ const { size = 24 } = Astro.props;
   <!-- 立即初始化 checkbox 状态，避免页面加载时的图标闪烁 -->
   <script is:inline>
     (function () {
-      const savedTheme = localStorage.getItem("theme") || "light";
-      const checkbox = document.querySelector(".theme-controller");
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      const checkbox = document.querySelector('.theme-controller');
       if (checkbox) {
-        checkbox.checked = savedTheme === "dark";
+        checkbox.checked = savedTheme === 'dark';
       }
     })();
   </script>
@@ -75,14 +75,14 @@ const { size = 24 } = Astro.props;
 <script>
   // 同步 checkbox 状态与当前主题
   function syncCheckboxState() {
-    const currentTheme = document.documentElement.getAttribute("data-theme");
+    const currentTheme = document.documentElement.getAttribute('data-theme');
     const checkbox = document.querySelector(
-      ".theme-controller",
+      '.theme-controller'
     ) as HTMLInputElement;
 
     if (checkbox) {
       // dark 模式时 checkbox 应该被选中
-      const shouldBeChecked = currentTheme === "dark";
+      const shouldBeChecked = currentTheme === 'dark';
       if (checkbox.checked !== shouldBeChecked) {
         checkbox.checked = shouldBeChecked;
       }
@@ -93,14 +93,14 @@ const { size = 24 } = Astro.props;
   syncCheckboxState();
 
   // DOM 加载完成后再次确认
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", syncCheckboxState);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncCheckboxState);
   }
 
   // 监听主题变化，保持 checkbox 状态同步
   const observer = new MutationObserver(syncCheckboxState);
   observer.observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ["data-theme"],
+    attributeFilter: ['data-theme'],
   });
 </script>

@@ -1,5 +1,5 @@
 // scripts/paginationManager.ts
-import type { UIConfig } from "./types";
+import type { UIConfig } from './types';
 
 export class PaginationManager {
   private observer: IntersectionObserver | null = null;
@@ -13,7 +13,7 @@ export class PaginationManager {
 
   init(sentinel: HTMLElement) {
     if (this.observer) this.observer.disconnect();
-    
+
     this.observer = new IntersectionObserver(
       (entries) => entries[0].isIntersecting && this.callback(),
       {

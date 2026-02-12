@@ -1,6 +1,6 @@
 // scripts/searchManager.ts
-import type { Tool } from "../types/tool";
-import type { SearchConfig } from "./types";
+import type { Tool } from '../types/tool';
+import type { SearchConfig } from './types';
 
 // 导入 Fuse.js（动态导入以减少初始加载时间）
 let Fuse: any = null;
@@ -21,16 +21,16 @@ export function debounce<T extends (...args: any[]) => any>(
 // 初始化 Fuse.js
 export async function initFuse(tools: Tool[], config: SearchConfig) {
   if (!Fuse) {
-    const { default: FuseModule } = await import("fuse.js");
+    const { default: FuseModule } = await import('fuse.js');
     Fuse = FuseModule;
   }
 
   fuseInstance = new Fuse(tools, {
     keys: [
-      { name: "name", weight: config.FUSE_WEIGHTS.NAME },
-      { name: "description", weight: config.FUSE_WEIGHTS.DESCRIPTION },
-      { name: "category", weight: config.FUSE_WEIGHTS.CATEGORY },
-      { name: "tags", weight: config.FUSE_WEIGHTS.TAGS },
+      { name: 'name', weight: config.FUSE_WEIGHTS.NAME },
+      { name: 'description', weight: config.FUSE_WEIGHTS.DESCRIPTION },
+      { name: 'category', weight: config.FUSE_WEIGHTS.CATEGORY },
+      { name: 'tags', weight: config.FUSE_WEIGHTS.TAGS },
     ],
     threshold: config.FUSE_THRESHOLD,
     includeScore: false,

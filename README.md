@@ -253,7 +253,7 @@ export const SEARCH_CONFIG = {
 
 // 例如: 修改默认主题为暗色
 export const UI_CONFIG = {
-  DEFAULT_THEME: "dark" as const,
+  DEFAULT_THEME: 'dark' as const,
   // ...
 };
 ```
@@ -320,7 +320,7 @@ netlify deploy --prod --dir=dist
 
 ```javascript
 export default defineConfig({
-  base: "/batool", // 你的仓库名
+  base: '/batool', // 你的仓库名
   // ...
 });
 ```
@@ -373,7 +373,7 @@ pnpm preview
 
 ```astro
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="页面标题">

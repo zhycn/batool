@@ -1,23 +1,23 @@
 ---
-import HomeLayout from "../layouts/HomeLayout.astro";
-import EmptyState from "../components/EmptyState.astro";
-import Skeleton from "../components/Skeleton.astro";
-import LoadingContainer from "../components/LoadingContainer.astro";
-import type { Tool } from "../types/tool";
-import { UI_CONFIG, SEARCH_CONFIG } from "../types/settings";
+import HomeLayout from '../layouts/HomeLayout.astro';
+import EmptyState from '../components/EmptyState.astro';
+import Skeleton from '../components/Skeleton.astro';
+import LoadingContainer from '../components/LoadingContainer.astro';
+import type { Tool } from '../types/tool';
+import { UI_CONFIG, SEARCH_CONFIG } from '../types/settings';
 
 // 加载工具数据
-const toolsData = await import("../../public/tools.json");
+const toolsData = await import('../../public/tools.json');
 const tools: Tool[] = toolsData.default as Tool[];
 
 // 获取所有分类并统计
 const categories = tools.reduce(
   (acc, tool) => {
-    const cat = tool.category || "未分类";
+    const cat = tool.category || '未分类';
     acc[cat] = (acc[cat] || 0) + 1;
     return acc;
   },
-  {} as Record<string, number>,
+  {} as Record<string, number>
 );
 
 // 按工具数量排序分类

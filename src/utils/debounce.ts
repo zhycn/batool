@@ -35,16 +35,16 @@ export function debounce<T extends (...args: any[]) => any>(
   wait: number,
   options: {
     leading?: boolean;
-  } = {},
+  } = {}
 ): ((...args: Parameters<T>) => ReturnType<T> | undefined) & {
   cancel: () => void;
 } {
-  if (typeof func !== "function") {
-    throw new TypeError("Expected a function");
+  if (typeof func !== 'function') {
+    throw new TypeError('Expected a function');
   }
 
-  if (typeof wait !== "number" || wait < 0) {
-    throw new TypeError("Expected wait time to be a positive number");
+  if (typeof wait !== 'number' || wait < 0) {
+    throw new TypeError('Expected wait time to be a positive number');
   }
 
   const { leading = false } = options;
