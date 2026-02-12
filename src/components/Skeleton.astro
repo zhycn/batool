@@ -1,18 +1,22 @@
 ---
-// Skeleton.astro
+interface Props {
+  count?: number;
+}
+const { count = 12 } = Astro.props;
 ---
 
 <div
   id="skeleton-state"
+  aria-hidden="true"
   class="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
 >
   {
-    Array.from({ length: 12 }).map(() => (
-      <div class="skeleton bg-base-200 rounded-full p-3 sm:px-5">
+    Array.from({ length: count }).map(() => (
+      <div class="skeleton bg-base-200 rounded-full p-3 sm:p-4">
         <div class="flex items-center gap-3 sm:gap-4">
           <div class="skeleton h-5 w-5 shrink-0 rounded-full sm:h-6 sm:w-6" />
-          <div class="flex-1 gap-2 sm:gap-3">
-            <div class="skeleton h-4 w-20 rounded-md sm:w-24" />
+          <div class="flex-1 space-y-2">
+            <div class="skeleton h-4 w-1/2 max-w-xs rounded-md" />
             <div class="skeleton h-5 w-12 rounded-full sm:w-16" />
           </div>
         </div>
