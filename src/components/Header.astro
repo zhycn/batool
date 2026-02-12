@@ -2,17 +2,14 @@
 import { APP_CONFIG } from "../types/settings";
 import Logo from "./Logo.astro";
 import ToggleTheme from "./ToggleTheme.astro";
+import Hero from "./Hero.astro";
 
 interface Props {
   toolCount?: number;
-  lastUpdate?: string;
-  license?: string;
 }
 
 const {
   toolCount = 0,
-  lastUpdate = "2024-06-01",
-  license = "MIT License",
 } = Astro.props;
 ---
 
@@ -94,34 +91,9 @@ const {
         </div>
       </div>
 
-      <!-- Hero 内容区域 - 左右两栏布局 -->
-      <div
-        class="flex flex-col lg:flex-row items-center justify-center gap-12 py-6"
-      >
-        <!-- 左侧内容区域 -->
-        <div class="flex-1 w-full max-w-2xl text-center">
-          <!-- 标签区域 -->
-          <div class="flex flex-wrap items-center justify-center gap-3 mb-6">
-            <span class="badge">{toolCount} tools</span>
-            <span class="badge">{license}</span>
-            <span class="badge">Last Update: {lastUpdate}</span>
-          </div>
-
-          <!-- Hero 标题 -->
-          <h1
-            class="text-[clamp(40px,6vw,64px)] font-black tracking-tight leading-[1.1] text-base-content mb-6"
-          >
-            开发者的极简工具入口
-          </h1>
-
-          <!-- 副标题 -->
-          <p
-            class="text-lg sm:text-xl text-base-content/70 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed"
-          >
-            快速找到并直达工具官网，零干扰
-          </p>
-        </div>
-      </div>
+      <!-- Hero 内容区域 -->
+      <Hero toolCount={toolCount} />
+      
     </div>
   </section>
 </div>

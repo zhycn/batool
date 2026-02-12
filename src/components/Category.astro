@@ -7,61 +7,65 @@ interface Props {
 const { categoryList, totalCount } = Astro.props;
 ---
 
-<!--
+<div class="border-b border-t bg-base-100 border-base-content/5 py-4">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!--
   分类过滤器组件 - 响应式布局
   - 移动端：单行横向滚动
   - PC端：自动换行多行展示
   - 统一边框颜色为 border-base-content/10
 --><!-- 移动端：横向滚动容器 -->
-<div class="w-full md:hidden overflow-x-auto overflow-y-hidden">
-  <div
-    class="flex justify-center gap-2 min-w-max px-6 mx-auto"
-    style="max-width: fit-content;"
-  >
-    <!-- 全部按钮 -->
-    <button
-      data-category="all"
-      class="category-btn px-4 py-2 rounded-full bg-primary text-primary-content text-sm font-medium hover:bg-primary/90 transition-all duration-200 whitespace-nowrap border border-transparent"
-    >
-      全部 <span class="ml-1.5 opacity-70">({totalCount})</span>
-    </button>
-
-    <!-- 分类按钮列表 -->
-    {
-      categoryList.map(([cat, count]) => (
+    <div class="w-full md:hidden overflow-x-auto overflow-y-hidden">
+      <div
+        class="flex justify-center gap-2 min-w-max px-6 mx-auto"
+        style="max-width: fit-content;"
+      >
+        <!-- 全部按钮 -->
         <button
-          data-category={cat}
-          class="category-btn px-4 py-2 rounded-full bg-base-content/5 text-base-content/70 text-sm font-medium hover:bg-base-content/10 hover:text-base-content transition-all duration-200 border border-base-content/10 whitespace-nowrap"
+          data-category="all"
+          class="category-btn px-4 py-2 rounded-full bg-primary text-primary-content text-sm font-medium hover:bg-primary/90 transition-all duration-200 whitespace-nowrap border border-transparent"
         >
-          {cat} <span class="ml-1.5 opacity-50">({count})</span>
+          全部 <span class="ml-1.5 opacity-70">({totalCount})</span>
         </button>
-      ))
-    }
-  </div>
-</div>
 
-<!-- PC端：自动换行多行展示 -->
-<div class="hidden md:block w-full">
-  <div class="flex flex-wrap justify-center gap-2 sm:gap-2.5 px-6">
-    <!-- 全部按钮 -->
-    <button
-      data-category="all"
-      class="category-btn px-4 py-2 rounded-full bg-primary text-primary-content text-sm font-medium hover:bg-primary/90 transition-all duration-200 whitespace-nowrap border border-transparent"
-    >
-      全部 <span class="ml-1.5 opacity-70">({totalCount})</span>
-    </button>
+        <!-- 分类按钮列表 -->
+        {
+          categoryList.map(([cat, count]) => (
+            <button
+              data-category={cat}
+              class="category-btn px-4 py-2 rounded-full bg-base-content/5 text-base-content/70 text-sm font-medium hover:bg-base-content/10 hover:text-base-content transition-all duration-200 border border-base-content/10 whitespace-nowrap"
+            >
+              {cat} <span class="ml-1.5 opacity-50">({count})</span>
+            </button>
+          ))
+        }
+      </div>
+    </div>
 
-    <!-- 分类按钮列表 -->
-    {
-      categoryList.map(([cat, count]) => (
+    <!-- PC端：自动换行多行展示 -->
+    <div class="hidden md:block w-full">
+      <div class="flex flex-wrap justify-center gap-2 sm:gap-2.5 px-6">
+        <!-- 全部按钮 -->
         <button
-          data-category={cat}
-          class="category-btn px-4 py-2 rounded-full bg-base-content/5 text-base-content/70 text-sm font-medium hover:bg-base-content/10 hover:text-base-content transition-all duration-200 border border-base-content/10 whitespace-nowrap"
+          data-category="all"
+          class="category-btn px-4 py-2 rounded-full bg-primary text-primary-content text-sm font-medium hover:bg-primary/90 transition-all duration-200 whitespace-nowrap border border-transparent"
         >
-          {cat} <span class="ml-1.5 opacity-50">({count})</span>
+          全部 <span class="ml-1.5 opacity-70">({totalCount})</span>
         </button>
-      ))
-    }
+
+        <!-- 分类按钮列表 -->
+        {
+          categoryList.map(([cat, count]) => (
+            <button
+              data-category={cat}
+              class="category-btn px-4 py-2 rounded-full bg-base-content/5 text-base-content/70 text-sm font-medium hover:bg-base-content/10 hover:text-base-content transition-all duration-200 border border-base-content/10 whitespace-nowrap"
+            >
+              {cat} <span class="ml-1.5 opacity-50">({count})</span>
+            </button>
+          ))
+        }
+      </div>
+    </div>
   </div>
 </div>
 
